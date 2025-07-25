@@ -25,6 +25,12 @@ This two-phase approach eliminates both **planning inconsistency** and **context
 
 **📖 [See the complete workflow in the User Guide](aios-core/user-guide.md)** - Planning phase, development cycle, and all agent roles
 
+## Prerequisites
+
+- Node.js >=20.0.0
+- npm
+- GitHub CLI (required for team collaboration)
+
 ## Quick Navigation
 
 ### Understanding the AIOS Workflow
@@ -102,8 +108,30 @@ This single command handles:
 ### Alternative: Clone and Build
 
 ```bash
-git clone https://github.com/allfluenceinc/aios-fullstack.git
+# For team members - clone from organization
+git clone https://github.com/aios-team/aios-fullstack.git
+cd aios-fullstack
+
+# Setup GitHub CLI and authentication (first time only)
+npm run setup:github
+
+# Install AIOS
 npm run install:aios # build and install all to a destination folder
+```
+
+### Quick Team Setup
+
+For team members joining the project:
+
+```bash
+# Install with GitHub setup
+npx aios-fullstack setup
+
+# This will:
+# 1. Check/install GitHub CLI
+# 2. Authenticate with GitHub
+# 3. Verify access to aios-team organization
+# 4. Run the AIOS installer
 ```
 
 ## 🌟 Beyond Software Development - Expansion Packs

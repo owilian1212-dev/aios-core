@@ -17,6 +17,8 @@
     "validate": "node tools/cli.js validate",
     "install:aios": "node tools/installer/bin/aios.js install",
     "install:bmad": "node tools/installer/bin/aios.js install",
+    "setup:github": "node tools/setup-github-cli.js",
+    "setup": "npm run setup:github && npm run install:aios",
     "format": "prettier --write \"**/*.md\"",
     "version:patch": "node tools/version-bump.js patch",
     "version:minor": "node tools/version-bump.js minor",
