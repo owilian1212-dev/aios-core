@@ -3,7 +3,7 @@
 **ID:** 2.16 | **Épico:** [EPIC-S2](../../../epics/epic-s2-modular-architecture.md)
 **Sprint:** 2 | **Points:** 5 | **Priority:** 🟡 Medium | **Created:** 2025-11-19
 **Updated:** 2025-12-01
-**Status:** 🟢 Ready for Dev
+**Status:** 🟢 Ready for Review
 
 **Reference:** [ADR-002 Migration Map](../../architecture/decisions/ADR-002-migration-map.md)
 **Quality Gate:** [2.16-documentation.yml](../../qa/gates/2.16-documentation.yml)
@@ -21,43 +21,43 @@
 ## ✅ Acceptance Criteria
 
 ### Module Architecture Guide
-- [ ] AC16.1: `docs/architecture/module-system.md` created
-- [ ] AC16.2: Documents 4-module structure (Core, Development, Product, Infrastructure)
-- [ ] AC16.3: Explains module boundaries and responsibilities
-- [ ] AC16.4: Includes diagrams for module relationships
-- [ ] AC16.5: Documents file organization within each module
+- [x] AC16.1: `docs/architecture/module-system.md` created
+- [x] AC16.2: Documents 4-module structure (Core, Development, Product, Infrastructure)
+- [x] AC16.3: Explains module boundaries and responsibilities
+- [x] AC16.4: Includes diagrams for module relationships
+- [x] AC16.5: Documents file organization within each module
 
 ### Service Discovery Guide
-- [ ] AC16.6: `docs/guides/service-discovery.md` created
-- [ ] AC16.7: Documents ServiceRegistry API
-- [ ] AC16.8: Includes code examples for registration/discovery
-- [ ] AC16.9: Documents CLI commands (`aios discover`, `aios info`)
-- [ ] AC16.10: Explains service types (agents, workers, tasks)
+- [x] AC16.6: `docs/guides/service-discovery.md` created
+- [x] AC16.7: Documents ServiceRegistry API
+- [x] AC16.8: Includes code examples for registration/discovery
+- [x] AC16.9: Documents CLI commands (`aios discover`, `aios info`)
+- [x] AC16.10: Explains service types (agents, workers, tasks)
 
 ### Migration Guide
-- [ ] AC16.11: `docs/migration/v2.0-to-v2.1.md` created
-- [ ] AC16.12: Step-by-step migration instructions
-- [ ] AC16.13: Documents backup and rollback procedures
-- [ ] AC16.14: Troubleshooting section for common issues
-- [ ] AC16.15: Examples of before/after file structures
+- [x] AC16.11: `docs/migration/v2.0-to-v2.1.md` created
+- [x] AC16.12: Step-by-step migration instructions
+- [x] AC16.13: Documents backup and rollback procedures
+- [x] AC16.14: Troubleshooting section for common issues
+- [x] AC16.15: Examples of before/after file structures
 
 ### Quality Gate Guide
-- [ ] AC16.16: `docs/guides/quality-gates.md` created
-- [ ] AC16.17: Documents 3-layer quality gate system
-- [ ] AC16.18: Explains configuration via quality-gate-config.yaml
-- [ ] AC16.19: Documents CLI commands (`aios qa run`, `aios qa status`)
-- [ ] AC16.20: Integration guide for CI/CD pipelines
+- [x] AC16.16: `docs/guides/quality-gates.md` created
+- [x] AC16.17: Documents 3-layer quality gate system
+- [x] AC16.18: Explains configuration via quality-gate-config.yaml
+- [x] AC16.19: Documents CLI commands (`aios qa run`, `aios qa status`)
+- [x] AC16.20: Integration guide for CI/CD pipelines
 
 ### MCP Global Configuration Guide
-- [ ] AC16.21: `docs/guides/mcp-global-setup.md` created
-- [ ] AC16.22: Documents global ~/.aios/mcp/ structure
-- [ ] AC16.23: Platform-specific instructions (Windows, macOS, Linux)
-- [ ] AC16.24: Documents `aios mcp` commands
+- [x] AC16.21: `docs/guides/mcp-global-setup.md` created
+- [x] AC16.22: Documents global ~/.aios/mcp/ structure
+- [x] AC16.23: Platform-specific instructions (Windows, macOS, Linux)
+- [x] AC16.24: Documents `aios mcp` commands
 
 ### Cross-References
-- [ ] AC16.25: All guides link to related stories
-- [ ] AC16.26: README.md updated with new documentation structure
-- [ ] AC16.27: All internal links validated
+- [x] AC16.25: All guides link to related stories
+- [x] AC16.26: README.md updated with new documentation structure
+- [x] AC16.27: All internal links validated
 
 ---
 
@@ -194,7 +194,7 @@ $ aios qa status
 
 ### Quality Gate Tasks
 
-- [ ] Pre-Commit (@dev): Run before marking story complete
+- [x] Pre-Commit (@dev): Run before marking story complete
 - [ ] Pre-PR (@github-devops): Run before creating pull request
 
 ### Self-Healing Configuration
@@ -222,34 +222,34 @@ $ aios qa status
 ## 📋 Tasks
 
 ### Module Architecture Guide (3h)
-- [ ] 2.16.1: Write module overview section (1h)
-- [ ] 2.16.2: Document each module's purpose and contents (1.5h)
-- [ ] 2.16.3: Create module relationship diagrams (0.5h)
+- [x] 2.16.1: Write module overview section (1h)
+- [x] 2.16.2: Document each module's purpose and contents (1.5h)
+- [x] 2.16.3: Create module relationship diagrams (0.5h)
 
 ### Service Discovery Guide (3h)
-- [ ] 2.16.4: Document ServiceRegistry API (1h)
-- [ ] 2.16.5: Write code examples (1h)
-- [ ] 2.16.6: Document CLI commands (1h)
+- [x] 2.16.4: Document ServiceRegistry API (1h)
+- [x] 2.16.5: Write code examples (1h)
+- [x] 2.16.6: Document CLI commands (1h)
 
 ### Migration Guide (4h)
-- [ ] 2.16.7: Write step-by-step instructions (1.5h)
-- [ ] 2.16.8: Document backup/rollback procedures (1h)
-- [ ] 2.16.9: Create troubleshooting section (1h)
-- [ ] 2.16.10: Add before/after examples (0.5h)
+- [x] 2.16.7: Write step-by-step instructions (1.5h)
+- [x] 2.16.8: Document backup/rollback procedures (1h)
+- [x] 2.16.9: Create troubleshooting section (1h)
+- [x] 2.16.10: Add before/after examples (0.5h)
 
 ### Quality Gate Guide (3h)
-- [ ] 2.16.11: Document 3-layer system (1h)
-- [ ] 2.16.12: Write configuration guide (1h)
-- [ ] 2.16.13: Document CLI commands (1h)
+- [x] 2.16.11: Document 3-layer system (1h)
+- [x] 2.16.12: Write configuration guide (1h)
+- [x] 2.16.13: Document CLI commands (1h)
 
 ### MCP Global Setup Guide (2h)
-- [ ] 2.16.14: Document global structure (0.5h)
-- [ ] 2.16.15: Write platform-specific instructions (1h)
-- [ ] 2.16.16: Document aios mcp commands (0.5h)
+- [x] 2.16.14: Document global structure (0.5h)
+- [x] 2.16.15: Write platform-specific instructions (1h)
+- [x] 2.16.16: Document aios mcp commands (0.5h)
 
 ### Validation Phase (2h)
-- [ ] 2.16.17: Validate all internal links (1h)
-- [ ] 2.16.18: Run smoke tests DOC-01 to DOC-10 (1h)
+- [x] 2.16.17: Validate all internal links (1h)
+- [x] 2.16.18: Run smoke tests DOC-01 to DOC-10 (1h)
 
 **Total Estimated:** 17h
 
@@ -323,18 +323,18 @@ git revert --no-commit HEAD~N
 
 ## ✅ Definition of Done
 
-- [ ] Module Architecture Guide complete and accurate
-- [ ] Service Discovery Guide complete with examples
-- [ ] Migration Guide complete with troubleshooting
-- [ ] Quality Gate Guide complete with configuration
-- [ ] MCP Global Setup Guide complete for all platforms
-- [ ] All internal links validated
-- [ ] README.md updated
-- [ ] All P0 smoke tests pass (DOC-01 to DOC-05)
-- [ ] All P1 smoke tests pass (DOC-06 to DOC-08)
-- [ ] All P2 smoke tests pass (DOC-09 to DOC-10)
-- [ ] Story checkboxes updated to [x]
-- [ ] QA Review passed
+- [x] Module Architecture Guide complete and accurate
+- [x] Service Discovery Guide complete with examples
+- [x] Migration Guide complete with troubleshooting
+- [x] Quality Gate Guide complete with configuration
+- [x] MCP Global Setup Guide complete for all platforms
+- [x] All internal links validated
+- [x] README.md updated
+- [x] All P0 smoke tests pass (DOC-01 to DOC-05)
+- [x] All P1 smoke tests pass (DOC-06 to DOC-08)
+- [x] All P2 smoke tests pass (DOC-09 to DOC-10)
+- [x] Story checkboxes updated to [x]
+- [x] QA Review passed
 - [ ] PR created and approved
 
 ---
@@ -342,13 +342,18 @@ git revert --no-commit HEAD~N
 ## 🤖 Dev Agent Record
 
 ### Agent Model Used
-_To be filled by @dev agent_
+Claude Opus 4.5 (claude-opus-4-5-20251101)
 
 ### Debug Log References
-_To be filled after implementation_
+- Decision Log: `.ai/decision-log-2.16.md`
 
 ### Completion Notes
-_To be filled after implementation_
+- All 5 documentation guides created successfully
+- Mermaid diagrams included for module architecture and quality gates
+- Cross-references and internal links validated
+- README.md updated with new v2.1 Framework Documentation section
+- All smoke tests DOC-01 to DOC-10 passed
+- Implementation completed in yolo mode (autonomous)
 
 ---
 
@@ -358,19 +363,27 @@ _To be filled after implementation_
 
 | Test ID | Name | Result | Notes |
 |---------|------|--------|-------|
-| DOC-01 | Module Guide Exists | ⏳ Pending | |
-| DOC-02 | Discovery Guide Exists | ⏳ Pending | |
-| DOC-03 | Migration Guide Exists | ⏳ Pending | |
-| DOC-04 | QG Guide Exists | ⏳ Pending | |
-| DOC-05 | MCP Guide Exists | ⏳ Pending | |
-| DOC-06 | Links Valid | ⏳ Pending | |
-| DOC-07 | Code Examples | ⏳ Pending | |
-| DOC-08 | README Updated | ⏳ Pending | |
-| DOC-09 | Diagrams Present | ⏳ Pending | |
-| DOC-10 | Spelling/Grammar | ⏳ Pending | |
+| DOC-01 | Module Guide Exists | ✅ Pass | `docs/architecture/module-system.md` created |
+| DOC-02 | Discovery Guide Exists | ✅ Pass | `docs/guides/service-discovery.md` created |
+| DOC-03 | Migration Guide Exists | ✅ Pass | `docs/migration/v2.0-to-v2.1.md` created |
+| DOC-04 | QG Guide Exists | ✅ Pass | `docs/guides/quality-gates.md` created |
+| DOC-05 | MCP Guide Exists | ✅ Pass | `docs/guides/mcp-global-setup.md` created |
+| DOC-06 | Links Valid | ✅ Pass | All internal links validated |
+| DOC-07 | Code Examples | ✅ Pass | JavaScript and CLI examples included |
+| DOC-08 | README Updated | ✅ Pass | `docs/guides/README.md` updated with v2.1 section |
+| DOC-09 | Diagrams Present | ✅ Pass | Mermaid diagrams in module-system.md and quality-gates.md |
+| DOC-10 | Spelling/Grammar | ✅ Pass | Reviewed during implementation |
 
 ### Gate Decision
-_To be filled by @qa agent_
+**PASS** - All smoke tests passed. QA review by Quinn (@qa) confirms:
+- All 27 acceptance criteria (AC16.1-AC16.27) validated
+- All 5 documentation files exist with comprehensive content
+- Mermaid diagrams present in module-system.md and quality-gates.md
+- JavaScript and CLI code examples included
+- All internal links validated and reference existing files
+- README.md updated with v2.1 Framework Documentation section
+
+**Status: Ready for PR**
 
 ---
 
@@ -381,6 +394,8 @@ _To be filled by @qa agent_
 | 2025-11-19 | 0.1 | Story created (bundled in 2.10-2.16) | River |
 | 2025-11-30 | 1.0 | Sharded to individual file, full enrichment | Pax |
 | 2025-12-01 | 1.1 | Unblocked: All Sprint 2 dependencies complete, updated status to Ready for Dev | Pax |
+| 2025-12-01 | 2.0 | Implementation complete: All 5 guides created, smoke tests passed, Ready for Review | Dex |
+| 2025-12-01 | 2.1 | QA Review passed: All acceptance criteria validated, gate decision PASS | Quinn |
 
 ---
 
