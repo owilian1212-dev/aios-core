@@ -1,0 +1,159 @@
+# Quality Gate Decision - Story 3.0
+# Core Module Security Hardening
+
+schema: 1
+story: "3.0"
+story_title: "Core Module Security Hardening"
+gate: PENDING
+status_reason: "Awaiting implementation of security fixes"
+reviewer: "Quinn (@qa)"
+updated: "2025-12-01T19:00:00Z"
+
+waiver:
+  active: false
+
+# Pre-implementation validation
+pre_validation:
+  story_format: PASS
+  acceptance_criteria: PASS
+  definition_of_done: PASS
+  dependencies_clear: PASS
+  estimates_reasonable: PASS
+  rollback_plan: PASS
+
+# Required tests (from story smoke tests SEC-01 to SEC-05)
+required_tests:
+  p0_critical:
+    - id: SEC-01
+      name: "ReDoS Prevention"
+      description: "Malicious regex patterns rejected"
+      status: PENDING
+
+    - id: SEC-02
+      name: "Path Traversal Block"
+      description: "../ in sessionId rejected with error"
+      status: PENDING
+
+    - id: SEC-03
+      name: "Valid Session Loads"
+      description: "Normal sessions still work (no regression)"
+      status: PENDING
+
+  p1_important:
+    - id: SEC-04
+      name: "Error Handling"
+      description: "Invalid session path returns null, no crash"
+      status: PENDING
+
+    - id: SEC-05
+      name: "CodeRabbit Clean"
+      description: "No MEDIUM+ security findings"
+      status: PENDING
+
+# Deliverables scope
+deliverables:
+  files_to_modify:
+    - ".aios-core/core/elicitation/elicitation-engine.js"
+    - ".aios-core/core/elicitation/session-manager.js"
+
+  security_fixes:
+    - name: "ReDoS Vulnerability"
+      file: ".aios-core/core/elicitation/elicitation-engine.js"
+      lines: "328-332"
+      severity: MEDIUM
+      fix: "Pattern validation before RegExp construction"
+
+    - name: "Path Traversal"
+      file: ".aios-core/core/elicitation/session-manager.js"
+      lines: "274-276"
+      severity: MEDIUM
+      fix: "SessionId validation with strict hex pattern"
+
+    - name: "Missing Error Handling"
+      file: ".aios-core/core/elicitation/elicitation-engine.js"
+      lines: "376-382"
+      severity: MEDIUM
+      fix: "Try/catch wrapper for fs.readJson"
+
+    - name: "Uninitialized Variable"
+      file: ".aios-core/core/elicitation/elicitation-engine.js"
+      lines: "411-420"
+      severity: MEDIUM
+      fix: "Initialize this.currentSession properly"
+
+# Risk assessment
+risk_summary:
+  totals:
+    critical: 0
+    high: 0
+    medium: 4
+    low: 0
+  highest: medium
+  identified_risks:
+    - id: "REDOS-001"
+      severity: medium
+      finding: "ReDoS vulnerability allows CPU exhaustion"
+      mitigation: "Pattern validation before RegExp"
+      status: PLANNED
+
+    - id: "PATH-001"
+      severity: medium
+      finding: "Path traversal allows arbitrary file access"
+      mitigation: "Strict sessionId validation"
+      status: PLANNED
+
+  recommendations:
+    must_fix:
+      - "All 4 MEDIUM severity issues"
+    before_start:
+      - "Review affected code paths"
+    during_implementation:
+      - "Test each fix individually"
+      - "Run CORE regression tests after each change"
+    before_completion:
+      - "Full CodeRabbit security scan"
+      - "All SEC tests must pass"
+
+# Quality scoring (pre-implementation baseline)
+quality_score: 90
+
+# Gate criteria for PASS
+pass_criteria:
+  - "All P0 tests (SEC-01 to SEC-03) must pass"
+  - "All P1 tests (SEC-04 to SEC-05) must pass"
+  - "No MEDIUM+ CodeRabbit findings"
+  - "CORE-01 to CORE-07 regression tests pass"
+  - "All 4 security vulnerabilities addressed"
+
+expires: "2025-12-31T00:00:00Z"
+
+evidence:
+  story_validated: true
+  po_approved: true
+  dependencies_met:
+    - story: "Sprint 2"
+      status: "Complete"
+      note: "All Sprint 2 stories Done as of 2025-12-01"
+  backlog_reference: "1732891500001-core-security-hardening.md"
+  blocking_stories: []
+  note: "Promoted from backlog due to CRITICAL priority. Security fixes required before Sprint 3 feature work."
+
+# CodeRabbit Integration
+coderabbit_integration:
+  enabled: true
+  focus_areas:
+    primary:
+      - "Security vulnerability detection"
+      - "ReDoS pattern analysis"
+      - "Path traversal detection"
+    secondary:
+      - "Error handling completeness"
+      - "Variable initialization"
+  self_healing:
+    primary_agent: "@dev"
+    max_iterations: 2
+    timeout_minutes: 10
+    severity_filter:
+      - MEDIUM
+      - HIGH
+      - CRITICAL

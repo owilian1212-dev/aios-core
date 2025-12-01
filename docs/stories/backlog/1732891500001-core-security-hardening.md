@@ -2,7 +2,8 @@
 
 **ID:** 1732891500001
 **Type:** Technical Debt
-**Priority:** High
+**Priority:** 🔴 Critical (Promoted 2025-12-01)
+**Scheduled:** Sprint 3 → Story 3.0
 **Related Story:** [2.2 - Core Module Creation](../v2.1/sprint-2/story-2.2-core-module.md)
 **Created:** 2025-11-29
 **Created By:** @qa (Quinn)

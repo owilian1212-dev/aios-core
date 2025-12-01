@@ -2,9 +2,11 @@
 
 **ID:** 1732978800001
 **Type:** Technical Debt
-**Priority:** Medium
+**Priority:** 🟠 High (Sprint 3 Pre-Work)
 **Related Story:** [1.4 - IDE Selection](../v2.1/sprint-1/story-1.4-ide-selection.md), [6.1.2.4 - Agent Identity]
+**Scheduled:** Sprint 3 Pre-Work (before 3.1-3.12)
 **Created:** 2025-11-30
+**Updated:** 2025-12-01
 **Created By:** @github-devops (Gage)
 **Effort:** 30 minutes
 
