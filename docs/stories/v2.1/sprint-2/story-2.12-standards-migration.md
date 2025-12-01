@@ -2,8 +2,8 @@
 
 **ID:** 2.12 | **Épico:** [EPIC-S2](../../../epics/epic-s2-modular-architecture.md)
 **Sprint:** 2 | **Points:** 3 | **Priority:** 🟡 Medium | **Created:** 2025-01-19
-**Updated:** 2025-11-30
-**Status:** 🟢 Ready for Review
+**Updated:** 2025-12-01
+**Status:** ✅ Done
 
 **Reference:** [ADR-002 Migration Map](../../architecture/decisions/ADR-002-migration-map.md)
 **Quality Gate:** [2.12-standards-migration.yml](../../qa/gates/2.12-standards-migration.yml)
@@ -250,8 +250,8 @@ git checkout HEAD~1 -- .aios-core/docs/
 - [x] All P1 smoke tests pass (STD-04 to STD-05)
 - [x] All P2 smoke tests pass (STD-06)
 - [x] Story checkboxes updated to [x]
-- [ ] QA Review passed
-- [ ] PR created and approved
+- [x] QA Review passed
+- [x] PR created and approved
 
 ---
 
@@ -335,6 +335,7 @@ Story 2.12 successfully migrates 12 framework standards files from `docs/standar
 | 2025-01-19 | 0.1 | Story created (bundled in 2.10-2.16) | River |
 | 2025-11-30 | 1.0 | Sharded to individual file, full enrichment | Pax |
 | 2025-12-01 | 1.1 | Implementation complete - 12 files migrated, refs updated | Dex |
+| 2025-12-01 | 1.2 | QA passed, pushed to main, marked Done | Pax |
 
 ---
 
