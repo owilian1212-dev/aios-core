@@ -3,7 +3,7 @@
 **ID:** 3.9 | **Epic:** [EPIC-S3](../../../epics/epic-s3-quality-templates.md)
 **Sprint:** 3 | **Points:** 3 | **Priority:** 🟡 Medium | **Created:** 2025-01-19
 **Updated:** 2025-12-05
-**Status:** 🔍 Ready for Review
+**Status:** ✅ Done
 
 **Reference:** [Decisão 9 - Template Engine](../../../audits/PEDRO-DECISION-LOG.md#decisão-9)
 
@@ -396,7 +396,7 @@ Key differences:
 - [x] PMDR-01 to PMDR-05 tests pass
 - [x] CLI command `aios generate pmdr` works correctly
 - [x] QA Review passed
-- [ ] PR created and approved
+- [x] PR created and approved (PR #21 merged)
 
 ---
 
@@ -452,6 +452,7 @@ Key differences:
 | 2025-12-05 | 2.2 | Story validated and approved; readiness score 8/10; predecessor 3.6 confirmed complete | Pax (@po) |
 | 2025-12-05 | 2.3 | Implementation complete: CLI generate command created, tests passing (13/13), lint clean | Dex (@dev) |
 | 2025-12-05 | 2.4 | QA Review PASS: All 8 ACs verified, 13/13 tests, gate file created | Quinn (@qa) |
+| 2025-12-05 | 2.5 | PR #21 created and merged to main; Story marked as Done | Gage (@devops) |
 
 ---
 
