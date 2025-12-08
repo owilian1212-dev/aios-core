@@ -103,6 +103,7 @@ security-audit,Security Audit,general,TASK-FORMAT-V1,false,.aios-core/developmen
 security-scan,Security Scan,general,TASK-FORMAT-V1,false,.aios-core/development/tasks/security-scan.md,active
 setup-database,Setup Database,general,TASK-FORMAT-V1,false,.aios-core/development/tasks/setup-database.md,active
 setup-design-system,Setup Design System,general,TASK-FORMAT-V1,false,.aios-core/development/tasks/setup-design-system.md,active
+setup-github,Setup Github,general,TASK-FORMAT-V1,true,.aios-core/development/tasks/setup-github.md,active
 shard-doc,Shard Doc,general,TASK-FORMAT-V1,false,.aios-core/development/tasks/shard-doc.md,active
 sm-create-next-story,Sm Create Next Story,general,TASK-FORMAT-V1,false,.aios-core/development/tasks/sm-create-next-story.md,active
 sync-documentation,Sync Documentation,general,TASK-FORMAT-V1,false,.aios-core/development/tasks/sync-documentation.md,active
