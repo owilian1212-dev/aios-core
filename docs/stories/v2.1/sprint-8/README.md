@@ -21,7 +21,7 @@
 |----|-------|--------|--------|----------|
 | **SQS-5** | SquadSyncService for Synkra API | Draft | 10-12h | High |
 | **SQS-6** | Download & Publish Tasks | Draft | 8-10h | High |
-| **SQS-7** | Migration Tool (expansion-packs to squads) | Draft | 6-8h | Medium |
+| **SQS-7** | Migration Tool (legacy to AIOS 2.1 format) | Draft | 9-12h | Medium |
 | **SQS-8** | Documentation & Examples Update | Draft | 4-6h | Medium |
 | **SQS-9** | Squad Designer - Guided Creation from Docs | Draft | 26-35h | High |
 
@@ -29,6 +29,7 @@
 
 ## Story Files
 
+- [SQS-7: Migration Tool](./story-sqs-7-migration-tool.md) - Legacy squad migration to AIOS 2.1 format
 - [SQS-9: Squad Designer](./story-sqs-9-squad-designer.md) - Guided squad creation from documentation
 
 ---
@@ -56,9 +57,10 @@
 - Registry integration
 
 ### SQS-7: Migration Tool
-- `squad-migrate.js` script
-- Mapping rules for expansion-pack to squad
-- Migration report generator
+- `squad-migrator.js` class in `.aios-core/development/scripts/squad/`
+- `*migrate-squad` task for @squad-creator agent
+- Backup creation and rollback support
+- Dry-run mode and migration reports
 
 ### SQS-8: Documentation
 - Updated squads-guide.md
