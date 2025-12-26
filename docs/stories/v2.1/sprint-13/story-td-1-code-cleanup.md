@@ -4,7 +4,7 @@
 <!-- Context: ESLint fixes + Orphaned legacy files cleanup -->
 <!-- Type: Tech Debt -->
 
-## Status: Ready for Dev
+## Status: Ready for Review
 
 **Priority:** HIGH (Quick Win)
 **Sprint:** 13
@@ -143,47 +143,47 @@ Large amount of deprecated files consuming space and causing confusion:
 **Responsável:** @dev (Dex)
 **Effort:** 15-30min
 
-- [ ] 1.1 Run `npm run lint` to confirm all instances
-- [ ] 1.2 Fix `.aios-core/core/session/context-loader.js`
-- [ ] 1.3 Fix `src/installer/brownfield-upgrader.js`
-- [ ] 1.4 Fix `tests/integration/test-utilities-part-3.js`
-- [ ] 1.5 Fix `.aios-core/scripts/test-template-system.js`
-- [ ] 1.6 Fix `.aios-core/infrastructure/scripts/test-quality-assessment.js`
-- [ ] 1.7 Fix `.aios-core/infrastructure/scripts/test-generator.js`
-- [ ] 1.8 Fix `tests/epic-verification.test.js`
-- [ ] 1.9 Fix `tests/e2e/story-creation-clickup.test.js`
-- [ ] 1.10 Fix `.aios-core/infrastructure/scripts/test-utilities.js`
-- [ ] 1.11 Verify lint passes with no new warnings
-- [ ] 1.12 Run tests to ensure no regressions
+- [x] 1.1 Run `npm run lint` to confirm all instances
+- [x] 1.2 Fix `.aios-core/core/session/context-loader.js`
+- [x] 1.3 Fix `src/installer/brownfield-upgrader.js`
+- [x] 1.4 Fix `tests/integration/test-utilities-part-3.js`
+- [x] 1.5 Fix `.aios-core/scripts/test-template-system.js`
+- [x] 1.6 Fix `.aios-core/infrastructure/scripts/test-quality-assessment.js`
+- [x] 1.7 Fix `.aios-core/infrastructure/scripts/test-generator.js`
+- [x] 1.8 Fix `tests/epic-verification.test.js`
+- [x] 1.9 Fix `tests/e2e/story-creation-clickup.test.js`
+- [x] 1.10 Fix `.aios-core/infrastructure/scripts/test-utilities.js`
+- [x] 1.11 Verify lint passes with no new warnings
+- [x] 1.12 Run tests to ensure no regressions
 
 ### Task 2: Remove Deprecated Docs (AC: 4, 7)
 
 **Responsável:** @dev (Dex)
 **Effort:** 15min
 
-- [ ] 2.1 Verify no active references to `.github/deprecated-docs/`
-- [ ] 2.2 Remove `.github/deprecated-docs/` directory (272 files)
-- [ ] 2.3 Verify no broken links in remaining docs
+- [x] 2.1 Verify no active references to `.github/deprecated-docs/`
+- [x] 2.2 Remove `.github/deprecated-docs/` directory (272 files)
+- [x] 2.3 Verify no broken links in remaining docs
 
 ### Task 3: Remove Backup Files (AC: 5-6)
 
 **Responsável:** @dev (Dex)
 **Effort:** 15min
 
-- [ ] 3.1 Remove `expansion-packs/minds/naval_ravikant/sources/**/*.backup` (4 files)
-- [ ] 3.2 Remove `expansion-packs/mmos/minds/naval_ravikant/sources/**/*.backup` (4 files)
-- [ ] 3.3 Remove `bin/aios-init.backup-v1.1.4.js`
-- [ ] 3.4 Verify originals exist and are current
+- [x] 3.1 Remove `expansion-packs/minds/naval_ravikant/sources/**/*.backup` (4 files)
+- [x] 3.2 Remove `expansion-packs/mmos/minds/naval_ravikant/sources/**/*.backup` (4 files)
+- [x] 3.3 Remove `bin/aios-init.backup-v1.1.4.js`
+- [x] 3.4 Verify originals exist and are current
 
 ### Task 4: Validation (AC: 8-10)
 
 **Responsável:** @qa (Quinn)
 **Effort:** 15min
 
-- [ ] 4.1 Run full test suite: `npm test`
-- [ ] 4.2 Run lint check: `npm run lint`
-- [ ] 4.3 Run build: `npm run build`
-- [ ] 4.4 Verify no broken imports/references
+- [x] 4.1 Run full test suite: `npm test`
+- [x] 4.2 Run lint check: `npm run lint`
+- [x] 4.3 Run build: `npm run build`
+- [x] 4.4 Verify no broken imports/references
 
 ---
 
@@ -243,12 +243,12 @@ npm run lint && npm test && npm run build
 
 ## Definition of Done
 
-- [ ] All 9 ESLint warnings for `_error` resolved
-- [ ] All 282 deprecated/backup files removed
-- [ ] No broken references in codebase
-- [ ] Tests pass
-- [ ] Lint passes
-- [ ] Build succeeds
+- [x] All 9 ESLint warnings for `_error` resolved
+- [x] All 282 deprecated/backup files removed
+- [x] No broken references in codebase
+- [x] Tests pass
+- [x] Lint passes
+- [x] Build succeeds
 - [ ] PR approved and merged
 
 ---
@@ -296,3 +296,4 @@ Files to be modified/removed in this story:
 |------|---------|--------|--------|
 | 2025-12-26 | 1.0 | @po (Pax) | Story created from tech debt consolidation |
 | 2025-12-26 | 1.1 | @po (Pax) | Added CodeRabbit section, File List, accurate file counts, Ready for Dev |
+| 2025-12-26 | 1.2 | @dev (Dex) | Implementation complete: Fixed 9 files, removed 282 deprecated/backup files |
