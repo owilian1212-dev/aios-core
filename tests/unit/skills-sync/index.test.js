@@ -41,13 +41,13 @@ describe('skills-sync shared pipeline', () => {
     );
     const taskPlan = buildTaskSkillPlan(
       [
-        { id: 'z-task', filename: 'z-task.md', title: 'Z Task' },
-        { id: 'a-task', filename: 'a-task.md', title: 'A Task' },
+        { id: 'z-task', filename: 'z-task.md', title: 'Z Task', agent: 'qa' },
+        { id: 'a-task', filename: 'a-task.md', title: 'A Task', agent: 'po' },
       ],
       skillsDir,
     );
 
     expect(agentPlan.map((item) => item.skillId)).toEqual(['aios-architect', 'aios-qa']);
-    expect(taskPlan.map((item) => item.skillId)).toEqual(['aios-task-a-task', 'aios-task-z-task']);
+    expect(taskPlan.map((item) => item.skillId)).toEqual(['aios-po-a-task', 'aios-qa-z-task']);
   });
 });

@@ -83,9 +83,6 @@ function validateGeminiIntegration(options = {}) {
   if (!fs.existsSync(resolved.agentsDir)) {
     errors.push(`Missing Gemini agents dir: ${path.relative(resolved.projectRoot, resolved.agentsDir)}`);
   }
-  if (!fs.existsSync(resolved.commandsDir)) {
-    errors.push(`Missing Gemini commands dir: ${path.relative(resolved.projectRoot, resolved.commandsDir)}`);
-  }
   if (!fs.existsSync(resolved.skillsDir)) {
     errors.push(`Missing Gemini skills dir: ${path.relative(resolved.projectRoot, resolved.skillsDir)}`);
   }
@@ -101,18 +98,8 @@ function validateGeminiIntegration(options = {}) {
   const commandFiles = fs.existsSync(resolved.commandsDir)
     ? fs.readdirSync(resolved.commandsDir).filter((f) => f.endsWith('.toml'))
     : [];
-  const expectedCommandCount = sourceCount > 0 ? sourceCount + 1 : 0;
-
-  if (sourceCount > 0 && commandFiles.length !== expectedCommandCount) {
-    warnings.push(`Gemini command count differs from source (${commandFiles.length}/${expectedCommandCount})`);
-  }
-  if (!commandFiles.includes('aios-menu.toml')) {
-    errors.push(
-      `Missing Gemini command file: ${path.relative(
-        resolved.projectRoot,
-        path.join(resolved.commandsDir, 'aios-menu.toml'),
-      )}`,
-    );
+  if (commandFiles.length > 0) {
+    errors.push(`Gemini command adapters must be removed: ${commandFiles.join(', ')}`);
   }
   if (sourceCount > 0 && geminiCount !== sourceCount) {
     warnings.push(`Gemini agent count differs from source (${geminiCount}/${sourceCount})`);
@@ -177,7 +164,7 @@ function validateGeminiIntegration(options = {}) {
 function formatHumanReport(result) {
   if (result.ok) {
     const lines = [
-      `✅ Gemini integration validation passed (agents: ${result.metrics.geminiAgents}, commands: ${result.metrics.geminiCommands}, skills: ${result.metrics.geminiSkills})`,
+      `✅ Gemini integration validation passed (agents: ${result.metrics.geminiAgents}, skills: ${result.metrics.geminiSkills}, adapters: ${result.metrics.geminiCommands})`,
     ];
     if (result.warnings.length > 0) {
       lines.push(...result.warnings.map((w) => `⚠️ ${w}`));

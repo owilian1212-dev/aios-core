@@ -7,6 +7,8 @@ const path = require('path');
 const {
   parseTaskFile,
   parseAllTasks,
+  extractSummary,
+  extractCommandHint,
 } = require('../../../.aios-core/infrastructure/scripts/ide-sync/task-parser');
 
 describe('task-parser', () => {
@@ -73,5 +75,50 @@ describe('task-parser', () => {
 
     expect(tasks).toHaveLength(2);
     expect(ids).toEqual(['a', 'b']);
+  });
+
+  it('prefers Purpose section text over command metadata for summary', () => {
+    const filePath = path.join(tmpRoot, 'purpose-priority.md');
+    fs.writeFileSync(
+      filePath,
+      [
+        '# Task: Build Resume',
+        '',
+        '> **Command:** `*build-resume {story-id}`',
+        '> **Agent:** @dev',
+        '',
+        '## Purpose',
+        '',
+        'Resume an autonomous build from its last checkpoint after failure.',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const parsed = parseTaskFile(filePath);
+    expect(parsed.summary).toBe('Resume an autonomous build from its last checkpoint after failure.');
+  });
+
+  it('extracts command hint from markdown command metadata', () => {
+    const body = [
+      '# Task: Build',
+      '',
+      '> **Command:** `*build {story-id}`',
+      '',
+      '## Purpose',
+      '',
+      'Build implementation for a story.',
+    ].join('\n');
+
+    expect(extractCommandHint(body)).toBe('*build {story-id}');
+  });
+
+  it('cleans markdown formatting when extracting summary', () => {
+    const body = [
+      '# Task',
+      '',
+      '**Purpose:** Validate prerequisites BEFORE task execution (blocking)',
+    ].join('\n');
+
+    expect(extractSummary(body)).toBe('Validate prerequisites BEFORE task execution (blocking)');
   });
 });

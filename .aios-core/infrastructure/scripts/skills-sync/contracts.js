@@ -53,14 +53,19 @@ function normalizeAgentSpec(agentData = {}) {
 function normalizeTaskSpec(taskData = {}) {
   const id = String(taskData.id || '').trim();
   const filename = String(taskData.filename || `${id}.md`).trim();
+  const normalizedTitle = normalizeText(taskData.title || id);
+  const normalizedSummary = normalizeText(
+    taskData.summary || `Task workflow for ${normalizedTitle}.`,
+  );
 
   return {
     specVersion: TASK_SPEC_VERSION,
     id,
     filename,
     sourcePath: `.aios-core/development/tasks/${filename}`,
-    title: normalizeText(taskData.title || id),
-    summary: normalizeText(taskData.summary || ''),
+    title: normalizedTitle,
+    summary: normalizedSummary,
+    command: normalizeText(taskData.command || ''),
     frontmatter: taskData.frontmatter || {},
     taskDefinition: taskData.taskDefinition || null,
     elicit: Boolean(taskData.elicit),

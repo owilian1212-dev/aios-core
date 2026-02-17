@@ -179,9 +179,9 @@ describe('IDE Transformers', () => {
       expect(claudeNative.getFilename(sampleAgent)).toBe('dev.md');
     });
 
-    it('should include compatibility pointer to command adapter', () => {
+    it('should not include compatibility adapter pointer', () => {
       const result = claudeNative.transform(sampleAgent);
-      expect(result).toContain('.claude/commands/AIOS/agents/dev.md');
+      expect(result).not.toContain('.claude/commands/AIOS/agents/dev.md');
     });
   });
 

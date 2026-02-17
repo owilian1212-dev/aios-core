@@ -1,7 +1,7 @@
 metadata:
   version: 1.0.0
-  lastUpdated: '2026-02-16T20:22:35.905Z'
-  entityCount: 508
+  lastUpdated: '2026-02-17T22:07:25.420Z'
+  entityCount: 509
   checksumAlgorithm: sha256
 entities:
   tasks:
@@ -6000,7 +6000,9 @@ entities:
     dev-helper:
       path: .aios-core/core/code-intel/helpers/dev-helper.js
       type: module
-      purpose: Code intelligence helper for @dev agent tasks - IDS G4 automation, duplicate detection, conventions, blast radius
+      purpose: >-
+        Code intelligence helper for @dev agent tasks - IDS G4 automation, duplicate detection, conventions, blast
+        radius
       keywords:
         - code-intel
         - dev-helper
@@ -6009,11 +6011,7 @@ entities:
         - blast-radius
         - conventions
         - reuse
-      usedBy:
-        - dev-develop-story
-        - create-service
-        - dev-suggest-refactoring
-        - build-autonomous
+      usedBy: []
       dependencies:
         - code-intel
       adaptability:
@@ -8335,8 +8333,8 @@ entities:
         score: 0.4
         constraints: []
         extensionPoints: []
-      checksum: sha256:6d87ec21d32acff1ba9b9d13025118c106ce6db59c1339c3a6ef4b2a02fd7f52
-      lastVerified: '2026-02-14T05:21:37.024Z'
+      checksum: sha256:d687199de502789cd7eae38ef9217c558323cb30e5c9d9227f5b00f8be1bc977
+      lastVerified: '2026-02-17T22:07:25.419Z'
     core-config:
       path: .aios-core/core-config.yaml
       type: module
@@ -8355,8 +8353,8 @@ entities:
         score: 0.4
         constraints: []
         extensionPoints: []
-      checksum: sha256:c1266389772b3fcf3e4c91df085bd38dc0b01d0a5f98bdf977d134972ccaf49b
-      lastVerified: '2026-02-15T22:52:07.323Z'
+      checksum: sha256:cc0d330cf8d3a7b41f8803dec646d29dfb1b9479cc127cc54fe6d3a40b673f83
+      lastVerified: '2026-02-17T22:07:25.418Z'
     active-modules.verify:
       path: .aios-core/core/memory/__tests__/active-modules.verify.js
       type: module

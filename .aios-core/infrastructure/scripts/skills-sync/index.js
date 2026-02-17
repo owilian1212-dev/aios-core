@@ -53,7 +53,7 @@ function buildAgentSkillPlan(agentSpecs, skillsDir) {
 function buildTaskSkillPlan(taskSpecs, skillsDir) {
   return (taskSpecs || [])
     .map((taskSpec) => {
-      const skillId = getTaskSkillId(taskSpec.id);
+      const skillId = getTaskSkillId(taskSpec.id, taskSpec.agent);
       const targetDir = path.join(skillsDir, skillId);
       return {
         type: 'task',

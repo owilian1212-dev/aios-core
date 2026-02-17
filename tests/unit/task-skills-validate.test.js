@@ -44,6 +44,7 @@ describe('task-skills-sync validate', () => {
         '    path: .codex/skills',
         'allowlist:',
         '  - task_id: execute-checklist',
+        '    agent: qa',
       ].join('\n'),
     );
   });
@@ -56,8 +57,10 @@ describe('task-skills-sync validate', () => {
     syncTaskSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceAgentsDir,
       catalogPath,
       target: 'codex',
+      scope: 'catalog',
       dryRun: false,
     });
 
@@ -66,6 +69,7 @@ describe('task-skills-sync validate', () => {
       sourceDir,
       sourceAgentsDir,
       catalogPath,
+      scope: 'catalog',
       strict: true,
     });
 
@@ -78,22 +82,80 @@ describe('task-skills-sync validate', () => {
     syncTaskSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceAgentsDir,
       catalogPath,
       target: 'codex',
+      scope: 'catalog',
       dryRun: false,
     });
 
-    fs.rmSync(path.join(tmpRoot, '.codex', 'skills', 'aios-task-execute-checklist', 'SKILL.md'));
+    fs.rmSync(path.join(tmpRoot, '.codex', 'skills', 'aios-qa-execute-checklist', 'SKILL.md'));
 
     const result = validateTaskSkills({
       projectRoot: tmpRoot,
       sourceDir,
       sourceAgentsDir,
       catalogPath,
+      scope: 'catalog',
       strict: true,
     });
 
     expect(result.ok).toBe(false);
     expect(result.errors.some((error) => error.includes('Missing task skill file'))).toBe(true);
+  });
+
+  it('fails when catalog entry does not declare an agent', () => {
+    write(
+      catalogPath,
+      [
+        'schema_version: 1',
+        'targets:',
+        '  codex:',
+        '    enabled: true',
+        '    path: .codex/skills',
+        'allowlist:',
+        '  - task_id: execute-checklist',
+      ].join('\n'),
+    );
+
+    const result = validateTaskSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      sourceAgentsDir,
+      catalogPath,
+      scope: 'catalog',
+      strict: true,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.errors.some((error) => error.includes('missing agent'))).toBe(true);
+  });
+
+  it('passes in full scope with fallback agent and validates all source tasks', () => {
+    syncTaskSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      sourceAgentsDir,
+      catalogPath,
+      target: 'codex',
+      scope: 'full',
+      fallbackAgent: 'master',
+      dryRun: false,
+    });
+
+    const result = validateTaskSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      sourceAgentsDir,
+      catalogPath,
+      scope: 'full',
+      fallbackAgent: 'master',
+      strict: true,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.errors).toEqual([]);
+    expect(result.metrics.expectedTasks).toBe(result.metrics.sourceTasks);
+    expect(result.metrics.checkedSkills).toBe(result.metrics.sourceTasks);
   });
 });

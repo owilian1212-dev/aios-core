@@ -8,6 +8,15 @@ global_required_checks:
   - task-skills
   - paths
 
+task_skills:
+  id_pattern: "aios-{agent}-{task-id}"
+  legacy_id_pattern: "aios-task-{task-id}"
+  legacy_allowed: false
+
+adapter_policy:
+  claude_command_adapters: false
+  gemini_command_adapters: false
+
 ide_matrix:
   - ide: "claude-code"
     display_name: "Claude Code"

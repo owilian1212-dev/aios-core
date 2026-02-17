@@ -10,6 +10,21 @@ const FORBIDDEN_ABSOLUTE_PATTERNS = [
   /[A-Za-z]:\\Users\\[^\s\\'"]+/g,
 ];
 
+const AGENT_TASK_SKILL_PATTERN = [
+  'master',
+  'analyst',
+  'architect',
+  'data-engineer',
+  'dev',
+  'devops',
+  'pm',
+  'po',
+  'qa',
+  'sm',
+  'squad-creator',
+  'ux-design-expert',
+].join('|');
+
 function getDefaultOptions() {
   const projectRoot = process.cwd();
   return {
@@ -55,7 +70,9 @@ function collectAbsolutePathViolations(content, filePath) {
 }
 
 function isTaskSkillFile(filePath) {
-  return /(^|\/)aios-task-[^/]+\/SKILL\.md$/.test(String(filePath || '').replace(/\\/g, '/'));
+  return new RegExp(
+    `(^|/)(?:aios-task-[^/]+|aios-(?:${AGENT_TASK_SKILL_PATTERN})-[^/]+)/SKILL\\.md$`,
+  ).test(String(filePath || '').replace(/\\/g, '/'));
 }
 
 function validateSkillPathConventions(content, filePath) {

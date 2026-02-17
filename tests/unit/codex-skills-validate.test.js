@@ -10,6 +10,7 @@ const { validateCodexSkills } = require('../../.aios-core/infrastructure/scripts
 describe('Codex Skills Validator', () => {
   let tmpRoot;
   let sourceDir;
+  let sourceTasksDir;
   let skillsDir;
   let taskCatalogPath;
   let expectedAgentCount;
@@ -17,6 +18,7 @@ describe('Codex Skills Validator', () => {
   beforeEach(() => {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aios-codex-validate-'));
     sourceDir = path.join(process.cwd(), '.aios-core', 'development', 'agents');
+    sourceTasksDir = path.join(process.cwd(), '.aios-core', 'development', 'tasks');
     skillsDir = path.join(tmpRoot, '.codex', 'skills');
     taskCatalogPath = path.join(
       tmpRoot,
@@ -38,6 +40,7 @@ describe('Codex Skills Validator', () => {
     const result = validateCodexSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceTasksDir,
       skillsDir,
       strict: true,
     });
@@ -54,6 +57,7 @@ describe('Codex Skills Validator', () => {
     const result = validateCodexSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceTasksDir,
       skillsDir,
       strict: true,
     });
@@ -71,6 +75,7 @@ describe('Codex Skills Validator', () => {
     const result = validateCodexSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceTasksDir,
       skillsDir,
       strict: true,
     });
@@ -88,6 +93,7 @@ describe('Codex Skills Validator', () => {
     const result = validateCodexSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceTasksDir,
       skillsDir,
       strict: true,
     });
@@ -110,17 +116,19 @@ describe('Codex Skills Validator', () => {
         '    path: .codex/skills',
         'allowlist:',
         '  - task_id: execute-checklist',
+        '    agent: qa',
       ].join('\n'),
       'utf8',
     );
 
-    const taskSkillDir = path.join(skillsDir, 'aios-task-execute-checklist');
+    const taskSkillDir = path.join(skillsDir, 'aios-qa-execute-checklist');
     fs.mkdirSync(taskSkillDir, { recursive: true });
     fs.writeFileSync(path.join(taskSkillDir, 'SKILL.md'), '# task skill', 'utf8');
 
     const result = validateCodexSkills({
       projectRoot: tmpRoot,
       sourceDir,
+      sourceTasksDir,
       skillsDir,
       strict: true,
       taskSkillCatalogPath: taskCatalogPath,
@@ -128,5 +136,82 @@ describe('Codex Skills Validator', () => {
 
     expect(result.ok).toBe(true);
     expect(result.errors).toEqual([]);
+  });
+
+  it('allows source-derived task skills in strict mode even when not catalog-listed', () => {
+    syncSkills({ sourceDir, localSkillsDir: skillsDir, dryRun: false });
+
+    const taskSkillDir = path.join(skillsDir, 'aios-master-analyze-brownfield');
+    fs.mkdirSync(taskSkillDir, { recursive: true });
+    fs.writeFileSync(path.join(taskSkillDir, 'SKILL.md'), '# task skill', 'utf8');
+
+    const result = validateCodexSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      sourceTasksDir,
+      skillsDir,
+      strict: true,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.errors).toEqual([]);
+  });
+
+  it('normalizes task skill agent alias from catalog (github-devops -> devops)', () => {
+    syncSkills({ sourceDir, localSkillsDir: skillsDir, dryRun: false });
+
+    fs.mkdirSync(path.dirname(taskCatalogPath), { recursive: true });
+    fs.writeFileSync(
+      taskCatalogPath,
+      [
+        'schema_version: 1',
+        'targets:',
+        '  codex:',
+        '    enabled: true',
+        '    path: .codex/skills',
+        'agent_aliases:',
+        '  github-devops: devops',
+        'allowlist:',
+        '  - task_id: publish-npm',
+        '    agent: github-devops',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const taskSkillDir = path.join(skillsDir, 'aios-devops-publish-npm');
+    fs.mkdirSync(taskSkillDir, { recursive: true });
+    fs.writeFileSync(path.join(taskSkillDir, 'SKILL.md'), '# task skill', 'utf8');
+
+    const result = validateCodexSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      sourceTasksDir,
+      skillsDir,
+      strict: true,
+      taskSkillCatalogPath: taskCatalogPath,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.errors).toEqual([]);
+  });
+
+  it('flags invalid source-derived task/agent combinations in strict mode', () => {
+    syncSkills({ sourceDir, localSkillsDir: skillsDir, dryRun: false });
+
+    // "spec-write-spec" is owned by PM in full mapping, so devops binding must be rejected.
+    const invalidTaskSkillDir = path.join(skillsDir, 'aios-devops-spec-write-spec');
+    fs.mkdirSync(invalidTaskSkillDir, { recursive: true });
+    fs.writeFileSync(path.join(invalidTaskSkillDir, 'SKILL.md'), '# task skill', 'utf8');
+
+    const result = validateCodexSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      sourceTasksDir,
+      skillsDir,
+      strict: true,
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.orphaned).toContain('aios-devops-spec-write-spec');
   });
 });

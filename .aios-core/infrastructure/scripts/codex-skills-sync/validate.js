@@ -6,10 +6,39 @@ const path = require('path');
 const yaml = require('js-yaml');
 
 const { parseAllAgents } = require('../ide-sync/agent-parser');
+const { parseAllTasks } = require('../ide-sync/task-parser');
+const { getTaskSkillId, normalizeAgentSlug } = require('../skills-sync/renderers/task-skill');
+const {
+  readCatalog: readTaskSkillCatalog,
+  normalizeAllowlist,
+  buildAliasMap: buildTaskAliasMap,
+  buildScopedEntries,
+} = require('../task-skills-sync/validate');
 const { getSkillId } = require('./index');
 
 function normalizeTaskId(value) {
   return String(value || '').trim().replace(/^aios-task-/, '');
+}
+
+function buildAliasMap(catalog = {}) {
+  const aliasMap = new Map();
+  const aliases = catalog && typeof catalog.agent_aliases === 'object'
+    ? catalog.agent_aliases
+    : {};
+
+  for (const [alias, target] of Object.entries(aliases)) {
+    const normalizedAlias = normalizeAgentSlug(alias).replace(/_/g, '-');
+    const normalizedTarget = normalizeAgentSlug(target).replace(/_/g, '-');
+    if (!normalizedAlias || !normalizedTarget) continue;
+    aliasMap.set(normalizedAlias, normalizedTarget);
+  }
+
+  return aliasMap;
+}
+
+function canonicalizeAgent(value, aliasMap = new Map()) {
+  const normalized = normalizeAgentSlug(value).replace(/_/g, '-');
+  return aliasMap.get(normalized) || normalized;
 }
 
 function loadExpectedCodexTaskSkillIds(projectRoot, catalogPath) {
@@ -26,6 +55,8 @@ function loadExpectedCodexTaskSkillIds(projectRoot, catalogPath) {
   } catch (_) {
     return new Set();
   }
+
+  const aliasMap = buildAliasMap(parsed);
 
   const codexConfig = parsed.targets && parsed.targets.codex ? parsed.targets.codex : null;
   if (!codexConfig || codexConfig.enabled !== true) {
@@ -46,17 +77,79 @@ function loadExpectedCodexTaskSkillIds(projectRoot, catalogPath) {
 
     const taskId = normalizeTaskId(row.task_id);
     if (!taskId) continue;
-    expected.add(`aios-task-${taskId}`);
+    const agent = canonicalizeAgent(row.agent, aliasMap);
+    if (!agent) continue;
+    expected.add(getTaskSkillId(taskId, agent));
   }
 
   return expected;
 }
 
-function getDefaultOptions() {
-  const projectRoot = process.cwd();
+function loadSourceDerivedCodexTaskSkillIds(options = {}) {
+  const resolved = {
+    projectRoot: process.cwd(),
+    sourceTasksDir: '',
+    sourceAgentsDir: '',
+    taskSkillCatalogPath: path.join(
+      process.cwd(),
+      '.aios-core',
+      'infrastructure',
+      'contracts',
+      'task-skill-catalog.yaml',
+    ),
+    fallbackAgent: 'master',
+    ...options,
+  };
+
+  if (!fs.existsSync(resolved.sourceTasksDir) || !fs.existsSync(resolved.sourceAgentsDir)) {
+    return new Set();
+  }
+
+  // Keep Codex strict-mode aligned with task-skills-sync scope=full mapping
+  // (catalog aliases + declared owners + fallback owner), not cartesian products.
+  let catalog;
+  try {
+    catalog = readTaskSkillCatalog(resolved.taskSkillCatalogPath);
+  } catch (_) {
+    catalog = {
+      allowlist: [],
+      targets: {},
+      agent_aliases: {},
+    };
+  }
+
+  const aliasMap = buildTaskAliasMap(catalog);
+  const parsedAgents = parseAllAgents(resolved.sourceAgentsDir).filter(isParsableAgent);
+  const validAgentSlugs = new Set(parsedAgents.map((agent) => normalizeAgentSlug(agent.id)).filter(Boolean));
+  const parsedTasks = parseAllTasks(resolved.sourceTasksDir).filter((task) => !task.error);
+  const { entries } = normalizeAllowlist(catalog, validAgentSlugs, aliasMap);
+
+  let scoped;
+  try {
+    scoped = buildScopedEntries({
+      scope: 'full',
+      catalogEntries: entries,
+      parsedTasks,
+      validAgentSlugs,
+      fallbackAgent: resolved.fallbackAgent,
+      aliasMap,
+    });
+  } catch (_) {
+    return new Set();
+  }
+
+  return new Set(
+    scoped.entries
+      .filter((entry) => entry.enabled !== false)
+      .map((entry) => getTaskSkillId(entry.taskId, entry.agent)),
+  );
+}
+
+function getDefaultOptions(projectRoot = process.cwd()) {
   return {
     projectRoot,
     sourceDir: path.join(projectRoot, '.aios-core', 'development', 'agents'),
+    sourceTasksDir: path.join(projectRoot, '.aios-core', 'development', 'tasks'),
     skillsDir: path.join(projectRoot, '.codex', 'skills'),
     taskSkillCatalogPath: path.join(
       projectRoot,
@@ -112,7 +205,22 @@ function validateSkillContent(content, expected) {
 }
 
 function validateCodexSkills(options = {}) {
-  const resolved = { ...getDefaultOptions(), ...options };
+  const projectRoot = options.projectRoot || process.cwd();
+  const resolved = {
+    ...getDefaultOptions(projectRoot),
+    ...options,
+    projectRoot,
+    sourceDir: options.sourceDir || path.join(projectRoot, '.aios-core', 'development', 'agents'),
+    sourceTasksDir: options.sourceTasksDir || path.join(projectRoot, '.aios-core', 'development', 'tasks'),
+    skillsDir: options.skillsDir || path.join(projectRoot, '.codex', 'skills'),
+    taskSkillCatalogPath: options.taskSkillCatalogPath || path.join(
+      projectRoot,
+      '.aios-core',
+      'infrastructure',
+      'contracts',
+      'task-skill-catalog.yaml',
+    ),
+  };
   const errors = [];
   const warnings = [];
 
@@ -131,6 +239,13 @@ function validateCodexSkills(options = {}) {
     resolved.projectRoot,
     resolved.taskSkillCatalogPath,
   );
+  const sourceDerivedTaskSkillIds = loadSourceDerivedCodexTaskSkillIds({
+    projectRoot: resolved.projectRoot,
+    sourceTasksDir: resolved.sourceTasksDir,
+    sourceAgentsDir: resolved.sourceDir,
+    taskSkillCatalogPath: resolved.taskSkillCatalogPath,
+    fallbackAgent: 'master',
+  });
 
   const missing = [];
   for (const item of expected) {
@@ -161,7 +276,10 @@ function validateCodexSkills(options = {}) {
       .filter(entry => entry.isDirectory() && entry.name.startsWith('aios-'))
       .map(entry => entry.name);
     for (const dir of dirs) {
-      if (dir.startsWith('aios-task-') && expectedTaskSkillIds.has(dir)) {
+      if (expectedTaskSkillIds.has(dir)) {
+        continue;
+      }
+      if (sourceDerivedTaskSkillIds.has(dir)) {
         continue;
       }
       if (!expectedIds.has(dir)) {
@@ -227,6 +345,9 @@ module.exports = {
   validateCodexSkills,
   validateSkillContent,
   loadExpectedCodexTaskSkillIds,
+  loadSourceDerivedCodexTaskSkillIds,
+  buildAliasMap,
+  canonicalizeAgent,
   normalizeTaskId,
   parseArgs,
   getDefaultOptions,

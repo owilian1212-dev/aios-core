@@ -2,26 +2,69 @@
 
 const { trimText } = require('./agent-skill');
 
-function getTaskSkillId(taskId) {
+function normalizeTaskId(taskId) {
   const id = String(taskId || '').trim().replace(/^aios-task-/, '');
-  return `aios-task-${id}`;
+  return id;
+}
+
+function normalizeAgentSlug(agent) {
+  return String(agent || '').trim().replace(/^aios-/, '');
+}
+
+function getTaskSkillId(taskId, agent) {
+  const id = normalizeTaskId(taskId);
+  const agentSlug = normalizeAgentSlug(agent);
+
+  if (!id) {
+    throw new Error('Task skill id requires taskId');
+  }
+
+  if (!agentSlug) {
+    throw new Error(`Task skill id requires agent slug for task "${id}"`);
+  }
+
+  return `aios-${agentSlug}-${id}`;
+}
+
+function sanitizeDescription(text) {
+  return String(text || '')
+    .replace(/^>\s*/, '')
+    .replace(/^[-*+]\s+/, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function toYamlString(value) {
+  return JSON.stringify(String(value || '').replace(/\s+/g, ' ').trim());
 }
 
 function buildTaskSkillContent(taskSpec) {
-  const skillId = getTaskSkillId(taskSpec.id);
+  const skillId = getTaskSkillId(taskSpec.id, taskSpec.agent);
   const title = taskSpec.title || taskSpec.id;
-  const summary = trimText(
+  const summary = sanitizeDescription(trimText(
     taskSpec.summary || `Reusable AIOS task workflow skill for ${taskSpec.id}.`,
     180,
-  );
+  ));
+  const description = summary || `Execute AIOS task workflow ${taskSpec.id}.`;
+  const commandHint = String(taskSpec.command || '').trim();
+  const normalizedAgent = normalizeAgentSlug(taskSpec.agent);
   const interactionNote = taskSpec.elicit
     ? '- This task requires user interaction points (`elicit=true`). Do not skip them.'
     : '- Execute non-interactive flow unless blocked by missing context.';
 
   return `---
 name: ${skillId}
-description: ${summary}
----
+description: ${toYamlString(description)}
+owner: ${toYamlString(normalizedAgent)}
+intent: "aios-task-workflow"
+source: ${toYamlString(`.aios-core/development/tasks/${taskSpec.filename}`)}
+${commandHint ? `command: ${toYamlString(commandHint)}\n` : ''}---
 
 # AIOS Task Skill: ${title}
 
@@ -38,7 +81,7 @@ description: ${summary}
 ## Interaction Rules
 ${interactionNote}
 
-## Guardrails
+${commandHint ? `## Canonical Command\n- \`${commandHint}\`\n\n` : ''}## Guardrails
 - Do not invent requirements outside the task definition.
 - Keep outputs aligned with the active story/epic scope.
 - Escalate when constitutional or quality gates would be violated.
@@ -46,6 +89,10 @@ ${interactionNote}
 }
 
 module.exports = {
+  normalizeTaskId,
+  normalizeAgentSlug,
   getTaskSkillId,
+  sanitizeDescription,
+  toYamlString,
   buildTaskSkillContent,
 };

@@ -97,7 +97,7 @@ describe('Path Validator', () => {
     write(path.join(tmpRoot, 'AGENTS.md'), '# Agents\n');
     write(path.join(tmpRoot, '.aios-core', 'product', 'templates', 'ide-rules', 'codex-rules.md'), '# codex\n');
     write(
-      path.join(skillsDir, 'aios-task-execute-checklist', 'SKILL.md'),
+      path.join(skillsDir, 'aios-qa-execute-checklist', 'SKILL.md'),
       [
         '# Skill',
         'Load .aios-core/development/tasks/execute-checklist.md',

@@ -46,6 +46,8 @@
     "sync:skills:claude": "node .aios-core/infrastructure/scripts/ide-sync/index.js sync --ide claude-skills",
     "sync:skills:gemini": "node .aios-core/infrastructure/scripts/ide-sync/index.js sync --ide gemini-skills",
     "sync:skills:tasks": "node .aios-core/infrastructure/scripts/task-skills-sync/index.js",
+    "sync:skills:tasks:full": "node .aios-core/infrastructure/scripts/task-skills-sync/index.js --scope full",
+    "sync:skills:tasks:catalog": "node .aios-core/infrastructure/scripts/task-skills-sync/index.js --scope catalog",
     "sync:ide:codex": "node .aios-core/infrastructure/scripts/ide-sync/index.js sync --ide codex",
     "sync:ide:gemini": "node .aios-core/infrastructure/scripts/ide-sync/index.js sync --ide gemini",
     "sync:ide:github-copilot": "node .aios-core/infrastructure/scripts/ide-sync/index.js sync --ide github-copilot",
@@ -62,6 +64,8 @@
     "sync:skills:codex:global": "node .aios-core/infrastructure/scripts/codex-skills-sync/index.js --global --global-only",
     "validate:codex-skills": "node .aios-core/infrastructure/scripts/codex-skills-sync/validate.js --strict",
     "validate:task-skills": "node .aios-core/infrastructure/scripts/task-skills-sync/validate.js --strict",
+    "validate:task-skills:full": "node .aios-core/infrastructure/scripts/task-skills-sync/validate.js --strict --scope full",
+    "validate:task-skills:catalog": "node .aios-core/infrastructure/scripts/task-skills-sync/validate.js --strict --scope catalog",
     "validate:paths": "node .aios-core/infrastructure/scripts/validate-paths.js",
     "validate:parity": "node .aios-core/infrastructure/scripts/validate-parity.js",
     "validate:semantic-lint": "node scripts/semantic-lint.js",
@@ -83,7 +87,7 @@
     "execa": "^5.1.1",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.2",
-    "glob": "^10.4.4",
+    "glob": "^12.0.0",
     "handlebars": "^4.7.8",
     "inquirer": "^8.2.6",
     "js-yaml": "^4.1.0",
@@ -155,6 +159,7 @@
   },
   "overrides": {
     "tar": "^7.5.7",
-    "diff": "^8.0.3"
+    "diff": "^8.0.3",
+    "glob": "^12.0.0"
   }
 }

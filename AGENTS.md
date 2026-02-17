@@ -40,16 +40,20 @@ npm test
 - Sincronizar tudo: `npm run sync:ide`
 - Validar drift: `npm run sync:ide:check`
 - Rodar paridade multi-IDE (Claude/Codex/Gemini): `npm run validate:parity`
-- Claude Code (modelo atual): agentes nativos em `.claude/agents`, commands em `.claude/commands/AIOS/agents` como adapter de compatibilidade, e skills em `.claude/skills`
+- Claude Code (modelo atual): agentes nativos em `.claude/agents` e skills em `.claude/skills` (sem adapters de command)
 - Sync Claude native agents: `npm run sync:agents:claude`
 - Sync Claude agent skills: `npm run sync:skills:claude`
-- Gemini CLI (modelo atual): rules + `.gemini/commands/*.toml` como adapter estável, com skills de agente em `packages/gemini-aios-extension/skills`
-- Sync Gemini rules/commands: `npm run sync:ide:gemini`
+- Gemini CLI (modelo atual): rules + skills de agente em `packages/gemini-aios-extension/skills` (sem adapters de command)
+- Sync Gemini rules: `npm run sync:ide:gemini`
 - Sync Gemini agent skills (extension): `npm run sync:skills:gemini`
 - Validar Codex sync/integration: `npm run validate:codex-sync && npm run validate:codex-integration`
 - Gerar skills locais do Codex (agents): `npm run sync:skills:codex`
-- Gerar skills de tasks (allowlist curada): `npm run sync:skills:tasks`
-- Validar skills de tasks: `npm run validate:task-skills`
+- Gerar skills de tasks (full/default): `npm run sync:skills:tasks`
+- Gerar skills de tasks (catalog legado): `npm run sync:skills:tasks:catalog`
+- Validar skills de tasks (full/default): `npm run validate:task-skills`
+- Validar skills de tasks (catalog legado): `npm run validate:task-skills:catalog`
+- Habilitar IDE/CLI adicional apos a instalacao (ex.: Antigravity): `npm run sync:ide:antigravity`
+- Outros targets pos-instalacao: `npm run sync:ide:cursor`, `npm run sync:ide:gemini`, `npm run sync:ide:github-copilot`, `npm run sync:ide:claude`, `npm run sync:ide:codex`
 - Este repositorio usa **local-first**: prefira `.codex/skills` versionado no projeto
 - Use `sync:skills:codex:global` apenas para testes fora deste repo
 

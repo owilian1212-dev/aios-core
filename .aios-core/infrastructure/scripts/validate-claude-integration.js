@@ -109,9 +109,6 @@ function validateClaudeIntegration(options = {}) {
   if (!fs.existsSync(nativeAgentsDir)) {
     errors.push(`Missing Claude native agents dir: ${path.relative(projectRoot, nativeAgentsDir)}`);
   }
-  if (!fs.existsSync(commandAgentsDir)) {
-    errors.push(`Missing Claude command adapter dir: ${path.relative(projectRoot, commandAgentsDir)}`);
-  }
   if (!fs.existsSync(rulesFile)) {
     warnings.push(`Claude rules file not found yet: ${path.relative(projectRoot, rulesFile)}`);
   }
@@ -121,22 +118,20 @@ function validateClaudeIntegration(options = {}) {
 
   const sourceFiles = listExpectedSourceAgents(sourceAgentsDir);
   const expectedNativeFiles = sourceFiles;
-  const expectedCommandFiles = sourceFiles;
   const expectedSkillIds = sourceFiles.map(toSkillIdFromFilename);
   const nativeFiles = new Set(listMarkdownFilenames(nativeAgentsDir));
-  const commandFiles = new Set(listMarkdownFilenames(commandAgentsDir));
+  const commandFiles = listMarkdownFilenames(commandAgentsDir);
   const skillIds = new Set(listSkillIds(skillsDir));
 
   const missingNative = expectedNativeFiles.filter((filename) => !nativeFiles.has(filename));
-  const missingCommandAdapters = expectedCommandFiles.filter((filename) => !commandFiles.has(filename));
   const missingSkills = expectedSkillIds.filter((skillId) => !skillIds.has(skillId));
   const duplicateNativeAgentNames = findDuplicateNativeAgentNames(nativeAgentsDir);
 
   if (missingNative.length > 0) {
     errors.push(`Missing Claude native agent files: ${missingNative.join(', ')}`);
   }
-  if (missingCommandAdapters.length > 0) {
-    errors.push(`Missing Claude command adapter files: ${missingCommandAdapters.join(', ')}`);
+  if (commandFiles.length > 0) {
+    errors.push(`Claude command adapters must be removed: ${commandFiles.join(', ')}`);
   }
   if (missingSkills.length > 0) {
     errors.push(`Missing Claude skill files: ${missingSkills.join(', ')}`);
@@ -149,14 +144,11 @@ function validateClaudeIntegration(options = {}) {
 
   const sourceCount = sourceFiles.length;
   const nativeCount = nativeFiles.size;
-  const commandCount = commandFiles.size;
+  const commandCount = commandFiles.length;
   const skillsCount = skillIds.size;
 
   if (sourceCount > 0 && nativeCount < sourceCount) {
     warnings.push(`Claude native agent inventory is lower than source (${nativeCount}/${sourceCount})`);
-  }
-  if (sourceCount > 0 && commandCount < sourceCount) {
-    warnings.push(`Claude command adapter inventory is lower than source (${commandCount}/${sourceCount})`);
   }
   if (sourceCount > 0 && skillsCount < sourceCount) {
     warnings.push(`Claude skills inventory is lower than source (${skillsCount}/${sourceCount})`);
@@ -178,7 +170,7 @@ function validateClaudeIntegration(options = {}) {
 function formatHumanReport(result) {
   if (result.ok) {
     const lines = [
-      `✅ Claude integration validation passed (native: ${result.metrics.claudeNativeAgents}, adapters: ${result.metrics.claudeCommandAdapters}, skills: ${result.metrics.claudeSkills})`,
+      `✅ Claude integration validation passed (native: ${result.metrics.claudeNativeAgents}, skills: ${result.metrics.claudeSkills}, adapters: ${result.metrics.claudeCommandAdapters})`,
     ];
     if (result.warnings.length > 0) {
       lines.push(...result.warnings.map((w) => `⚠️ ${w}`));

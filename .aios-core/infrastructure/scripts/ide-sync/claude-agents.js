@@ -94,9 +94,6 @@ ${whenToUse}
 
 ## Starter Commands
 ${starterCommands}
-
-## Compatibility
-- Legacy command adapter remains at \`.claude/commands/AIOS/agents/${agentData.filename}\`.
 `;
 }
 

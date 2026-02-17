@@ -24,7 +24,6 @@ const yaml = require('js-yaml');
 const { parseAllAgents } = require('./agent-parser');
 const { generateAllRedirects, writeRedirects } = require('./redirect-generator');
 const { validateAllIdes, formatValidationReport } = require('./validator');
-const { syncGeminiCommands, buildGeminiCommandFiles } = require('./gemini-commands');
 
 // Transformers
 const claudeCodeTransformer = require('./transformers/claude-code');
@@ -65,11 +64,6 @@ function loadConfig(projectRoot) {
         enabled: true,
         path: '.claude/agents',
         format: 'claude-native-agent',
-      },
-      'claude-code-commands': {
-        enabled: true,
-        path: '.claude/commands/AIOS/agents',
-        format: 'full-markdown-yaml',
       },
       'claude-skills': {
         enabled: true,
@@ -288,13 +282,7 @@ async function commandSync(options) {
 
     const result = syncIde(agents, ideConfig, ideName, projectRoot, options);
 
-    // Gemini CLI: also sync slash launcher command files (.gemini/commands/*.toml)
-    if (ideName === 'gemini') {
-      const geminiCommands = syncGeminiCommands(agents, projectRoot, options);
-      result.commandFiles = geminiCommands.files;
-    } else {
-      result.commandFiles = [];
-    }
+    result.commandFiles = [];
 
     if (ideName === 'gemini-skills') {
       try {
@@ -327,7 +315,6 @@ async function commandSync(options) {
     }
 
     const agentCount = result.files.length;
-    const commandCount = (result.commandFiles || []).length;
     const manifestCount = (result.manifestFiles || []).length;
     const redirectCount = redirectResult.written.length;
     const errorCount = result.errors.length;
@@ -339,7 +326,7 @@ async function commandSync(options) {
       }
 
       console.log(
-        `   ${status} ${agentCount} agents${commandCount > 0 ? `, ${commandCount} commands` : ''}${manifestCount > 0 ? `, ${manifestCount} manifests` : ''}, ${redirectCount} redirects${errorCount > 0 ? `, ${errorCount} errors` : ''}`
+        `   ${status} ${agentCount} agents${manifestCount > 0 ? `, ${manifestCount} manifests` : ''}, ${redirectCount} redirects${errorCount > 0 ? `, ${errorCount} errors` : ''}`
       );
 
       if (options.verbose && result.errors.length > 0) {
@@ -352,7 +339,7 @@ async function commandSync(options) {
 
   // Summary
   const totalFiles = results.reduce(
-    (sum, r) => sum + r.files.length + (r.commandFiles || []).length + (r.manifestFiles || []).length,
+    (sum, r) => sum + r.files.length + (r.manifestFiles || []).length,
     0,
   );
   const totalRedirects =
@@ -447,17 +434,6 @@ async function commandValidate(options) {
       targetDir: path.join(projectRoot, ideConfig.path),
     };
 
-    // Gemini CLI command launcher files are synced under .gemini/commands/*.toml
-    if (ideName === 'gemini') {
-      const commandFiles = buildGeminiCommandFiles(agents).map((entry) => ({
-        filename: entry.filename,
-        content: entry.content,
-      }));
-      ideConfigs['gemini-commands'] = {
-        expectedFiles: commandFiles,
-        targetDir: path.join(projectRoot, '.gemini', 'commands'),
-      };
-    }
   }
 
   // Validate
@@ -514,7 +490,7 @@ function parseArgs() {
  */
 function showHelp() {
   console.log(`
-${colors.bright}IDE Sync${colors.reset} - Sync AIOS agents to IDE command files
+${colors.bright}IDE Sync${colors.reset} - Sync AIOS agents to IDE platform files
 
 ${colors.bright}Usage:${colors.reset}
   node ide-sync/index.js <command> [options]

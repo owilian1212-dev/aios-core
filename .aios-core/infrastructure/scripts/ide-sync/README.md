@@ -3,18 +3,16 @@
 **Story 6.19** - IDE Command Auto-Sync System
 **Story TD-4** - Pre-commit Auto-Stage Integration
 
-Automatically synchronizes AIOS agent definitions to IDE command files.
+Automatically synchronizes AIOS agent definitions to IDE platform files.
 
 ## Overview
 
-IDE Sync keeps agent definitions in `.aios-core/development/agents/` synchronized with IDE-specific command files in:
+IDE Sync keeps agent definitions in `.aios-core/development/agents/` synchronized with IDE-specific platform files in:
 
 - `.claude/agents/` (Claude Code native agents)
-- `.claude/commands/AIOS/agents/` (Claude Code compatibility adapters)
 - `.claude/skills/aios-*/SKILL.md` (Claude Code agent-skills, dual-run)
 - `.codex/agents/` (Codex CLI support files)
 - `.gemini/rules/AIOS/agents/` (Gemini CLI)
-- `.gemini/commands/` (Gemini slash command launcher files)
 - `packages/gemini-aios-extension/skills/aios-*/SKILL.md` (Gemini extension agent-skills, dual-run)
 - `.github/agents/` (GitHub Copilot native agents, `*.agent.md`)
 - `.cursor/rules/agents/` (Cursor)
@@ -26,7 +24,9 @@ For Codex `/skills` activators, use the dedicated skills sync:
 npm run sync:skills:codex
 npm run sync:skills:codex:global
 npm run sync:skills:tasks
+npm run sync:skills:tasks:catalog
 npm run validate:task-skills
+npm run validate:task-skills:catalog
 ```
 
 ## Parity Contract
@@ -47,10 +47,10 @@ npm run validate:parity
 The pre-commit hook automatically:
 
 1. Runs IDE sync before each commit
-2. Auto-stages any changed IDE command files
+2. Auto-stages any changed IDE platform files
 3. Runs lint-staged for code quality
 
-This ensures IDE command files are always in sync with agent definitions.
+This ensures IDE platform files are always in sync with agent definitions.
 
 ### Bypass
 
@@ -85,6 +85,17 @@ npm run sync:agents:claude
 npm run sync:agents:github-copilot
 npm run sync:skills:claude
 npm run sync:skills:gemini
+```
+
+Enable additional IDEs/CLIs after initial installation:
+
+```bash
+npm run sync:ide:antigravity
+npm run sync:ide:gemini
+npm run sync:ide:cursor
+npm run sync:ide:github-copilot
+npm run sync:ide:claude
+npm run sync:ide:codex
 ```
 
 ### Validate
@@ -128,10 +139,6 @@ ideSync:
       enabled: true
       path: .claude/agents
       format: claude-native-agent
-    claude-code-commands:
-      enabled: true
-      path: .claude/commands/AIOS/agents
-      format: full-markdown-yaml
     claude-skills:
       enabled: true
       path: .claude/skills
@@ -169,7 +176,6 @@ Each IDE has a specific format for agent files:
 | IDE         | Format                  | Extension |
 | ----------- | ----------------------- | --------- |
 | Claude Code (native) | Native agent markdown | `.md` |
-| Claude Code (adapter) | Full markdown with YAML | `.md` |
 | Claude Code (skills) | SKILL directories | `aios-*/SKILL.md` |
 | Codex CLI   | Full markdown with YAML | `.md`     |
 | Gemini CLI  | Full markdown with YAML | `.md`     |
@@ -188,6 +194,7 @@ npm run validate:codex-integration
 npm run validate:gemini-sync
 npm run validate:gemini-integration
 npm run validate:task-skills
+npm run validate:task-skills:full
 ```
 
 ## Redirect Agents

@@ -30,9 +30,9 @@ AIOS supports multiple AI-powered development platforms. Choose the one that bes
 
 | IDE/CLI | Overall Status | How to Activate an Agent | Auto-Checks Before/After Actions | Workaround if Limited |
 | --- | --- | --- | --- | --- |
-| Claude Code | Works | Native agents (`.claude/agents`) with `/agent-name` command adapters kept for compatibility | Works (full) | -- |
-| Gemini CLI | Works | `/aios-menu` then `/aios-<agent>` | Works (minor differences in event handling) | -- |
-| Codex CLI | Limited | `/skills` then `aios-<agent-id>` (agents) or `aios-task-<task-id>` (curated tasks) | Limited (some checks need manual sync) | Run `npm run sync:ide:codex`, `npm run sync:skills:codex`, and `npm run sync:skills:tasks` |
+| Claude Code | Works | Native agents (`.claude/agents`) + skills (`.claude/skills`) | Works (full) | -- |
+| Gemini CLI | Works | Gemini rules (`.gemini/rules/AIOS/agents`) + extension skills (`packages/gemini-aios-extension/skills`) | Works (minor differences in event handling) | -- |
+| Codex CLI | Limited | `/skills` then `aios-<agent-id>` (agents) or `aios-<agent>-<task-id>` (curated tasks) | Limited (some checks need manual sync) | Run `npm run sync:ide:codex`, `npm run sync:skills:codex`, and `npm run sync:skills:tasks` |
 | Cursor | Limited | `@agent` + synced rules | Not available | Follow synced rules and run validators manually (`npm run validate:parity`) |
 | GitHub Copilot | Limited | chat modes + repo instructions | Not available | Use repo instructions and VS Code MCP config for context |
 | AntiGravity | Limited | workflow-driven activation | Not available | Use generated workflows and run validators manually |
@@ -87,9 +87,8 @@ If your goal is to get started as fast as possible:
 ```yaml
 config_file: .claude/CLAUDE.md
 agent_folder: .claude/agents
-activation: native agent files (recommended) + /agent-name command adapters (compatibility)
+activation: native agent files + agent/task skills
 format: native-agent-markdown
-compatibility_adapter: .claude/commands/AIOS/agents
 skills_folder: .claude/skills
 mcp_support: native
 special_features:
@@ -104,9 +103,8 @@ special_features:
 
 1. AIOS automatically creates `.claude/` directory on init
 2. Native agents are generated into `.claude/agents/*.md`
-3. Compatibility slash commands remain available (`/dev`, `/qa`, `/architect`) via `.claude/commands/AIOS/agents`
-4. Agent/task skills are generated in `.claude/skills/`
-5. Configure MCP servers in `~/.claude.json`
+3. Agent/task skills are generated in `.claude/skills/`
+4. Configure MCP servers in `~/.claude.json`
 
 **Configuration:**
 
@@ -118,7 +116,7 @@ npm run sync:skills:claude
 npm run sync:skills:tasks
 
 # Verify setup
-ls -la .claude/agents/ .claude/commands/AIOS/agents/ .claude/skills/
+ls -la .claude/agents/ .claude/skills/
 ```
 
 ---
@@ -147,8 +145,8 @@ special_features:
 1. Keep `AGENTS.md` at repository root
 2. Run `npm run sync:ide:codex` to sync auxiliary agent files
 3. Run `npm run sync:skills:codex` to generate project-local skills in `.codex/skills`
-4. Run `npm run sync:skills:tasks` to generate curated task skills (`aios-task-*`)
-5. Use `/skills` and choose `aios-architect`, `aios-dev`, or curated `aios-task-*` entries
+4. Run `npm run sync:skills:tasks` to generate curated task skills (`aios-<agent>-<task-id>`)
+5. Use `/skills` and choose `aios-architect`, `aios-dev`, or curated `aios-<agent>-<task-id>` entries
 6. Use `npm run sync:skills:codex:global` only when you explicitly want global installation
 
 **Configuration:**
@@ -284,7 +282,7 @@ special_features:
 ```yaml
 config_file: .gemini/rules.md
 agent_folder: .gemini/rules/AIOS/agents
-activation: slash launcher commands (stable adapter) + extension agent skills
+activation: agent rules + extension agent skills
 format: text
 mcp_support: native
 skills_folder: packages/gemini-aios-extension/skills
@@ -303,7 +301,6 @@ special_features:
 2. AIOS creates:
    - `.gemini/rules.md`
    - `.gemini/rules/AIOS/agents/*.md`
-   - `.gemini/commands/*.toml` (`/aios-menu`, `/aios-<agent>`) as compatibility command adapter layer
    - `packages/gemini-aios-extension/skills/aios-*/SKILL.md` (agent skills)
    - `.gemini/hooks/*.js`
    - `.gemini/settings.json` (hooks enabled)
@@ -317,9 +314,8 @@ npm run validate:gemini-integration
 ```
 
 4. Quick agent activation (recommended):
-   - `/aios-menu` to list shortcuts
-   - `/aios-dev`, `/aios-architect`, `/aios-qa`, etc.
-   - `/aios-agent <agent-id>` for generic launcher
+   - Use generated agent rules in `.gemini/rules/AIOS/agents/*.md`
+   - Use extension skills in `packages/gemini-aios-extension/skills/aios-*/SKILL.md`
 
 ---
 
@@ -396,9 +392,9 @@ npm run sync:ide:check
 # Check platform-specific directory
 ls .cursor/rules/agents/               # Cursor
 ls .claude/agents/                     # Claude native agents
-ls .claude/commands/AIOS/agents/       # Claude command adapters (compatibility)
 ls .claude/skills/                     # Claude agent/task skills
 ls .gemini/rules/AIOS/agents/          # Gemini CLI
+ls packages/gemini-aios-extension/skills/ # Gemini extension skills
 ```
 
 ### Sync Conflicts
@@ -470,7 +466,7 @@ npm run sync:ide
 npm run sync:agents:claude
 
 # Verify migration
-ls -la .claude/agents/ .claude/commands/AIOS/agents/
+ls -la .claude/agents/ .claude/skills/
 npm run validate:claude-integration
 ```
 

@@ -8,10 +8,11 @@ const yaml = require('js-yaml');
 const { parseAllTasks } = require('../ide-sync/task-parser');
 const { parseAllAgents } = require('../ide-sync/agent-parser');
 const { isParsableAgent } = require('../skills-sync/contracts');
-const { getTaskSkillId } = require('../skills-sync/renderers/task-skill');
+const { getTaskSkillId, normalizeAgentSlug } = require('../skills-sync/renderers/task-skill');
 
-function getDefaultOptions() {
-  const projectRoot = process.cwd();
+const SUPPORTED_SCOPES = ['catalog', 'full'];
+
+function getDefaultOptions(projectRoot = process.cwd()) {
   return {
     projectRoot,
     sourceDir: path.join(projectRoot, '.aios-core', 'development', 'tasks'),
@@ -23,6 +24,8 @@ function getDefaultOptions() {
       'contracts',
       'task-skill-catalog.yaml',
     ),
+    scope: 'full',
+    fallbackAgent: 'master',
     strict: false,
     quiet: false,
     json: false,
@@ -30,17 +33,72 @@ function getDefaultOptions() {
 }
 
 function parseArgs(argv = process.argv.slice(2)) {
-  const args = new Set(
-    argv.filter((arg) => !arg.startsWith('--catalog=')),
-  );
-  const catalogArg = argv.find((arg) => arg.startsWith('--catalog='));
-
-  return {
-    strict: args.has('--strict'),
-    quiet: args.has('--quiet') || args.has('-q'),
-    json: args.has('--json'),
-    catalogPath: catalogArg ? catalogArg.slice('--catalog='.length) : undefined,
+  const options = {
+    strict: false,
+    quiet: false,
+    json: false,
+    catalogPath: undefined,
+    scope: 'full',
+    fallbackAgent: 'master',
   };
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+
+    if (arg === '--strict') {
+      options.strict = true;
+      continue;
+    }
+
+    if (arg === '--quiet' || arg === '-q') {
+      options.quiet = true;
+      continue;
+    }
+
+    if (arg === '--json') {
+      options.json = true;
+      continue;
+    }
+
+    if (arg === '--catalog' && argv[i + 1]) {
+      options.catalogPath = argv[i + 1];
+      i += 1;
+      continue;
+    }
+
+    if (arg.startsWith('--catalog=')) {
+      options.catalogPath = arg.slice('--catalog='.length);
+      continue;
+    }
+
+    if (arg === '--scope' && argv[i + 1]) {
+      options.scope = argv[i + 1];
+      i += 1;
+      continue;
+    }
+
+    if (arg.startsWith('--scope=')) {
+      options.scope = arg.slice('--scope='.length);
+      continue;
+    }
+
+    if (arg === '--full') {
+      options.scope = 'full';
+      continue;
+    }
+
+    if (arg === '--fallback-agent' && argv[i + 1]) {
+      options.fallbackAgent = argv[i + 1];
+      i += 1;
+      continue;
+    }
+
+    if (arg.startsWith('--fallback-agent=')) {
+      options.fallbackAgent = arg.slice('--fallback-agent='.length);
+    }
+  }
+
+  return options;
 }
 
 function readCatalog(catalogPath) {
@@ -66,9 +124,43 @@ function normalizeTaskId(value) {
   return String(value || '').trim().replace(/^aios-task-/, '');
 }
 
-function normalizeAllowlist(catalog) {
+function canonicalizeAgent(value, aliasMap = new Map()) {
+  const normalized = normalizeAgentSlug(value).replace(/_/g, '-');
+  return aliasMap.get(normalized) || normalized;
+}
+
+function buildAliasMap(catalog = {}) {
+  const aliasMap = new Map();
+  const aliases = catalog && typeof catalog.agent_aliases === 'object'
+    ? catalog.agent_aliases
+    : {};
+
+  for (const [alias, target] of Object.entries(aliases)) {
+    const normalizedAlias = normalizeAgentSlug(alias).replace(/_/g, '-');
+    const normalizedTarget = normalizeAgentSlug(target).replace(/_/g, '-');
+    if (!normalizedAlias || !normalizedTarget) continue;
+    aliasMap.set(normalizedAlias, normalizedTarget);
+  }
+
+  return aliasMap;
+}
+
+function parseScope(value) {
+  const normalized = String(value || 'full').trim().toLowerCase();
+  const scope = normalized || 'full';
+
+  if (!SUPPORTED_SCOPES.includes(scope)) {
+    throw new Error(`Unsupported task-skill scope: ${scope}`);
+  }
+
+  return scope;
+}
+
+function normalizeAllowlist(catalog, validAgentSlugs, aliasMap = new Map()) {
   const entries = [];
   const duplicates = [];
+  const missingAgent = [];
+  const invalidAgent = [];
   const seen = new Set();
 
   for (const row of catalog.allowlist) {
@@ -81,8 +173,20 @@ function normalizeAllowlist(catalog) {
     }
 
     seen.add(taskId);
+    const agent = canonicalizeAgent(row && row.agent, aliasMap);
+    if (!agent) {
+      missingAgent.push(taskId);
+      continue;
+    }
+
+    if (validAgentSlugs && !validAgentSlugs.has(agent)) {
+      invalidAgent.push({ taskId, agent });
+      continue;
+    }
+
     entries.push({
       taskId,
+      agent,
       enabled: row.enabled !== false,
       targets: row.targets || {},
     });
@@ -91,6 +195,95 @@ function normalizeAllowlist(catalog) {
   return {
     entries: entries.sort((left, right) => left.taskId.localeCompare(right.taskId)),
     duplicates,
+    missingAgent,
+    invalidAgent,
+  };
+}
+
+function resolveFallbackAgent(value, validAgentSlugs, aliasMap = new Map()) {
+  const fallbackAgent = canonicalizeAgent(value || 'master', aliasMap);
+  if (!fallbackAgent) {
+    throw new Error('Task skills validation fallback agent cannot be empty');
+  }
+
+  if (validAgentSlugs && !validAgentSlugs.has(fallbackAgent)) {
+    throw new Error(`Task skills validation fallback agent is invalid: ${fallbackAgent}`);
+  }
+
+  return fallbackAgent;
+}
+
+function extractDeclaredAgent(task = {}, aliasMap = new Map()) {
+  const fromFrontmatter = task.frontmatter && task.frontmatter.agent;
+  const fromTaskDefinition = task.taskDefinition && task.taskDefinition.agent;
+  const raw = String(task.raw || '');
+  const ownerMatch = raw.match(/owner\s+agent\s*:\s*@?([a-z0-9-]+)/i);
+  const markdownAgentMatch = raw.match(/\*\*\s*(?:owner\s+)?agent:\s*\*\*\s*@?([a-z0-9-]+)/i);
+  const markdownLabelMatch = raw.match(/(?:^|\n)\s*>?\s*\*{0,2}\s*(?:owner\s+)?agent\s*\*{0,2}\s*:\s*@?([a-z0-9-]+)/i);
+  const inlineMatch = raw.match(/^\s*agent\s*:\s*["']?@?([a-z0-9-]+)["']?\s*$/im);
+
+  return canonicalizeAgent(
+    fromFrontmatter
+      || fromTaskDefinition
+      || (ownerMatch ? ownerMatch[1] : '')
+      || (markdownAgentMatch ? markdownAgentMatch[1] : '')
+      || (markdownLabelMatch ? markdownLabelMatch[1] : '')
+      || (inlineMatch ? inlineMatch[1] : ''),
+    aliasMap,
+  );
+}
+
+function buildScopedEntries({
+  scope,
+  catalogEntries,
+  parsedTasks,
+  validAgentSlugs,
+  fallbackAgent,
+  aliasMap,
+}) {
+  if (scope !== 'full') {
+    return {
+      entries: catalogEntries,
+      metadata: {
+        fallbackAgent: null,
+        autoMapped: 0,
+      },
+    };
+  }
+
+  const fallback = resolveFallbackAgent(fallbackAgent, validAgentSlugs, aliasMap);
+  const byTaskId = new Map((catalogEntries || []).map((entry) => [entry.taskId, entry]));
+  const entries = [];
+  let autoMapped = 0;
+
+  for (const task of parsedTasks || []) {
+    if (!task || task.error) continue;
+
+    const existing = byTaskId.get(task.id);
+    if (existing) {
+      entries.push(existing);
+      continue;
+    }
+
+    const declaredAgent = extractDeclaredAgent(task, aliasMap);
+    const isDeclaredAgentValid = declaredAgent && validAgentSlugs.has(declaredAgent);
+    const agent = isDeclaredAgentValid ? declaredAgent : fallback;
+
+    entries.push({
+      taskId: task.id,
+      agent,
+      enabled: true,
+      targets: {},
+    });
+    autoMapped += 1;
+  }
+
+  return {
+    entries: entries.sort((left, right) => left.taskId.localeCompare(right.taskId)),
+    metadata: {
+      fallbackAgent: fallback,
+      autoMapped,
+    },
   };
 }
 
@@ -129,6 +322,10 @@ function toAgentSkillId(agentId) {
   return `aios-${normalized}`;
 }
 
+function toAgentSlug(agentId) {
+  return normalizeAgentSlug(agentId);
+}
+
 function validateTaskSkillContent(content, expected) {
   const issues = [];
 
@@ -160,16 +357,56 @@ function listTaskSkillDirs(skillsDir) {
   if (!fs.existsSync(skillsDir)) return [];
 
   return fs.readdirSync(skillsDir, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && entry.name.startsWith('aios-task-'))
+    .filter((entry) => entry.isDirectory() && entry.name.startsWith('aios-'))
     .filter((entry) => fs.existsSync(path.join(skillsDir, entry.name, 'SKILL.md')))
+    .filter((entry) => {
+      try {
+        const content = fs.readFileSync(path.join(skillsDir, entry.name, 'SKILL.md'), 'utf8');
+        return content.includes('.aios-core/development/tasks/');
+      } catch (_) {
+        return false;
+      }
+    })
     .map((entry) => entry.name)
     .sort((left, right) => left.localeCompare(right));
 }
 
 function validateTaskSkills(options = {}) {
-  const resolved = { ...getDefaultOptions(), ...options };
+  const projectRoot = options.projectRoot || process.cwd();
+  const resolved = {
+    ...getDefaultOptions(projectRoot),
+    ...options,
+    projectRoot,
+    sourceDir: options.sourceDir || path.join(projectRoot, '.aios-core', 'development', 'tasks'),
+    sourceAgentsDir: options.sourceAgentsDir || path.join(projectRoot, '.aios-core', 'development', 'agents'),
+    catalogPath: options.catalogPath || path.join(
+      projectRoot,
+      '.aios-core',
+      'infrastructure',
+      'contracts',
+      'task-skill-catalog.yaml',
+    ),
+  };
   const errors = [];
   const warnings = [];
+  let scope;
+
+  try {
+    scope = parseScope(resolved.scope);
+  } catch (error) {
+    return {
+      ok: false,
+      errors: [error.message],
+      warnings,
+      metrics: {
+        sourceTasks: 0,
+        catalogTasks: 0,
+        expectedTasks: 0,
+        autoMappedTasks: 0,
+        checkedSkills: 0,
+      },
+    };
+  }
 
   let catalog;
   try {
@@ -182,17 +419,40 @@ function validateTaskSkills(options = {}) {
       metrics: {
         sourceTasks: 0,
         catalogTasks: 0,
+        expectedTasks: 0,
+        autoMappedTasks: 0,
         checkedSkills: 0,
       },
     };
   }
+  const aliasMap = buildAliasMap(catalog);
 
-  const { entries, duplicates } = normalizeAllowlist(catalog);
+  const parsedAgents = parseAllAgents(resolved.sourceAgentsDir)
+    .filter(isParsableAgent);
+  const validAgentSlugs = new Set(parsedAgents.map((agent) => toAgentSlug(agent.id)).filter(Boolean));
+
+  if (validAgentSlugs.size === 0) {
+    errors.push(`No parseable agents found in source: ${path.relative(resolved.projectRoot, resolved.sourceAgentsDir)}`);
+  }
+
+  const { entries, duplicates, missingAgent, invalidAgent } = normalizeAllowlist(
+    catalog,
+    validAgentSlugs,
+    aliasMap,
+  );
   if (duplicates.length > 0) {
     errors.push(`Duplicate task_id in task skill catalog: ${duplicates.join(', ')}`);
   }
+  if (missingAgent.length > 0) {
+    errors.push(`Task skill catalog entries missing agent: ${missingAgent.join(', ')}`);
+  }
+  if (invalidAgent.length > 0) {
+    errors.push(
+      `Task skill catalog has invalid agent mapping: ${invalidAgent.map((entry) => `${entry.taskId}->${entry.agent}`).join(', ')}`,
+    );
+  }
 
-  if (entries.length === 0) {
+  if (scope === 'catalog' && entries.length === 0) {
     warnings.push('Task skill catalog allowlist is empty');
   }
 
@@ -206,15 +466,33 @@ function validateTaskSkills(options = {}) {
     }
   }
 
-  const agentSkillIds = new Set(
-    parseAllAgents(resolved.sourceAgentsDir)
-      .filter(isParsableAgent)
-      .map((agent) => toAgentSkillId(agent.id)),
-  );
+  let scoped;
+  try {
+    scoped = buildScopedEntries({
+      scope,
+      catalogEntries: entries,
+      parsedTasks,
+      validAgentSlugs,
+      fallbackAgent: resolved.fallbackAgent,
+      aliasMap,
+    });
+  } catch (error) {
+    errors.push(error.message);
+    scoped = {
+      entries: entries,
+      metadata: {
+        fallbackAgent: null,
+        autoMapped: 0,
+      },
+    };
+  }
+  const effectiveEntries = scoped.entries;
 
-  for (const entry of entries) {
+  const agentSkillIds = new Set(parsedAgents.map((agent) => toAgentSkillId(agent.id)));
+
+  for (const entry of effectiveEntries) {
     if (!entry.enabled) continue;
-    const skillId = getTaskSkillId(entry.taskId);
+    const skillId = getTaskSkillId(entry.taskId, entry.agent);
     if (agentSkillIds.has(skillId)) {
       errors.push(`Task skill id collides with agent skill id: ${skillId}`);
     }
@@ -228,11 +506,11 @@ function validateTaskSkills(options = {}) {
   let checkedSkills = 0;
 
   for (const target of targets) {
-    const expected = entries
+    const expected = effectiveEntries
       .filter((entry) => isEnabledForTarget(entry, target.name))
       .map((entry) => ({
         ...entry,
-        skillId: getTaskSkillId(entry.taskId),
+        skillId: getTaskSkillId(entry.taskId, entry.agent),
       }));
 
     if (expected.length > 0 && !fs.existsSync(target.absPath)) {
@@ -286,8 +564,12 @@ function validateTaskSkills(options = {}) {
     errors,
     warnings,
     metrics: {
+      scope,
       sourceTasks: parsedTasks.length,
       catalogTasks: entries.filter((entry) => entry.enabled).length,
+      expectedTasks: effectiveEntries.filter((entry) => entry.enabled).length,
+      autoMappedTasks: scoped.metadata.autoMapped,
+      fallbackAgent: scoped.metadata.fallbackAgent,
       checkedSkills,
     },
   };
@@ -348,10 +630,17 @@ if (require.main === module) {
 }
 
 module.exports = {
+  SUPPORTED_SCOPES,
   getDefaultOptions,
   parseArgs,
   readCatalog,
   normalizeAllowlist,
+  buildAliasMap,
+  canonicalizeAgent,
+  parseScope,
+  resolveFallbackAgent,
+  extractDeclaredAgent,
+  buildScopedEntries,
   resolveEnabledTargets,
   isEnabledForTarget,
   validateTaskSkillContent,

@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 4.2.13
-generated_at: "2026-02-17T22:07:24.539Z"
+generated_at: "2026-02-17T23:43:28.693Z"
 generator: scripts/generate-install-manifest.js
 file_count: 1020
 files:
@@ -177,9 +177,9 @@ files:
     type: cli
     size: 5907
   - path: core-config.yaml
-    hash: sha256:cc0d330cf8d3a7b41f8803dec646d29dfb1b9479cc127cc54fe6d3a40b673f83
+    hash: sha256:1cf249979578d6f8441c81aeb0695d59fd64f757e2b319bf08e944ab566b6f79
     type: config
-    size: 9729
+    size: 9609
   - path: core/code-intel/code-intel-client.js
     hash: sha256:bd88497c8c8f312e95f746121e627c088e93d27af093d411f0521712bd17ba94
     type: core
@@ -1045,9 +1045,9 @@ files:
     type: data
     size: 34251
   - path: data/entity-registry.yaml
-    hash: sha256:9cbf837d0b2151304c3ce8d28e6ac8efa1ef4b35a9dc4074bdbfaa9fd4afc77f
+    hash: sha256:2fba59065908197ac83bef6eb3f43f02fcabc3478013f513699fa0a83bf8b52d
     type: data
-    size: 291887
+    size: 291795
   - path: data/learned-patterns.yaml
     hash: sha256:24ac0b160615583a0ff783d3da8af80b7f94191575d6db2054ec8e10a3f945dc
     type: data
@@ -2497,13 +2497,13 @@ files:
     type: infrastructure
     size: 1074
   - path: infrastructure/contracts/compatibility/aios-4.2.13.yaml
-    hash: sha256:548ecfb738029a599ec4e41d678b7de927259d3dd4c56dd57fa9b78d903be949
+    hash: sha256:42a01f876a073a9106c362c968c21835c066a8d6686c9629478a58131950cc11
     type: infrastructure
-    size: 1091
+    size: 1294
   - path: infrastructure/contracts/task-skill-catalog.yaml
-    hash: sha256:24d36e1afb848ae315b8ff7093746d5bd35c6514417ea4bffa87b458575348c3
+    hash: sha256:5432a839c4d42b05b4c851321101c80ee14d988a39f8e0be84afe0d5896a7840
     type: infrastructure
-    size: 1469
+    size: 1725
   - path: infrastructure/index.js
     hash: sha256:8e05caec57188938d6f348444ad3abce2c06b53bdb46993fb2e8ff81c27fca4c
     type: infrastructure
@@ -2653,9 +2653,9 @@ files:
     type: script
     size: 3220
   - path: infrastructure/scripts/codex-skills-sync/validate.js
-    hash: sha256:95ff510d5795c2c64a5b8090357f3868f3033b5a78e89fc8f41a06d0d4a82cd5
+    hash: sha256:011a6422872769df5063ddaa272f1622c2e420f67c95b8e7e48a80b714a02baa
     type: script
-    size: 6238
+    size: 10152
   - path: infrastructure/scripts/commit-message-generator.js
     hash: sha256:e1286241b9aa6d8918eb682bea331a8ba555341124b1e21c12cc44625ca90a6f
     type: script
@@ -2761,9 +2761,9 @@ files:
     type: script
     size: 8893
   - path: infrastructure/scripts/ide-sync/claude-agents.js
-    hash: sha256:041be17c010f22e0b43aabaddadd435b849e6c9c29317eb10b158e1ae260a6fc
+    hash: sha256:7c4143ba804481d0dc532d737e64e7f4c59dc52782a8adb504b0412175d96303
     type: script
-    size: 3036
+    size: 2926
   - path: infrastructure/scripts/ide-sync/claude-skills.js
     hash: sha256:02294dfcff154de0fe72877c32e9c451c2b0916861fe0c2e57111dd973daf6aa
     type: script
@@ -2781,21 +2781,21 @@ files:
     type: script
     size: 2760
   - path: infrastructure/scripts/ide-sync/index.js
-    hash: sha256:b1cc982749bd639dcc9e1f5262fbcee8948ab2dfb631f266ab748b1737e9aece
+    hash: sha256:9fb822c023cd0c5d4533f29c31618c2d0547bd4549217960bef4e7362616158a
     type: script
-    size: 16538
+    size: 15465
   - path: infrastructure/scripts/ide-sync/README.md
-    hash: sha256:2642a942c5f242f5ebf5ed5e9f7b9308aed18e5d766e2c869fc895385b135ce8
+    hash: sha256:0505f52788f24fe16520aa045bb3fe85ba322217620b52b5a05a82e44fd3e31b
     type: script
-    size: 6957
+    size: 6981
   - path: infrastructure/scripts/ide-sync/redirect-generator.js
     hash: sha256:618b767411f1d9e65b450291bf26b36bec839cfe899d44771dc832703fc50389
     type: script
     size: 4213
   - path: infrastructure/scripts/ide-sync/task-parser.js
-    hash: sha256:cf21011ceb0c1640ff2751dfd01f7774863dc2085ff11b8e8eb5aa1ffd1d4415
+    hash: sha256:123da7cf91d7adf42014a4b04a7e838789d3f5a3a4edf352fe13fcda6dfa7d29
     type: script
-    size: 3355
+    size: 6908
   - path: infrastructure/scripts/ide-sync/transformers/antigravity.js
     hash: sha256:d8fe023ce70651e0d83151f9f90000d8ffb51ab260f246704c1616739a001622
     type: script
@@ -2961,21 +2961,21 @@ files:
     type: script
     size: 9535
   - path: infrastructure/scripts/skills-sync/contracts.js
-    hash: sha256:a59d6dbf1e42386432f33a261e6376f5790831af92325cd01956b71092e3109b
+    hash: sha256:2381693741bfe7f609a863a2aed1e797ecc7ab7b67882c7949d066812199f57a
     type: script
-    size: 2216
+    size: 2404
   - path: infrastructure/scripts/skills-sync/index.js
-    hash: sha256:9cccee297aff414262b04053b251ed0ccbc373401851d4fed71c02e722052f2f
+    hash: sha256:78ffbcd8e1d02537192100184c2b7db9a1fd205556e4e63d6a8795112a10ba41
     type: script
-    size: 2458
+    size: 2474
   - path: infrastructure/scripts/skills-sync/renderers/agent-skill.js
     hash: sha256:622d975df92019c7294fc1540f3dad633fc967a2865ff45d33dfbd73844217e8
     type: script
     size: 2340
   - path: infrastructure/scripts/skills-sync/renderers/task-skill.js
-    hash: sha256:21cf4cc1db9b68a0bb99ed7957e9f765a71dfbab6e1e6d621ecedbdd8c72e860
+    hash: sha256:ed59fced970860b1322054e8bd3298e31f788992512680b8f16dd33b2b8240cb
     type: script
-    size: 1444
+    size: 2974
   - path: infrastructure/scripts/spot-check-validator.js
     hash: sha256:4bf2d20ded322312aef98291d2a23913da565e1622bc97366c476793c6792c81
     type: script
@@ -2997,13 +2997,13 @@ files:
     type: script
     size: 22394
   - path: infrastructure/scripts/task-skills-sync/index.js
-    hash: sha256:242db2396ef2fe73a3017f48d5e7eeeb5da370105c749d633f0cf9fc0080eb36
+    hash: sha256:f0aa0edf4fa7acb48af7841c131c0f874f666236c8aa61aa57a5cc0278021421
     type: script
-    size: 8112
+    size: 15411
   - path: infrastructure/scripts/task-skills-sync/validate.js
-    hash: sha256:49672b577e3723b9a3703326afb07dbb6bc0b88ed02a89e4ed5e197d67747b36
+    hash: sha256:a3b14d00b311f36035e8eb3bd67387d359cd047e39ba64ec2ae3d646ff934786
     type: script
-    size: 9439
+    size: 17206
   - path: infrastructure/scripts/template-engine.js
     hash: sha256:93f0b72bd4f5b5e18f49c43f0f89b5a6d06cd86cf765705be4a3433fb18b89bd
     type: script
@@ -3049,17 +3049,17 @@ files:
     type: script
     size: 14900
   - path: infrastructure/scripts/validate-claude-integration.js
-    hash: sha256:7c9fd9b034e694ac58cfc3d6481d7d5f69ebd807bbec229bf3e18a24506fea2b
+    hash: sha256:df37bf9b103bea2e2ca064865275acd65b34926efc05df71d9191c086a24ebf4
     type: script
-    size: 7434
+    size: 6943
   - path: infrastructure/scripts/validate-codex-integration.js
     hash: sha256:83dadad6571d69ee188c0c75802eea2b3b71076801281d7b828e62ad5f6ea574
     type: script
     size: 4120
   - path: infrastructure/scripts/validate-gemini-integration.js
-    hash: sha256:d3872e4a5a1795f8424592f0782a106bbc8481e4fa6e4f131507e8d77395ed6e
+    hash: sha256:87d9a89a4ad6903b0abbf4246b56144d7014c8a22820f09aeb287f8bd6d8dd89
     type: script
-    size: 7867
+    size: 7341
   - path: infrastructure/scripts/validate-output-pattern.js
     hash: sha256:91111d656e8d7b38a20a1bda753e663b74318f75cdab2025c7e0b84c775fc83d
     type: script
@@ -3069,9 +3069,9 @@ files:
     type: script
     size: 13586
   - path: infrastructure/scripts/validate-paths.js
-    hash: sha256:68469013248439f8d236feb3f3af859371917bcad60955abf4a510e1966408ad
+    hash: sha256:eca94567ba9318ff0a1d68967f879ff49ab36ed994e91198a394da4e28fefe8e
     type: script
-    size: 4150
+    size: 4419
   - path: infrastructure/scripts/validate-user-profile.js
     hash: sha256:8d9e687b842135a184c87a72b83b9a1448b0315c5030d6119b32003059b5cf77
     type: script
