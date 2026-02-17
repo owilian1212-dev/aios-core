@@ -37,13 +37,19 @@ npm test
 
 ## IDE/Agent Sync
 
-- Sincronizar regras/agentes: `npm run sync:ide`
+- Sincronizar tudo: `npm run sync:ide`
 - Validar drift: `npm run sync:ide:check`
 - Rodar paridade multi-IDE (Claude/Codex/Gemini): `npm run validate:parity`
-- Sync Claude Code: `npm run sync:ide:claude`
-- Sincronizar Gemini CLI: `npm run sync:ide:gemini`
+- Claude Code (modelo atual): agentes nativos em `.claude/agents`, commands em `.claude/commands/AIOS/agents` como adapter de compatibilidade, e skills em `.claude/skills`
+- Sync Claude native agents: `npm run sync:agents:claude`
+- Sync Claude agent skills: `npm run sync:skills:claude`
+- Gemini CLI (modelo atual): rules + `.gemini/commands/*.toml` como adapter estável, com skills de agente em `packages/gemini-aios-extension/skills`
+- Sync Gemini rules/commands: `npm run sync:ide:gemini`
+- Sync Gemini agent skills (extension): `npm run sync:skills:gemini`
 - Validar Codex sync/integration: `npm run validate:codex-sync && npm run validate:codex-integration`
-- Gerar skills locais do Codex: `npm run sync:skills:codex`
+- Gerar skills locais do Codex (agents): `npm run sync:skills:codex`
+- Gerar skills de tasks (allowlist curada): `npm run sync:skills:tasks`
+- Validar skills de tasks: `npm run validate:task-skills`
 - Este repositorio usa **local-first**: prefira `.codex/skills` versionado no projeto
 - Use `sync:skills:codex:global` apenas para testes fora deste repo
 

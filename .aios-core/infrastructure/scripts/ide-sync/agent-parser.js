@@ -198,7 +198,9 @@ function parseAllAgents(agentsDir) {
     return agents;
   }
 
-  const files = fs.readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+  const files = fs.readdirSync(agentsDir)
+    .filter((f) => f.endsWith('.md'))
+    .sort((a, b) => a.localeCompare(b));
 
   for (const file of files) {
     const filePath = path.join(agentsDir, file);

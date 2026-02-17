@@ -3,9 +3,54 @@
 
 const fs = require('fs');
 const path = require('path');
+const yaml = require('js-yaml');
 
 const { parseAllAgents } = require('../ide-sync/agent-parser');
 const { getSkillId } = require('./index');
+
+function normalizeTaskId(value) {
+  return String(value || '').trim().replace(/^aios-task-/, '');
+}
+
+function loadExpectedCodexTaskSkillIds(projectRoot, catalogPath) {
+  const resolvedCatalogPath = catalogPath
+    || path.join(projectRoot, '.aios-core', 'infrastructure', 'contracts', 'task-skill-catalog.yaml');
+
+  if (!fs.existsSync(resolvedCatalogPath)) {
+    return new Set();
+  }
+
+  let parsed;
+  try {
+    parsed = yaml.load(fs.readFileSync(resolvedCatalogPath, 'utf8')) || {};
+  } catch (_) {
+    return new Set();
+  }
+
+  const codexConfig = parsed.targets && parsed.targets.codex ? parsed.targets.codex : null;
+  if (!codexConfig || codexConfig.enabled !== true) {
+    return new Set();
+  }
+
+  const allowlist = Array.isArray(parsed.allowlist) ? parsed.allowlist : [];
+  const expected = new Set();
+
+  for (const row of allowlist) {
+    if (!row || row.enabled === false) continue;
+
+    if (row.targets && Object.prototype.hasOwnProperty.call(row.targets, 'codex')) {
+      if (row.targets.codex !== true) {
+        continue;
+      }
+    }
+
+    const taskId = normalizeTaskId(row.task_id);
+    if (!taskId) continue;
+    expected.add(`aios-task-${taskId}`);
+  }
+
+  return expected;
+}
 
 function getDefaultOptions() {
   const projectRoot = process.cwd();
@@ -13,6 +58,13 @@ function getDefaultOptions() {
     projectRoot,
     sourceDir: path.join(projectRoot, '.aios-core', 'development', 'agents'),
     skillsDir: path.join(projectRoot, '.codex', 'skills'),
+    taskSkillCatalogPath: path.join(
+      projectRoot,
+      '.aios-core',
+      'infrastructure',
+      'contracts',
+      'task-skill-catalog.yaml',
+    ),
     strict: false,
     quiet: false,
     json: false,
@@ -75,6 +127,10 @@ function validateCodexSkills(options = {}) {
     filename: agent.filename,
     skillId: getSkillId(agent.id),
   }));
+  const expectedTaskSkillIds = loadExpectedCodexTaskSkillIds(
+    resolved.projectRoot,
+    resolved.taskSkillCatalogPath,
+  );
 
   const missing = [];
   for (const item of expected) {
@@ -105,6 +161,9 @@ function validateCodexSkills(options = {}) {
       .filter(entry => entry.isDirectory() && entry.name.startsWith('aios-'))
       .map(entry => entry.name);
     for (const dir of dirs) {
+      if (dir.startsWith('aios-task-') && expectedTaskSkillIds.has(dir)) {
+        continue;
+      }
       if (!expectedIds.has(dir)) {
         orphaned.push(dir);
         errors.push(`Orphaned skill directory: ${path.join(path.relative(resolved.projectRoot, resolved.skillsDir), dir)}`);
@@ -167,6 +226,8 @@ if (require.main === module) {
 module.exports = {
   validateCodexSkills,
   validateSkillContent,
+  loadExpectedCodexTaskSkillIds,
+  normalizeTaskId,
   parseArgs,
   getDefaultOptions,
 };

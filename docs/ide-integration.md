@@ -6,16 +6,16 @@
 
 Guide for integrating AIOS with supported IDEs and AI development platforms.
 
-**Version:** 4.2.11
-**Last Updated:** 2026-02-16
+**Version:** 4.2.13
+**Last Updated:** 2026-02-17
 
 ---
 
-## Compatibility Contract (AIOS 4.2.11)
+## Compatibility Contract (AIOS 4.2.13)
 
 The IDE matrix is enforced by a versioned contract:
 
-- Contract file: `.aios-core/infrastructure/contracts/compatibility/aios-4.2.11.yaml`
+- Contract file: `.aios-core/infrastructure/contracts/compatibility/aios-4.2.13.yaml`
 - Validator: `npm run validate:parity`
 
 If matrix claims in this document diverge from validator results, parity validation fails.
@@ -26,19 +26,19 @@ If matrix claims in this document diverge from validator results, parity validat
 
 AIOS supports multiple AI-powered development platforms. Choose the one that best fits your workflow.
 
-### Quick Status Matrix (AIOS 4.2.11)
+### Quick Status Matrix (AIOS 4.2.13)
 
 | IDE/CLI | Overall Status | How to Activate an Agent | Auto-Checks Before/After Actions | Workaround if Limited |
 | --- | --- | --- | --- | --- |
-| Claude Code | Works | `/agent-name` commands | Works (full) | -- |
+| Claude Code | Works | Native agents (`.claude/agents`) with `/agent-name` command adapters kept for compatibility | Works (full) | -- |
 | Gemini CLI | Works | `/aios-menu` then `/aios-<agent>` | Works (minor differences in event handling) | -- |
-| Codex CLI | Limited | `/skills` then `aios-<agent-id>` | Limited (some checks need manual sync) | Run `npm run sync:ide:codex` and follow `/skills` flow |
+| Codex CLI | Limited | `/skills` then `aios-<agent-id>` (agents) or `aios-task-<task-id>` (curated tasks) | Limited (some checks need manual sync) | Run `npm run sync:ide:codex`, `npm run sync:skills:codex`, and `npm run sync:skills:tasks` |
 | Cursor | Limited | `@agent` + synced rules | Not available | Follow synced rules and run validators manually (`npm run validate:parity`) |
 | GitHub Copilot | Limited | chat modes + repo instructions | Not available | Use repo instructions and VS Code MCP config for context |
 | AntiGravity | Limited | workflow-driven activation | Not available | Use generated workflows and run validators manually |
 
 Legend:
-- `Works`: fully recommended for new users in AIOS 4.2.11.
+- `Works`: fully recommended for new users in AIOS 4.2.13.
 - `Limited`: usable with the documented workaround.
 - `Not available`: this IDE does not offer this capability; use the workaround instead.
 
@@ -86,9 +86,11 @@ If your goal is to get started as fast as possible:
 
 ```yaml
 config_file: .claude/CLAUDE.md
-agent_folder: .claude/commands/AIOS/agents
-activation: /agent-name (slash commands)
-format: full-markdown-yaml
+agent_folder: .claude/agents
+activation: native agent files (recommended) + /agent-name command adapters (compatibility)
+format: native-agent-markdown
+compatibility_adapter: .claude/commands/AIOS/agents
+skills_folder: .claude/skills
 mcp_support: native
 special_features:
   - Task tool for subagents
@@ -101,17 +103,22 @@ special_features:
 **Setup:**
 
 1. AIOS automatically creates `.claude/` directory on init
-2. Agents are available as slash commands: `/dev`, `/qa`, `/architect`
-3. Configure MCP servers in `~/.claude.json`
+2. Native agents are generated into `.claude/agents/*.md`
+3. Compatibility slash commands remain available (`/dev`, `/qa`, `/architect`) via `.claude/commands/AIOS/agents`
+4. Agent/task skills are generated in `.claude/skills/`
+5. Configure MCP servers in `~/.claude.json`
 
 **Configuration:**
 
 ```bash
 # Sync all enabled IDE targets (including Claude)
 npm run sync:ide
+npm run sync:agents:claude
+npm run sync:skills:claude
+npm run sync:skills:tasks
 
 # Verify setup
-ls -la .claude/commands/AIOS/agents/
+ls -la .claude/agents/ .claude/commands/AIOS/agents/ .claude/skills/
 ```
 
 ---
@@ -140,8 +147,9 @@ special_features:
 1. Keep `AGENTS.md` at repository root
 2. Run `npm run sync:ide:codex` to sync auxiliary agent files
 3. Run `npm run sync:skills:codex` to generate project-local skills in `.codex/skills`
-4. Use `/skills` and choose `aios-architect`, `aios-dev`, etc.
-5. Use `npm run sync:skills:codex:global` only when you explicitly want global installation
+4. Run `npm run sync:skills:tasks` to generate curated task skills (`aios-task-*`)
+5. Use `/skills` and choose `aios-architect`, `aios-dev`, or curated `aios-task-*` entries
+6. Use `npm run sync:skills:codex:global` only when you explicitly want global installation
 
 **Configuration:**
 
@@ -152,6 +160,7 @@ npm run sync:skills:codex
 npm run validate:codex-sync
 npm run validate:codex-integration
 npm run validate:codex-skills
+npm run validate:task-skills
 
 # Verify setup
 ls -la AGENTS.md .codex/agents/ .codex/skills/
@@ -275,9 +284,10 @@ special_features:
 ```yaml
 config_file: .gemini/rules.md
 agent_folder: .gemini/rules/AIOS/agents
-activation: slash launcher commands
+activation: slash launcher commands (stable adapter) + extension agent skills
 format: text
 mcp_support: native
+skills_folder: packages/gemini-aios-extension/skills
 special_features:
   - Google AI models
   - CLI-based workflow
@@ -293,13 +303,15 @@ special_features:
 2. AIOS creates:
    - `.gemini/rules.md`
    - `.gemini/rules/AIOS/agents/*.md`
-   - `.gemini/commands/*.toml` (`/aios-menu`, `/aios-<agent>`)
+   - `.gemini/commands/*.toml` (`/aios-menu`, `/aios-<agent>`) as compatibility command adapter layer
+   - `packages/gemini-aios-extension/skills/aios-*/SKILL.md` (agent skills)
    - `.gemini/hooks/*.js`
    - `.gemini/settings.json` (hooks enabled)
 3. Validate integration:
 
 ```bash
 npm run sync:ide:gemini
+npm run sync:skills:gemini
 npm run validate:gemini-sync
 npm run validate:gemini-integration
 ```
@@ -335,7 +347,11 @@ AIOS maintains a single source of truth for agent definitions and synchronizes t
 # Sync all IDE targets
 npm run sync:ide
 
-# Sync only Gemini
+# Sync platform-specific native/skill outputs
+npm run sync:agents:claude
+npm run sync:skills:claude
+npm run sync:skills:gemini
+npm run sync:skills:tasks
 npm run sync:ide:gemini
 npm run sync:ide:github-copilot
 npm run sync:ide:antigravity
@@ -379,7 +395,9 @@ npm run sync:ide:check
 
 # Check platform-specific directory
 ls .cursor/rules/agents/               # Cursor
-ls .claude/commands/AIOS/agents/       # Claude Code
+ls .claude/agents/                     # Claude native agents
+ls .claude/commands/AIOS/agents/       # Claude command adapters (compatibility)
+ls .claude/skills/                     # Claude agent/task skills
 ls .gemini/rules/AIOS/agents/          # Gemini CLI
 ```
 
@@ -449,9 +467,11 @@ cp -r .cursor/rules/ ./rules-backup/
 
 # Initialize Claude Code
 npm run sync:ide
+npm run sync:agents:claude
 
 # Verify migration
-diff -r ./rules-backup/ .claude/commands/AIOS/agents/
+ls -la .claude/agents/ .claude/commands/AIOS/agents/
+npm run validate:claude-integration
 ```
 
 ### From Claude Code to Cursor
@@ -476,4 +496,4 @@ npm run sync:ide:cursor
 
 ---
 
-_Synkra AIOS IDE Integration Guide v4.2.11_
+_Synkra AIOS IDE Integration Guide v4.2.13_

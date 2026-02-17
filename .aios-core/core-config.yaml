@@ -308,8 +308,16 @@ ideSync:
   targets:
     claude-code:
       enabled: true
+      path: .claude/agents
+      format: claude-native-agent
+    claude-code-commands:
+      enabled: true
       path: .claude/commands/AIOS/agents
       format: full-markdown-yaml
+    claude-skills:
+      enabled: true
+      path: .claude/skills
+      format: claude-agent-skill
     codex:
       enabled: true
       path: .codex/agents
@@ -318,10 +326,14 @@ ideSync:
       enabled: true
       path: .gemini/rules/AIOS/agents
       format: full-markdown-yaml
+    gemini-skills:
+      enabled: true
+      path: packages/gemini-aios-extension/skills
+      format: gemini-agent-skill
     github-copilot:
       enabled: true
       path: .github/agents
-      format: full-markdown-yaml
+      format: github-copilot-native-agent
     cursor:
       enabled: true
       path: .cursor/rules/agents

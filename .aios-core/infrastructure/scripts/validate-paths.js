@@ -54,8 +54,20 @@ function collectAbsolutePathViolations(content, filePath) {
   return errors;
 }
 
+function isTaskSkillFile(filePath) {
+  return /(^|\/)aios-task-[^/]+\/SKILL\.md$/.test(String(filePath || '').replace(/\\/g, '/'));
+}
+
 function validateSkillPathConventions(content, filePath) {
   const errors = [];
+
+  if (isTaskSkillFile(filePath)) {
+    if (!content.includes('.aios-core/development/tasks/')) {
+      errors.push(`${filePath} missing canonical source path ".aios-core/development/tasks/"`);
+    }
+    return errors;
+  }
+
   if (!content.includes('.aios-core/development/agents/')) {
     errors.push(`${filePath} missing canonical source path ".aios-core/development/agents/"`);
   }
@@ -138,5 +150,6 @@ module.exports = {
   getDefaultOptions,
   listSkillFiles,
   collectAbsolutePathViolations,
+  isTaskSkillFile,
   validateSkillPathConventions,
 };

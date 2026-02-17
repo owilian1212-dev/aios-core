@@ -1,0 +1,71 @@
+'use strict';
+
+function trimText(text, max = 220) {
+  const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+  if (normalized.length <= max) return normalized;
+  return `${normalized.slice(0, max - 3).trim()}...`;
+}
+
+function getAgentSkillId(agentId) {
+  const id = String(agentId || '').trim();
+  if (id.startsWith('aios-')) return id;
+  return `aios-${id}`;
+}
+
+function getVisibleCommands(commands, visibility) {
+  return (commands || []).filter((command) => {
+    const levels = Array.isArray(command.visibility) ? command.visibility : ['full', 'quick'];
+    return levels.includes(visibility);
+  });
+}
+
+function buildStarterCommands(commands) {
+  const quick = getVisibleCommands(commands, 'quick');
+  const key = getVisibleCommands(commands, 'key');
+
+  return [...quick, ...key.filter((entry) => !quick.some((quickEntry) => quickEntry.name === entry.name))]
+    .slice(0, 8)
+    .map((entry) => `- \`*${entry.name}\` - ${entry.description || 'No description'}`)
+    .join('\n');
+}
+
+function buildAgentSkillContent(agentSpec) {
+  const metadata = agentSpec.metadata || {};
+  const name = metadata.name || agentSpec.id;
+  const title = metadata.title || 'AIOS Agent';
+  const whenToUse = trimText(metadata.whenToUse || `Use @${agentSpec.id} for specialized tasks.`);
+  const skillName = getAgentSkillId(agentSpec.id);
+  const description = trimText(`${title} (${name}). ${whenToUse}`, 180);
+  const starterCommands = buildStarterCommands(agentSpec.commands || []);
+
+  return `---
+name: ${skillName}
+description: ${description}
+---
+
+# AIOS ${title} Activator
+
+## When To Use
+${whenToUse}
+
+## Activation Protocol
+1. Load \`.aios-core/development/agents/${agentSpec.filename}\` as source of truth (fallback: \`.codex/agents/${agentSpec.filename}\`).
+2. Adopt this agent persona and command system.
+3. Generate greeting via \`node .aios-core/development/scripts/generate-greeting.js ${agentSpec.id}\` and show it first.
+4. Stay in this persona until the user asks to switch or exit.
+
+## Starter Commands
+${starterCommands || '- `*help` - List available commands'}
+
+## Non-Negotiables
+- Follow \`.aios-core/constitution.md\`.
+- Execute workflows/tasks only from declared dependencies.
+- Do not invent requirements outside the project artifacts.
+`;
+}
+
+module.exports = {
+  trimText,
+  getAgentSkillId,
+  buildAgentSkillContent,
+};

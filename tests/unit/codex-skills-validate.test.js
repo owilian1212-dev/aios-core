@@ -11,12 +11,20 @@ describe('Codex Skills Validator', () => {
   let tmpRoot;
   let sourceDir;
   let skillsDir;
+  let taskCatalogPath;
   let expectedAgentCount;
 
   beforeEach(() => {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aios-codex-validate-'));
     sourceDir = path.join(process.cwd(), '.aios-core', 'development', 'agents');
     skillsDir = path.join(tmpRoot, '.codex', 'skills');
+    taskCatalogPath = path.join(
+      tmpRoot,
+      '.aios-core',
+      'infrastructure',
+      'contracts',
+      'task-skill-catalog.yaml',
+    );
     expectedAgentCount = fs.readdirSync(sourceDir).filter(name => name.endsWith('.md')).length;
   });
 
@@ -86,5 +94,39 @@ describe('Codex Skills Validator', () => {
 
     expect(result.ok).toBe(false);
     expect(result.orphaned).toContain('aios-legacy');
+  });
+
+  it('allows catalog-listed task skills in strict mode', () => {
+    syncSkills({ sourceDir, localSkillsDir: skillsDir, dryRun: false });
+
+    fs.mkdirSync(path.dirname(taskCatalogPath), { recursive: true });
+    fs.writeFileSync(
+      taskCatalogPath,
+      [
+        'schema_version: 1',
+        'targets:',
+        '  codex:',
+        '    enabled: true',
+        '    path: .codex/skills',
+        'allowlist:',
+        '  - task_id: execute-checklist',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const taskSkillDir = path.join(skillsDir, 'aios-task-execute-checklist');
+    fs.mkdirSync(taskSkillDir, { recursive: true });
+    fs.writeFileSync(path.join(taskSkillDir, 'SKILL.md'), '# task skill', 'utf8');
+
+    const result = validateCodexSkills({
+      projectRoot: tmpRoot,
+      sourceDir,
+      skillsDir,
+      strict: true,
+      taskSkillCatalogPath: taskCatalogPath,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.errors).toEqual([]);
   });
 });

@@ -28,6 +28,11 @@ const { syncGeminiCommands, buildGeminiCommandFiles } = require('./gemini-comman
 
 // Transformers
 const claudeCodeTransformer = require('./transformers/claude-code');
+const claudeAgentsTransformer = require('./claude-agents');
+const claudeSkillsTransformer = require('./claude-skills');
+const githubCopilotAgentsTransformer = require('./github-copilot-agents');
+const geminiSkillsTransformer = require('./gemini-skills');
+const { syncGeminiSkillsManifest } = geminiSkillsTransformer;
 const cursorTransformer = require('./transformers/cursor');
 const antigravityTransformer = require('./transformers/antigravity');
 
@@ -58,8 +63,18 @@ function loadConfig(projectRoot) {
     targets: {
       'claude-code': {
         enabled: true,
+        path: '.claude/agents',
+        format: 'claude-native-agent',
+      },
+      'claude-code-commands': {
+        enabled: true,
         path: '.claude/commands/AIOS/agents',
         format: 'full-markdown-yaml',
+      },
+      'claude-skills': {
+        enabled: true,
+        path: '.claude/skills',
+        format: 'claude-agent-skill',
       },
       codex: {
         enabled: true,
@@ -71,10 +86,15 @@ function loadConfig(projectRoot) {
         path: '.gemini/rules/AIOS/agents',
         format: 'full-markdown-yaml',
       },
+      'gemini-skills': {
+        enabled: true,
+        path: 'packages/gemini-aios-extension/skills',
+        format: 'gemini-agent-skill',
+      },
       'github-copilot': {
         enabled: true,
         path: '.github/agents',
-        format: 'full-markdown-yaml',
+        format: 'github-copilot-native-agent',
       },
       cursor: {
         enabled: true,
@@ -124,6 +144,10 @@ function loadConfig(projectRoot) {
 function getTransformer(format) {
   const transformers = {
     'full-markdown-yaml': claudeCodeTransformer,
+    'claude-native-agent': claudeAgentsTransformer,
+    'claude-agent-skill': claudeSkillsTransformer,
+    'gemini-agent-skill': geminiSkillsTransformer,
+    'github-copilot-native-agent': githubCopilotAgentsTransformer,
     'condensed-rules': cursorTransformer,
     'cursor-style': antigravityTransformer,
   };
@@ -184,6 +208,7 @@ function syncIde(agents, ideConfig, ideName, projectRoot, options) {
       const targetPath = path.join(result.targetDir, filename);
 
       if (!options.dryRun) {
+        fs.ensureDirSync(path.dirname(targetPath));
         fs.writeFileSync(targetPath, content, 'utf8');
       }
 
@@ -271,6 +296,26 @@ async function commandSync(options) {
       result.commandFiles = [];
     }
 
+    if (ideName === 'gemini-skills') {
+      try {
+        const manifest = syncGeminiSkillsManifest(agents, projectRoot, options);
+        result.manifestFiles = [
+          {
+            filename: path.relative(projectRoot, manifest.extensionPath).replace(/\\/g, '/'),
+            path: manifest.extensionPath,
+          },
+        ];
+      } catch (error) {
+        result.errors.push({
+          agent: 'gemini-skills-manifest',
+          error: error.message,
+        });
+        result.manifestFiles = [];
+      }
+    } else {
+      result.manifestFiles = [];
+    }
+
     results.push(result);
 
     // Generate redirects for this IDE
@@ -283,6 +328,7 @@ async function commandSync(options) {
 
     const agentCount = result.files.length;
     const commandCount = (result.commandFiles || []).length;
+    const manifestCount = (result.manifestFiles || []).length;
     const redirectCount = redirectResult.written.length;
     const errorCount = result.errors.length;
 
@@ -293,7 +339,7 @@ async function commandSync(options) {
       }
 
       console.log(
-        `   ${status} ${agentCount} agents${commandCount > 0 ? `, ${commandCount} commands` : ''}, ${redirectCount} redirects${errorCount > 0 ? `, ${errorCount} errors` : ''}`
+        `   ${status} ${agentCount} agents${commandCount > 0 ? `, ${commandCount} commands` : ''}${manifestCount > 0 ? `, ${manifestCount} manifests` : ''}, ${redirectCount} redirects${errorCount > 0 ? `, ${errorCount} errors` : ''}`
       );
 
       if (options.verbose && result.errors.length > 0) {
@@ -305,7 +351,10 @@ async function commandSync(options) {
   }
 
   // Summary
-  const totalFiles = results.reduce((sum, r) => sum + r.files.length + (r.commandFiles || []).length, 0);
+  const totalFiles = results.reduce(
+    (sum, r) => sum + r.files.length + (r.commandFiles || []).length + (r.manifestFiles || []).length,
+    0,
+  );
   const totalRedirects =
     Object.keys(config.redirects).length * targetIdes.filter(([, c]) => c.enabled).length;
   const totalErrors = results.reduce((sum, r) => sum + r.errors.length, 0);

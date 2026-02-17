@@ -4,6 +4,10 @@
  */
 
 const claudeCode = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/claude-code');
+const claudeNative = require('../../.aios-core/infrastructure/scripts/ide-sync/claude-agents');
+const claudeSkills = require('../../.aios-core/infrastructure/scripts/ide-sync/claude-skills');
+const geminiSkills = require('../../.aios-core/infrastructure/scripts/ide-sync/gemini-skills');
+const githubCopilotNative = require('../../.aios-core/infrastructure/scripts/ide-sync/github-copilot-agents');
 const cursor = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/cursor');
 const antigravity = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/antigravity');
 
@@ -163,8 +167,70 @@ describe('IDE Transformers', () => {
     });
   });
 
+  describe('claude native agent transformer', () => {
+    it('should generate claude native frontmatter', () => {
+      const result = claudeNative.transform(sampleAgent);
+      expect(result).toContain('name: dev');
+      expect(result).toContain('memory: project');
+      expect(result).toContain('model: sonnet');
+    });
+
+    it('should generate native filename', () => {
+      expect(claudeNative.getFilename(sampleAgent)).toBe('dev.md');
+    });
+
+    it('should include compatibility pointer to command adapter', () => {
+      const result = claudeNative.transform(sampleAgent);
+      expect(result).toContain('.claude/commands/AIOS/agents/dev.md');
+    });
+  });
+
+  describe('github copilot native agent transformer', () => {
+    it('should generate copilot frontmatter', () => {
+      const result = githubCopilotNative.transform(sampleAgent);
+      expect(result).toContain('name: aios-dev');
+      expect(result).toContain('target: github-copilot');
+    });
+
+    it('should generate .agent.md filename', () => {
+      expect(githubCopilotNative.getFilename(sampleAgent)).toBe('dev.agent.md');
+    });
+  });
+
+  describe('claude skill transformer', () => {
+    it('should generate skill content compatible with shared renderer', () => {
+      const result = claudeSkills.transform(sampleAgent);
+      expect(result).toContain('name: aios-dev');
+      expect(result).toContain('Activation Protocol');
+    });
+
+    it('should generate nested SKILL.md path', () => {
+      expect(claudeSkills.getFilename(sampleAgent)).toBe('aios-dev/SKILL.md');
+    });
+  });
+
+  describe('gemini skill transformer', () => {
+    it('should generate skill content compatible with shared renderer', () => {
+      const result = geminiSkills.transform(sampleAgent);
+      expect(result).toContain('name: aios-dev');
+      expect(result).toContain('Starter Commands');
+    });
+
+    it('should generate nested SKILL.md path', () => {
+      expect(geminiSkills.getFilename(sampleAgent)).toBe('aios-dev/SKILL.md');
+    });
+  });
+
   describe('all transformers', () => {
-    const transformers = [claudeCode, cursor, antigravity];
+    const transformers = [
+      claudeCode,
+      claudeNative,
+      claudeSkills,
+      geminiSkills,
+      githubCopilotNative,
+      cursor,
+      antigravity,
+    ];
 
     it('should handle agent with minimal data', () => {
       const minimal = {
@@ -189,7 +255,9 @@ describe('IDE Transformers', () => {
     it('should return valid filename for all', () => {
       for (const transformer of transformers) {
         const filename = transformer.getFilename(sampleAgent);
-        expect(filename).toBe('dev.md');
+        expect(typeof filename).toBe('string');
+        expect(filename.length).toBeGreaterThan(0);
+        expect(filename.endsWith('.md')).toBe(true);
       }
     });
 

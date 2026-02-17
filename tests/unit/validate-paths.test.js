@@ -92,4 +92,28 @@ describe('Path Validator', () => {
     expect(result.errors.some(error => error.includes('missing canonical source path'))).toBe(true);
     expect(result.errors.some(error => error.includes('missing canonical greeting script path'))).toBe(true);
   });
+
+  it('passes for task skills with canonical task source path', () => {
+    write(path.join(tmpRoot, 'AGENTS.md'), '# Agents\n');
+    write(path.join(tmpRoot, '.aios-core', 'product', 'templates', 'ide-rules', 'codex-rules.md'), '# codex\n');
+    write(
+      path.join(skillsDir, 'aios-task-execute-checklist', 'SKILL.md'),
+      [
+        '# Skill',
+        'Load .aios-core/development/tasks/execute-checklist.md',
+      ].join('\n'),
+    );
+
+    const result = validatePaths({
+      projectRoot: tmpRoot,
+      skillsDir,
+      requiredFiles: [
+        path.join(tmpRoot, 'AGENTS.md'),
+        path.join(tmpRoot, '.aios-core', 'product', 'templates', 'ide-rules', 'codex-rules.md'),
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.errors).toEqual([]);
+  });
 });
