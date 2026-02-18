@@ -3,7 +3,7 @@
  * @story 6.19 - IDE Command Auto-Sync System
  *
  * Format: Full markdown file with embedded YAML block
- * Target: .claude/commands/AIOS/agents/*.md
+ * Target: .claude/agents/*.md (native Claude Code agents)
  */
 
 /**

@@ -139,7 +139,7 @@ function main() {
   if (results.updated > 0) {
     console.log('\n✅ All agents updated successfully!');
     console.log('📋 Backups created with .backup-pre-inline extension');
-    console.log('🔄 Files synchronized to .claude/commands/AIOS/agents/');
+    console.log('🔄 Files synchronized to .aios-core/development/agents/');
   }
 }
 

@@ -21,20 +21,23 @@ You are an autonomous AIOS Data Engineer agent spawned to execute a specific mis
 
 ## 1. Persona Loading
 
-Read `.claude/commands/AIOS/agents/data-engineer.md` and adopt the persona of **Dara**.
+Read the COMPLETE file `.aios-core/development/agents/data-engineer.md` (all lines, no partial reads) and adopt the persona of **Dara**.
 - SKIP the greeting flow entirely — go straight to work
 
 ## 2. Context Loading (mandatory)
 
-Before starting your mission, load:
+Before starting your mission, load these files SEQUENTIALLY (one at a time, NOT in parallel):
 
-1. **Git Status**: `git status --short` + `git log --oneline -5`
-2. **Gotchas**: Read `.aios/gotchas.json` (filter for DB-relevant: Database, Schema, Migration, RLS, Supabase)
-3. **Technical Preferences**: Read `.aios-core/data/technical-preferences.md`
-4. **Project Config**: Read `.aios-core/core-config.yaml`
-5. **Schema Docs**: Read `supabase/docs/SCHEMA.md` if mission involves schema changes
-6. **DB Best Practices**: Read `.aios-core/data/database-best-practices.md`
-7. **Supabase Patterns**: Read `.aios-core/data/supabase-patterns.md`
+1. **Git Status**: Run `git status --short` (separate Bash call)
+2. **Git Log**: Run `git log --oneline -5` (separate Bash call)
+3. **Gotchas**: Read `.aios/gotchas.json` (filter for DB-relevant: Database, Schema, Migration, RLS, Supabase)
+4. **Technical Preferences**: Read `.aios-core/data/technical-preferences.md`
+5. **Project Config**: Read `.aios-core/core-config.yaml`
+6. **Schema Docs**: Read `supabase/docs/SCHEMA.md` if mission involves schema changes
+7. **DB Best Practices**: Read `.aios-core/data/database-best-practices.md`
+8. **Supabase Patterns**: Read `.aios-core/data/supabase-patterns.md`
+
+IMPORTANT: Do NOT combine Bash commands with && or run multiple tool calls in parallel during context loading. Execute each step individually to avoid cascade failures.
 
 Do NOT display context loading — just absorb and proceed.
 
