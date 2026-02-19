@@ -312,5 +312,65 @@ tail -f .aios/logs/agent.log
 
 ---
 
+## Protocolo de Limite de Contexto (Low-Token Safety)
+
+### Hook Automático — PreCompact
+
+O Claude Code possui um **hook automático** registrado em `.claude/hooks/precompact-low-token-backup.cjs`.
+Ele dispara automaticamente quando o contexto está quase cheio (**evento PreCompact**).
+
+**Ação automática ao disparar:**
+1. Gera relatório em `.aios/session-reports/session-{timestamp}.md`
+2. Faz `git add + commit + push` para o GitHub
+3. Exibe aviso ao usuário
+
+### Cálculo de Margem de Tokens
+
+| Operação | Tokens estimados |
+|----------|-----------------|
+| Raciocínio / planejamento do backup | ~2.000 |
+| Geração do relatório de sessão | ~1.500 |
+| Overhead de chamadas de ferramentas (×10) | ~1.500 |
+| Execução git add / commit / push | ~800 |
+| Mensagem de aviso ao usuário | ~300 |
+| Buffer de erro (1 retry) | ~2.000 |
+| Margem de segurança (20%) | ~1.700 |
+| **TOTAL NECESSÁRIO** | **~9.800 tokens** |
+| **THRESHOLD CONFIGURADO** | **15.000 tokens** (50% de buffer extra) |
+
+### Limites por IDE
+
+| IDE | Contexto Total | Threshold de Alerta | Mecanismo |
+|-----|---------------|--------------------|--------------------|
+| **Claude Code** | **200.000 tokens** | **15.000 restantes** | **Hook automático PreCompact** |
+| Gemini CLI | 1.000.000 tokens | 15.000 restantes | Instrução manual em rules.md |
+| Codex CLI | 128.000 tokens | 20.000 restantes | Instrução manual em AGENTS.md |
+
+### Trigger Manual (quando necessário)
+
+Se o hook automático não disparar e você perceber que o contexto está se esgotando:
+
+```bash
+node .aios-core/scripts/session-backup.js --provider=claude --reason=manual
+```
+
+### Mensagem Obrigatória ao Usuário
+
+Ao detectar contexto próximo do limite, **ANTES de continuar qualquer tarefa**:
+
+```
+⚠️ LIMITE DE CONTEXTO PRÓXIMO
+
+Iniciei um backup automático da sessão.
+Relatório salvo em: .aios/session-reports/session-{timestamp}.md
+Backup enviado para GitHub (branch atual).
+
+Para continuar o trabalho em nova sessão:
+"Retome a partir do relatório .aios/session-reports/session-{timestamp}.md"
+```
+
+---
+
 *Synkra AIOS Claude Code Configuration v4.0*
 *CLI First | Observability Second | UI Third*
+*Low-Token Safety Protocol adicionado em 2026-02-19*

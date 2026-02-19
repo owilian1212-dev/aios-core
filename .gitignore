@@ -85,6 +85,7 @@ CLAUDE.md
 !.claude/commands/AIOS/agents/
 !.claude/CLAUDE.md
 !.claude/rules/
+!.claude/hooks/
 .gemini
 !.gemini/
 !.gemini/rules/
@@ -365,4 +366,21 @@ docs/guides/aios-workflows/
 docs/guides/glue-script-guide.md
 
 # Local Gemini project rules generated/managed per workspace
-.gemini/rules.md
+# .gemini/rules.md  ← tracked: regras do time multi-IDE
+!.gemini/rules.md
+
+# Dependencies (AIOS)
+node_modules
+
+# Build & Logs (AIOS)
+dist/
+build/
+
+# IDE & OS (AIOS)
+.idea/
+*.swp
+
+# AIOS Local (AIOS)
+.aios-core/local/
+.claude/settings.local.json
+.aios/install-log.txt
