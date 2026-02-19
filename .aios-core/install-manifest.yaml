@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 4.2.13
-generated_at: "2026-02-19T16:55:59.273Z"
+generated_at: "2026-02-19T17:21:47.840Z"
 generator: scripts/generate-install-manifest.js
 file_count: 1008
 files:
@@ -3937,9 +3937,9 @@ files:
     type: script
     size: 4527
   - path: scripts/session-backup.js
-    hash: sha256:fb71f434b6fca58abdf0520b4b433e0e3981e3c48bffb0e368c61189ef36a22d
+    hash: sha256:0870268344c50018ae0026bd10643e727d0ab0157082a5b6cb4f407049e19b0b
     type: script
-    size: 8188
+    size: 19327
   - path: scripts/session-context-loader.js
     hash: sha256:2581477ca682c6788fc57759b7fc697ffbcaab0a2c1c0cd6eb4f9ad228bb1020
     type: script
