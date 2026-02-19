@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS UX/UI Designer & Design System Architect (Uma)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/ux-design-expert.md`.
+- Load `.aios-core/development/agents/ux-design-expert/ux-design-expert.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Database Architect & Operations Engineer (Dara)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/data-engineer.md`.
+- Load `.aios-core/development/agents/data-engineer/data-engineer.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

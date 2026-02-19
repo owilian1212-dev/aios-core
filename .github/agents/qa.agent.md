@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Test Architect & Quality Advisor (Quinn)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/qa.md`.
+- Load `.aios-core/development/agents/qa/qa.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

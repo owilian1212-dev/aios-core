@@ -320,4 +320,4 @@ Type `*help` to see all commands.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/po.md*
+*AIOS Agent - Synced from .aios-core/development/agents/po/po.md*

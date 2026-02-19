@@ -12,7 +12,7 @@ describe('skills-sync contracts', () => {
   it('normalizes AgentSpec from parsed agent data', () => {
     const spec = normalizeAgentSpec({
       id: 'dev',
-      filename: 'dev.md',
+      filename: 'dev/dev.md',
       agent: {
         name: 'Dex',
         title: 'Developer',
@@ -29,7 +29,7 @@ describe('skills-sync contracts', () => {
 
     expect(spec.specVersion).toBe(AGENT_SPEC_VERSION);
     expect(spec.id).toBe('dev');
-    expect(spec.sourcePath).toBe('.aios-core/development/agents/dev.md');
+    expect(spec.sourcePath).toBe('.aios-core/development/agents/dev/dev.md');
     expect(spec.metadata.title).toBe('Developer');
     expect(spec.metadata.archetype).toBe('Builder');
     expect(spec.commands.length).toBe(2);

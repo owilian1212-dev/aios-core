@@ -51,7 +51,7 @@ ${whenToUse}
 ## Activation Protocol
 1. Load \`.aios-core/development/agents/${agentSpec.filename}\` as source of truth (fallback: \`.codex/agents/${agentSpec.filename}\`).
 2. Adopt this agent persona and command system.
-3. Generate greeting via \`node .aios-core/development/scripts/generate-greeting.js ${agentSpec.id}\` and show it first.
+3. Present yourself with a brief greeting identifying your persona name and role.
 4. Stay in this persona until the user asks to switch or exit.
 
 ## Starter Commands

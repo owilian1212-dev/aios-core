@@ -15,8 +15,10 @@ describe('Codex Skills Sync', () => {
 
   beforeEach(() => {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aios-codex-skills-'));
-    expectedAgentCount = fs.readdirSync(path.join(process.cwd(), '.aios-core', 'development', 'agents'))
-      .filter(name => name.endsWith('.md')).length;
+    const agentsDir = path.join(process.cwd(), '.aios-core', 'development', 'agents');
+    expectedAgentCount = fs.readdirSync(agentsDir, { withFileTypes: true })
+      .filter(entry => entry.isDirectory() && fs.existsSync(path.join(agentsDir, entry.name, `${entry.name}.md`)))
+      .length;
   });
 
   afterEach(() => {
@@ -38,8 +40,8 @@ describe('Codex Skills Sync', () => {
     const content = fs.readFileSync(expected, 'utf8');
     expect(content).toContain('name: aios-architect');
     expect(content).toContain('Activation Protocol');
-    expect(content).toContain('.aios-core/development/agents/architect.md');
-    expect(content).toContain('generate-greeting.js architect');
+    expect(content).toContain('.aios-core/development/agents/architect/architect.md');
+    expect(content).toContain('Present yourself with a brief greeting');
   });
 
   it('supports global installation path when --global mode is enabled', () => {
@@ -80,7 +82,7 @@ describe('Codex Skills Sync', () => {
   it('buildSkillContent emits valid frontmatter and starter commands', () => {
     const sample = {
       id: 'dev',
-      filename: 'dev.md',
+      filename: 'dev/dev.md',
       agent: { name: 'Dex', title: 'Developer', whenToUse: 'Build features safely.' },
       commands: [{ name: 'help', description: 'Show commands', visibility: ['quick', 'key', 'full'] }],
     };

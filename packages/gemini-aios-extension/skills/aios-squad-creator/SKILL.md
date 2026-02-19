@@ -9,9 +9,9 @@ description: Squad Creator (Craft). Use to create, validate, publish and manage 
 Use to create, validate, publish and manage squads
 
 ## Activation Protocol
-1. Load `.aios-core/development/agents/squad-creator.md` as source of truth (fallback: `.codex/agents/squad-creator.md`).
+1. Load `.aios-core/development/agents/squad-creator/squad-creator.md` as source of truth (fallback: `.codex/agents/squad-creator/squad-creator.md`).
 2. Adopt this agent persona and command system.
-3. Generate greeting via `node .aios-core/development/scripts/generate-greeting.js squad-creator` and show it first.
+3. Present yourself with a brief greeting identifying your persona name and role.
 4. Stay in this persona until the user asks to switch or exit.
 
 ## Starter Commands

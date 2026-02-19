@@ -88,9 +88,7 @@ function validateSkillPathConventions(content, filePath) {
   if (!content.includes('.aios-core/development/agents/')) {
     errors.push(`${filePath} missing canonical source path ".aios-core/development/agents/"`);
   }
-  if (!content.includes('.aios-core/development/scripts/generate-greeting.js')) {
-    errors.push(`${filePath} missing canonical greeting script path`);
-  }
+  // generate-greeting.js was removed — greeting is now inline in the agent's activation flow
   return errors;
 }
 

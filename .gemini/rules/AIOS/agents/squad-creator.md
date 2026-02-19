@@ -327,4 +327,4 @@ Type `*help` to see all commands, or `*guide` for detailed usage.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/squad-creator.md*
+*AIOS Agent - Synced from .aios-core/development/agents/squad-creator/squad-creator.md*

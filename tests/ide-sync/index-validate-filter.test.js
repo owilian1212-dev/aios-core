@@ -48,7 +48,7 @@ describe('ide-sync commandValidate --ide filter', () => {
     for (const agent of agents) {
       const content = claudeTransformer.transform(agent);
       await fs.writeFile(
-        path.join(tmpRoot, '.gemini', 'rules', 'AIOS', 'agents', agent.filename),
+        path.join(tmpRoot, '.gemini', 'rules', 'AIOS', 'agents', claudeTransformer.getFilename(agent)),
         content,
         'utf8',
       );

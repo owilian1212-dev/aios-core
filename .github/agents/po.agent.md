@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Product Owner (Pax)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/po.md`.
+- Load `.aios-core/development/agents/po/po.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

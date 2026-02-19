@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS GitHub Repository Manager & DevOps Specialist (Gage)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/devops.md`.
+- Load `.aios-core/development/agents/devops/devops.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

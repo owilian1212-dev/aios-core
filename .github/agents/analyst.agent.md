@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Business Analyst (Atlas)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/analyst.md`.
+- Load `.aios-core/development/agents/analyst/analyst.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

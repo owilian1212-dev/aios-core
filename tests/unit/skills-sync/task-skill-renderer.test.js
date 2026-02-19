@@ -14,8 +14,8 @@ describe('task-skill renderer', () => {
   });
 
   it('resolves owner agent source filename', () => {
-    expect(getAgentSourceFilename('dev')).toBe('dev.md');
-    expect(getAgentSourceFilename('master')).toBe('aios-master.md');
+    expect(getAgentSourceFilename('dev')).toBe('dev/dev.md');
+    expect(getAgentSourceFilename('master')).toBe('aios-master/aios-master.md');
   });
 
   it('sanitizes markdown-heavy summary text', () => {
@@ -40,7 +40,7 @@ describe('task-skill renderer', () => {
     expect(content).toContain('source: ".aios-core/development/tasks/build-resume.md"');
     expect(content).toContain('command: "*build-resume {story-id}"');
     expect(content).toContain('## Agent Context');
-    expect(content).toContain('.aios-core/development/agents/dev.md');
+    expect(content).toContain('.aios-core/development/agents/dev/dev.md');
     expect(content).toContain('## Canonical Command');
   });
 });

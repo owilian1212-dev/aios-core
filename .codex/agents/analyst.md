@@ -258,4 +258,4 @@ Type `*help` to see all commands, or `*yolo` to skip confirmations.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/analyst.md*
+*AIOS Agent - Synced from .aios-core/development/agents/analyst/analyst.md*

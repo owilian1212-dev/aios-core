@@ -30,7 +30,7 @@ function normalizeAgentSpec(agentData = {}) {
   }));
 
   const id = String(agentData.id || '').trim();
-  const filename = String(agentData.filename || `${id}.md`).trim();
+  const filename = String(agentData.filename || `${id}/${id}.md`).trim();
 
   return {
     specVersion: AGENT_SPEC_VERSION,

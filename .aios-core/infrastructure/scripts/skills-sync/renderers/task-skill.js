@@ -16,7 +16,8 @@ function getAgentSourceFilename(agent) {
   if (!agentSlug) {
     throw new Error('Task skill requires owner agent');
   }
-  return agentSlug === 'master' ? 'aios-master.md' : `${agentSlug}.md`;
+  const name = agentSlug === 'master' ? 'aios-master' : agentSlug;
+  return `${name}/${name}.md`;
 }
 
 function getTaskSkillId(taskId, agent) {

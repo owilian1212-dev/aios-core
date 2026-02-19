@@ -497,4 +497,4 @@ Type `*help` to see all commands.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/devops.md*
+*AIOS Agent - Synced from .aios-core/development/agents/devops/devops.md*

@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS AIOS Master Orchestrator & Framework Developer (Orion)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/aios-master.md`.
+- Load `.aios-core/development/agents/aios-master/aios-master.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

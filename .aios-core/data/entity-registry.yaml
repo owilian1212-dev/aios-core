@@ -8885,7 +8885,7 @@ entities:
       lastVerified: '2026-02-18T18:21:36.070Z'
   agents:
     aios-master:
-      path: .aios-core/development/agents/aios-master.md
+      path: .aios-core/development/agents/aios-master/aios-master.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -8901,7 +8901,7 @@ entities:
       checksum: sha256:092161d318ab523b8cd5c3dc8a2bd19accc23ab7fa731d5b4fa11c5afb8b5a08
       lastVerified: '2026-02-16T19:52:18.846Z'
     analyst:
-      path: .aios-core/development/agents/analyst.md
+      path: .aios-core/development/agents/analyst/analyst.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -8915,7 +8915,7 @@ entities:
       checksum: sha256:470384d9ee05d1373fe7519602f135179a88a35895252277823b35339dafd2a3
       lastVerified: '2026-02-08T13:33:24.383Z'
     architect:
-      path: .aios-core/development/agents/architect.md
+      path: .aios-core/development/agents/architect/architect.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -8929,7 +8929,7 @@ entities:
       checksum: sha256:624cc2a9e8a6cb1549321614927649714a867332272faaa5861f4378206f1c34
       lastVerified: '2026-02-15T19:33:09.493Z'
     data-engineer:
-      path: .aios-core/development/agents/data-engineer.md
+      path: .aios-core/development/agents/data-engineer/data-engineer.md
       type: agent
       purpose: data-engineer
       keywords:
@@ -8945,7 +8945,7 @@ entities:
       checksum: sha256:4be2e5bff60e58d7444d39030edd1e8d34e326e6d1267ae84772871f3e76ec19
       lastVerified: '2026-02-08T13:33:24.384Z'
     dev:
-      path: .aios-core/development/agents/dev.md
+      path: .aios-core/development/agents/dev/dev.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -8960,7 +8960,7 @@ entities:
       checksum: sha256:994d1015878d4deec3ee1b0f14cfa9ff6ffcf60ee1f83abe969daaa01b95b4db
       lastVerified: '2026-02-08T13:33:24.385Z'
     devops:
-      path: .aios-core/development/agents/devops.md
+      path: .aios-core/development/agents/devops/devops.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -8974,7 +8974,7 @@ entities:
       checksum: sha256:958dd617e0c3d4fd3419102df22e6c3f3acdbab30f1333e687ce6191e41113f8
       lastVerified: '2026-02-15T19:33:09.494Z'
     pm:
-      path: .aios-core/development/agents/pm.md
+      path: .aios-core/development/agents/pm/pm.md
       type: agent
       purpose: '|'
       keywords:
@@ -8990,7 +8990,7 @@ entities:
       checksum: sha256:e724b248d30c0e67e316e72d5d408c4c57b2da0bfe0cc014e48415531703e765
       lastVerified: '2026-02-08T13:33:24.386Z'
     po:
-      path: .aios-core/development/agents/po.md
+      path: .aios-core/development/agents/po/po.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -9004,7 +9004,7 @@ entities:
       checksum: sha256:4b092282c4a6fab6cadb15c9a5792f851766525d152d18bc8d2f0c8d66366c7d
       lastVerified: '2026-02-08T13:33:24.386Z'
     qa:
-      path: .aios-core/development/agents/qa.md
+      path: .aios-core/development/agents/qa/qa.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -9018,7 +9018,7 @@ entities:
       checksum: sha256:0f8fb4bce7c75852937bc822547ce74735b212c16761b2d58d95356708fd0a14
       lastVerified: '2026-02-15T19:33:09.495Z'
     sm:
-      path: .aios-core/development/agents/sm.md
+      path: .aios-core/development/agents/sm/sm.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -9032,7 +9032,7 @@ entities:
       checksum: sha256:0f0a8171a68035594ef5dfc5f3e611e6a16198b3c3cc116b98c34d38ef2045ad
       lastVerified: '2026-02-08T13:33:24.387Z'
     squad-creator:
-      path: .aios-core/development/agents/squad-creator.md
+      path: .aios-core/development/agents/squad-creator/squad-creator.md
       type: agent
       purpose: '''Show all available commands with descriptions'''
       keywords:
@@ -9048,7 +9048,7 @@ entities:
       checksum: sha256:396afae845d9d53f510e64360dc814954f181d8832c93593e96ede0f84f41d41
       lastVerified: '2026-02-08T13:33:24.388Z'
     ux-design-expert:
-      path: .aios-core/development/agents/ux-design-expert.md
+      path: .aios-core/development/agents/ux-design-expert/ux-design-expert.md
       type: agent
       purpose: '''Complete workflow from user research to component building'''
       keywords:

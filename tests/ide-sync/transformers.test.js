@@ -15,7 +15,7 @@ describe('IDE Transformers', () => {
   // Sample agent data for testing
   const sampleAgent = {
     path: '/path/to/dev.md',
-    filename: 'dev.md',
+    filename: 'dev/dev.md',
     id: 'dev',
     raw: '# dev\n\n```yaml\nagent:\n  name: Dex\n  id: dev\n```\n\nContent',
     yaml: {
@@ -77,7 +77,7 @@ describe('IDE Transformers', () => {
 
     it('should add sync footer if not present', () => {
       const result = claudeCode.transform(sampleAgent);
-      expect(result).toContain('Synced from .aios-core/development/agents/dev.md');
+      expect(result).toContain('Synced from .aios-core/development/agents/dev/dev.md');
     });
 
     it('should not duplicate sync footer', () => {
@@ -85,7 +85,7 @@ describe('IDE Transformers', () => {
         ...sampleAgent,
         raw:
           sampleAgent.raw +
-          '\n---\n*AIOS Agent - Synced from .aios-core/development/agents/dev.md*',
+          '\n---\n*AIOS Agent - Synced from .aios-core/development/agents/dev/dev.md*',
       };
       const result = claudeCode.transform(agentWithFooter);
       const footerCount = (result.match(/Synced from/g) || []).length;
@@ -234,7 +234,7 @@ describe('IDE Transformers', () => {
 
     it('should handle agent with minimal data', () => {
       const minimal = {
-        filename: 'minimal.md',
+        filename: 'minimal/minimal.md',
         id: 'minimal',
         agent: null,
         persona_profile: null,

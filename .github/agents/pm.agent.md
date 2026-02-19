@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Product Manager (Morgan)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/pm.md`.
+- Load `.aios-core/development/agents/pm/pm.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

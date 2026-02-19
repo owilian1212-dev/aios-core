@@ -450,4 +450,4 @@ Use specialized agents for specific tasks - this agent is for orchestration and 
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/aios-master.md*
+*AIOS Agent - Synced from .aios-core/development/agents/aios-master/aios-master.md*

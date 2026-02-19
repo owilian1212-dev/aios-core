@@ -74,7 +74,7 @@ ${icon} **${name}** - ${title}
  * @returns {string} - Target filename
  */
 function getFilename(agentData) {
-  return agentData.filename;
+  return require('path').basename(agentData.filename);
 }
 
 module.exports = {

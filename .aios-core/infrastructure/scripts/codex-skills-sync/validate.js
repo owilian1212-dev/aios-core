@@ -185,10 +185,7 @@ function validateSkillContent(content, expected) {
       ok: content.includes(`.aios-core/development/agents/${expected.filename}`),
       reason: `missing canonical agent path "${expected.filename}"`,
     },
-    {
-      ok: content.includes(`generate-greeting.js ${expected.agentId}`),
-      reason: `missing canonical greeting command for "${expected.agentId}"`,
-    },
+    // generate-greeting.js removed — greeting is now inline in agent activation flow
     {
       ok: content.includes('source of truth'),
       reason: 'missing source-of-truth activation note',

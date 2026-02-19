@@ -27,7 +27,9 @@ describe('Codex Skills Validator', () => {
       'contracts',
       'task-skill-catalog.yaml',
     );
-    expectedAgentCount = fs.readdirSync(sourceDir).filter(name => name.endsWith('.md')).length;
+    expectedAgentCount = fs.readdirSync(sourceDir, { withFileTypes: true })
+      .filter(entry => entry.isDirectory() && fs.existsSync(path.join(sourceDir, entry.name, `${entry.name}.md`)))
+      .length;
   });
 
   afterEach(() => {
@@ -66,11 +68,14 @@ describe('Codex Skills Validator', () => {
     expect(result.errors.some(error => error.includes('Missing skill file'))).toBe(true);
   });
 
-  it('fails when greeting command is removed from a skill', () => {
+  it('passes when skill content uses inline greeting (no generate-greeting.js)', () => {
     syncSkills({ sourceDir, localSkillsDir: skillsDir, dryRun: false });
     const target = path.join(skillsDir, 'aios-dev', 'SKILL.md');
-    const original = fs.readFileSync(target, 'utf8');
-    fs.writeFileSync(target, original.replace('generate-greeting.js dev', 'generate-greeting.js'), 'utf8');
+    const content = fs.readFileSync(target, 'utf8');
+
+    // Skills should NOT reference generate-greeting.js (removed)
+    expect(content).not.toContain('generate-greeting.js');
+    expect(content).toContain('Present yourself with a brief greeting');
 
     const result = validateCodexSkills({
       projectRoot: tmpRoot,
@@ -80,8 +85,7 @@ describe('Codex Skills Validator', () => {
       strict: true,
     });
 
-    expect(result.ok).toBe(false);
-    expect(result.errors.some(error => error.includes('missing canonical greeting command'))).toBe(true);
+    expect(result.ok).toBe(true);
   });
 
   it('fails in strict mode when orphaned aios-* skill dir exists', () => {

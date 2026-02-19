@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Squad Creator (Craft)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/squad-creator.md`.
+- Load `.aios-core/development/agents/squad-creator/squad-creator.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

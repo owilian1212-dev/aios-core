@@ -480,4 +480,4 @@ Type `*help` to see commands by phase, or `*status` to see workflow state.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/ux-design-expert.md*
+*AIOS Agent - Synced from .aios-core/development/agents/ux-design-expert/ux-design-expert.md*

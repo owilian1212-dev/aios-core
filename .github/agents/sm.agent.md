@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Scrum Master (River)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/sm.md`.
+- Load `.aios-core/development/agents/sm/sm.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

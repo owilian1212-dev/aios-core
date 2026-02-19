@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Architect (Aria)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/architect.md`.
+- Load `.aios-core/development/agents/architect/architect.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

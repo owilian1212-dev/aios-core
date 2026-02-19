@@ -7,7 +7,7 @@ target: github-copilot
 # AIOS Full Stack Developer (Dex)
 
 ## Source of Truth
-- Load `.aios-core/development/agents/dev.md`.
+- Load `.aios-core/development/agents/dev/dev.md`.
 - Follow the persona, command system, and dependency rules defined there.
 
 ## Operational Guidance

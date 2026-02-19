@@ -63,21 +63,21 @@ Preferencia de ativacao no Codex CLI:
 1. Use `/skills` e selecione `aios-<agent-id>` vindo de `.codex/skills` (ex.: `aios-architect`)
 2. Se preferir, use os atalhos abaixo (`@architect`, `/architect`, etc.)
 
-Quando a mensagem do usuario for um atalho de agente, carregue o arquivo correspondente em `.aios-core/development/agents/` (fallback: `.codex/agents/`), renderize o greeting via `generate-greeting.js` e assuma a persona ate receber `*exit`.
+Quando a mensagem do usuario for um atalho de agente, carregue o arquivo correspondente em `.aios-core/development/agents/{id}/{id}.md` (fallback: `.codex/agents/{id}.md`), apresente-se com um greeting breve identificando sua persona e assuma a persona ate receber `*exit`.
 
 Atalhos aceitos por agente:
-- `@aios-master`, `/aios-master`, `/aios-master.md` -> `.aios-core/development/agents/aios-master.md`
-- `@analyst`, `/analyst`, `/analyst.md` -> `.aios-core/development/agents/analyst.md`
-- `@architect`, `/architect`, `/architect.md` -> `.aios-core/development/agents/architect.md`
-- `@data-engineer`, `/data-engineer`, `/data-engineer.md` -> `.aios-core/development/agents/data-engineer.md`
-- `@dev`, `/dev`, `/dev.md` -> `.aios-core/development/agents/dev.md`
-- `@devops`, `/devops`, `/devops.md` -> `.aios-core/development/agents/devops.md`
-- `@pm`, `/pm`, `/pm.md` -> `.aios-core/development/agents/pm.md`
-- `@po`, `/po`, `/po.md` -> `.aios-core/development/agents/po.md`
-- `@qa`, `/qa`, `/qa.md` -> `.aios-core/development/agents/qa.md`
-- `@sm`, `/sm`, `/sm.md` -> `.aios-core/development/agents/sm.md`
-- `@squad-creator`, `/squad-creator`, `/squad-creator.md` -> `.aios-core/development/agents/squad-creator.md`
-- `@ux-design-expert`, `/ux-design-expert`, `/ux-design-expert.md` -> `.aios-core/development/agents/ux-design-expert.md`
+- `@aios-master`, `/aios-master`, `/aios-master.md` -> `.aios-core/development/agents/aios-master/aios-master.md`
+- `@analyst`, `/analyst`, `/analyst.md` -> `.aios-core/development/agents/analyst/analyst.md`
+- `@architect`, `/architect`, `/architect.md` -> `.aios-core/development/agents/architect/architect.md`
+- `@data-engineer`, `/data-engineer`, `/data-engineer.md` -> `.aios-core/development/agents/data-engineer/data-engineer.md`
+- `@dev`, `/dev`, `/dev.md` -> `.aios-core/development/agents/dev/dev.md`
+- `@devops`, `/devops`, `/devops.md` -> `.aios-core/development/agents/devops/devops.md`
+- `@pm`, `/pm`, `/pm.md` -> `.aios-core/development/agents/pm/pm.md`
+- `@po`, `/po`, `/po.md` -> `.aios-core/development/agents/po/po.md`
+- `@qa`, `/qa`, `/qa.md` -> `.aios-core/development/agents/qa/qa.md`
+- `@sm`, `/sm`, `/sm.md` -> `.aios-core/development/agents/sm/sm.md`
+- `@squad-creator`, `/squad-creator`, `/squad-creator.md` -> `.aios-core/development/agents/squad-creator/squad-creator.md`
+- `@ux-design-expert`, `/ux-design-expert`, `/ux-design-expert.md` -> `.aios-core/development/agents/ux-design-expert/ux-design-expert.md`
 
 Resposta esperada ao ativar atalho:
 1. Confirmar agente ativado

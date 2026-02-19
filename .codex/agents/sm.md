@@ -272,4 +272,4 @@ Type `*help` to see all commands.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/sm.md*
+*AIOS Agent - Synced from .aios-core/development/agents/sm/sm.md*

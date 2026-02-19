@@ -90,7 +90,6 @@ describe('Path Validator', () => {
 
     expect(result.ok).toBe(false);
     expect(result.errors.some(error => error.includes('missing canonical source path'))).toBe(true);
-    expect(result.errors.some(error => error.includes('missing canonical greeting script path'))).toBe(true);
   });
 
   it('passes for task skills with canonical task source path', () => {

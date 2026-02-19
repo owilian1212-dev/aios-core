@@ -459,4 +459,4 @@ Type `*help` to see all commands, or `*yolo` to skip confirmations.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/architect.md*
+*AIOS Agent - Synced from .aios-core/development/agents/architect/architect.md*

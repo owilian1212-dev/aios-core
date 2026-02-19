@@ -19,16 +19,16 @@
 - The *yolo command cycles PermissionMode; it does NOT directly change greeting preference
 
 ## Architecture Patterns to Track
-- Agent activation: UnifiedActivationPipeline is now THE single entry point for all 12 agents (ACT-6)
-- Previous two paths (Direct 9 agents + CLI wrapper 3 agents) are now unified
-- generate-greeting.js is thin wrapper around UnifiedActivationPipeline (backward compat)
+- Agent activation is handled by IDE-generated files (`.claude/agents/{id}.md`) — no script pipeline
+- Activation flow: read source .md → read MEMORY.md → read agent-context.md → greet → halt
+- `generate-greeting.js` and `unified-activation-pipeline.js` are deprecated
 - user_profile cascades: config-resolver > validate-user-profile > greeting-preference-manager > greeting-builder
 - Permission system: permission-mode.js + operation-guard.js + index.js (facade)
 - ProjectStatusLoader: .aios/project-status.yaml (runtime cache), separate from .aios-core/ (framework config)
 - PM agent bypasses bob mode restriction in _resolvePreference()
 
 ## Key File Locations
-- Unified Pipeline: `.aios-core/development/scripts/unified-activation-pipeline.js`
+- Agent context: `.aios-core/development/agents/{id}/agent-context.md`
 - Permissions: `.aios-core/core/permissions/`
 - Greeting system: `.aios-core/development/scripts/greeting-builder.js`, `greeting-preference-manager.js`
 - Project status: `.aios-core/infrastructure/scripts/project-status-loader.js`

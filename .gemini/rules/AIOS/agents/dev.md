@@ -545,4 +545,4 @@ Type `*help` to see all commands, or `*explain` to learn more.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/dev.md*
+*AIOS Agent - Synced from .aios-core/development/agents/dev/dev.md*

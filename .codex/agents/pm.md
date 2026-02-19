@@ -362,4 +362,4 @@ Type `*help` to see all commands, or `*yolo` to skip confirmations.
 
 ---
 ---
-*AIOS Agent - Synced from .aios-core/development/agents/pm.md*
+*AIOS Agent - Synced from .aios-core/development/agents/pm/pm.md*

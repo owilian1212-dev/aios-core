@@ -20,6 +20,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const yaml = require('js-yaml');
+const { execSync } = require('child_process');
 
 const { parseAllAgents } = require('./agent-parser');
 const { generateAllRedirects, writeRedirects } = require('./redirect-generator');
@@ -224,6 +225,78 @@ function syncIde(agents, ideConfig, ideName, projectRoot, options) {
 }
 
 /**
+ * Sync agent memory directories as junctions/symlinks
+ * Creates links from .claude/agent-memory/{name}/ → .aios-core/development/agents/{name}/
+ * so Claude Code memory writes go to the canonical cross-IDE location.
+ *
+ * @param {object[]} agents - Parsed agent data
+ * @param {string} projectRoot - Project root directory
+ * @param {object} options - Sync options
+ * @returns {object} - { created: number, skipped: number, errors: string[] }
+ */
+function syncMemoryLinks(agents, projectRoot, options) {
+  const memoryDir = path.join(projectRoot, '.claude', 'agent-memory');
+  const sourceBase = path.join(projectRoot, '.aios-core', 'development', 'agents');
+  const isWindows = process.platform === 'win32';
+  const result = { created: 0, skipped: 0, errors: [] };
+
+  if (options.dryRun) {
+    return result;
+  }
+
+  fs.ensureDirSync(memoryDir);
+
+  for (const agent of agents) {
+    if (agent.error) continue;
+
+    const agentName = agent.id;
+    const linkPath = path.join(memoryDir, agentName);
+    const targetPath = path.join(sourceBase, agentName);
+
+    // Ensure canonical directory exists in .aios-core
+    fs.ensureDirSync(targetPath);
+
+    // Skip if link already exists and points to correct target
+    try {
+      const stat = fs.lstatSync(linkPath);
+      if (stat.isSymbolicLink() || stat.isDirectory()) {
+        // Check if it's already a junction/symlink to the right place
+        try {
+          const realPath = fs.realpathSync(linkPath);
+          const expectedReal = fs.realpathSync(targetPath);
+          if (realPath === expectedReal) {
+            result.skipped++;
+            continue;
+          }
+        } catch {
+          // Can't resolve, recreate
+        }
+        // Remove existing to recreate
+        fs.removeSync(linkPath);
+      }
+    } catch {
+      // Doesn't exist, will create
+    }
+
+    try {
+      if (isWindows) {
+        // Use junction on Windows (no admin required)
+        execSync(`cmd /c "mklink /J "${linkPath}" "${targetPath}""`, { stdio: 'pipe' });
+      } else {
+        // Use symlink on Unix
+        const relTarget = path.relative(memoryDir, targetPath);
+        fs.symlinkSync(relTarget, linkPath, 'dir');
+      }
+      result.created++;
+    } catch (error) {
+      result.errors.push(`${agentName}: ${error.message}`);
+    }
+  }
+
+  return result;
+}
+
+/**
  * Execute sync command
  * @param {object} options - Command options
  */
@@ -335,6 +408,17 @@ async function commandSync(options) {
         }
       }
     }
+  }
+
+  // Sync memory links (Claude Code agent memory → .aios-core canonical location)
+  const memoryResult = syncMemoryLinks(agents, projectRoot, options);
+  if (!options.quiet && (memoryResult.created > 0 || memoryResult.errors.length > 0)) {
+    const memStatus = memoryResult.errors.length > 0
+      ? `${colors.yellow}⚠${colors.reset}`
+      : `${colors.green}✓${colors.reset}`;
+    console.log(
+      `${colors.cyan}🧠 Memory links:${colors.reset} ${memStatus} ${memoryResult.created} created, ${memoryResult.skipped} existing${memoryResult.errors.length > 0 ? `, ${memoryResult.errors.length} errors` : ''}`
+    );
   }
 
   // Summary
@@ -558,6 +642,7 @@ module.exports = {
   loadConfig,
   getTransformer,
   syncIde,
+  syncMemoryLinks,
   commandSync,
   commandValidate,
 };
