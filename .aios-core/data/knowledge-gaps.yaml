@@ -1,0 +1,458 @@
+# Knowledge Gaps Ledger
+# Maintained by @knowledge-monitor (Sage)
+# Source of truth for knowledge debt across all agents
+#
+# Statuses: pending | in-progress | resolved | deferred
+# Severity:  critical (score < 0.30) | high (0.30-0.50) | medium (0.50-0.60)
+# Detection: gap-scanner | freshness-watcher | gotchas-analysis | broker | manual
+
+meta:
+  version: '1.0.0'
+  generatedAt: '2026-02-19T00:00:00Z'
+  totalGaps: 32
+  critical: 18
+  high: 9
+  medium: 5
+
+gaps:
+
+  # ─── @dev ────────────────────────────────────────────────────────────────────
+
+  - id: KG-001
+    agent: dev
+    domain: security-owasp
+    severity: critical
+    score: 0.15
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Nenhum padrão de segurança no entity-registry para @dev"
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "OWASP Top 10 Node.js TypeScript security patterns"
+        - type: exa
+          query: "secure coding practices TypeScript 2025 injection XSS CSRF"
+      estimatedTokens: 5000
+      outputFile: .aios-core/data/knowledge-briefs/dev-security-owasp.md
+    status: pending
+
+  - id: KG-002
+    agent: dev
+    domain: algorithm-patterns
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Stories com lógica de negócio complexa delegada sem referência"
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "common algorithms data structures JavaScript TypeScript"
+        - type: exa
+          query: "algorithm patterns software engineering 2025"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/dev-algorithm-patterns.md
+    status: pending
+
+  - id: KG-003
+    agent: dev
+    domain: performance-optimization
+    severity: critical
+    score: 0.25
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "Node.js performance optimization profiling memory leaks"
+        - type: context7
+          query: "React performance optimization memo useMemo useCallback"
+      estimatedTokens: 4500
+      outputFile: .aios-core/data/knowledge-briefs/dev-performance.md
+    status: pending
+
+  - id: KG-004
+    agent: dev
+    domain: supabase-rls
+    severity: high
+    score: 0.35
+    detectedAt: '2026-02-19'
+    detectedBy: gotchas-analysis
+    trigger: "2 gotchas de RLS capturados; padrões incompletos"
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "Supabase Row Level Security policies TypeScript client"
+      estimatedTokens: 3000
+      outputFile: .aios-core/data/knowledge-briefs/dev-supabase-rls.md
+    status: pending
+
+  - id: KG-005
+    agent: dev
+    domain: nextjs-15
+    severity: high
+    score: 0.42
+    detectedAt: '2026-02-19'
+    detectedBy: freshness-watcher
+    trigger: "Next.js atualizado para v15; padrões App Router não absorvidos"
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "Next.js 15 App Router Server Components data fetching"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/dev-nextjs15.md
+    status: pending
+
+  # ─── @architect ──────────────────────────────────────────────────────────────
+
+  - id: KG-006
+    agent: architect
+    domain: anti-patterns-library
+    severity: critical
+    score: 0.00
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Nenhum banco de anti-padrões existe no projeto"
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "software architecture anti-patterns distributed systems 2025"
+        - type: exa
+          query: "microservices anti-patterns pitfalls mistakes"
+      estimatedTokens: 6000
+      outputFile: .aios-core/data/knowledge-briefs/architect-anti-patterns.md
+    status: pending
+
+  - id: KG-007
+    agent: architect
+    domain: scalability-heuristics
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "software scalability heuristics rules of thumb 2025"
+        - type: context7
+          query: "system design scalability patterns load balancing"
+      estimatedTokens: 5000
+      outputFile: .aios-core/data/knowledge-briefs/architect-scalability.md
+    status: pending
+
+  - id: KG-008
+    agent: architect
+    domain: brownfield-refactoring
+    severity: critical
+    score: 0.28
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "brownfield software refactoring strangler fig pattern"
+        - type: exa
+          query: "legacy system modernization architecture patterns"
+      estimatedTokens: 4500
+      outputFile: .aios-core/data/knowledge-briefs/architect-brownfield.md
+    status: pending
+
+  - id: KG-009
+    agent: architect
+    domain: nextjs-15-patterns
+    severity: high
+    score: 0.38
+    detectedAt: '2026-02-19'
+    detectedBy: freshness-watcher
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "Next.js 15 architecture patterns server components RSC"
+      estimatedTokens: 3500
+      outputFile: .aios-core/data/knowledge-briefs/architect-nextjs15.md
+    status: pending
+
+  # ─── @qa ─────────────────────────────────────────────────────────────────────
+
+  - id: KG-010
+    agent: qa
+    domain: load-testing
+    severity: critical
+    score: 0.15
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "NFRs de performance em stories sem cobertura de carga"
+    acquisitionPlan:
+      sources:
+        - type: context7
+          query: "k6 load testing JavaScript TypeScript API"
+        - type: context7
+          query: "Artillery performance testing Node.js"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/qa-load-testing.md
+    status: pending
+
+  - id: KG-011
+    agent: qa
+    domain: security-testing
+    severity: critical
+    score: 0.12
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "OWASP security testing methodology web applications 2025"
+        - type: context7
+          query: "Playwright security testing authentication authorization"
+      estimatedTokens: 4500
+      outputFile: .aios-core/data/knowledge-briefs/qa-security-testing.md
+    status: pending
+
+  - id: KG-012
+    agent: qa
+    domain: quality-metrics-baselines
+    severity: critical
+    score: 0.00
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Nenhum baseline histórico de qualidade existe"
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "software quality metrics baselines DORA metrics 2025"
+      estimatedTokens: 3000
+      outputFile: .aios-core/data/knowledge-briefs/qa-quality-metrics.md
+    status: pending
+
+  # ─── @pm ─────────────────────────────────────────────────────────────────────
+
+  - id: KG-013
+    agent: pm
+    domain: go-to-market-playbooks
+    severity: critical
+    score: 0.15
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "go-to-market strategy playbook SaaS product launch 2025"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/pm-gtm-playbooks.md
+    status: pending
+
+  - id: KG-014
+    agent: pm
+    domain: roi-calculator
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "software feature ROI calculation business value framework"
+      estimatedTokens: 3000
+      outputFile: .aios-core/data/knowledge-briefs/pm-roi.md
+    status: pending
+
+  - id: KG-015
+    agent: pm
+    domain: competitive-pricing-models
+    severity: critical
+    score: 0.10
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "SaaS pricing strategy models competitive analysis 2025"
+      estimatedTokens: 3500
+      outputFile: .aios-core/data/knowledge-briefs/pm-pricing.md
+    status: pending
+
+  # ─── @analyst ────────────────────────────────────────────────────────────────
+
+  - id: KG-016
+    agent: analyst
+    domain: market-sizing-tam-sam-som
+    severity: critical
+    score: 0.15
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "TAM SAM SOM market sizing methodology framework 2025"
+      estimatedTokens: 3000
+      outputFile: .aios-core/data/knowledge-briefs/analyst-market-sizing.md
+    status: pending
+
+  - id: KG-017
+    agent: analyst
+    domain: primary-research-methodology
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "primary research methodology user interviews surveys best practices"
+      estimatedTokens: 3500
+      outputFile: .aios-core/data/knowledge-briefs/analyst-research-methodology.md
+    status: pending
+
+  # ─── @data-engineer ──────────────────────────────────────────────────────────
+
+  - id: KG-018
+    agent: data-engineer
+    domain: data-warehouse-design
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Padrões OLAP completamente ausentes no projeto"
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "data warehouse design star schema snowflake PostgreSQL 2025"
+        - type: context7
+          query: "data modeling OLAP patterns analytics"
+      estimatedTokens: 5000
+      outputFile: .aios-core/data/knowledge-briefs/data-engineer-warehouse.md
+    status: pending
+
+  - id: KG-019
+    agent: data-engineer
+    domain: etl-pipelines
+    severity: critical
+    score: 0.18
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "ETL pipeline design patterns PostgreSQL Node.js 2025"
+        - type: context7
+          query: "data pipeline architecture best practices"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/data-engineer-etl.md
+    status: pending
+
+  - id: KG-020
+    agent: data-engineer
+    domain: gdpr-ccpa-compliance-automation
+    severity: critical
+    score: 0.22
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "GDPR CCPA database compliance automation PostgreSQL Supabase"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/data-engineer-compliance.md
+    status: pending
+
+  # ─── @sm ─────────────────────────────────────────────────────────────────────
+
+  - id: KG-021
+    agent: sm
+    domain: story-estimation-frameworks
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Story sizing é conhecimento tácito, sem framework implementado"
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "story estimation t-shirt sizing planning poker fibonacci agile"
+      estimatedTokens: 3000
+      outputFile: .aios-core/data/knowledge-briefs/sm-estimation.md
+    status: pending
+
+  - id: KG-022
+    agent: sm
+    domain: velocity-learning
+    severity: critical
+    score: 0.00
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Nenhum rastreamento de velocidade existe no sistema"
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "agile velocity tracking learning capacity planning 2025"
+      estimatedTokens: 3000
+      outputFile: .aios-core/data/knowledge-briefs/sm-velocity.md
+    status: pending
+
+  # ─── @po ─────────────────────────────────────────────────────────────────────
+
+  - id: KG-023
+    agent: po
+    domain: rice-scoring-calculator
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "RICE scoring framework product prioritization implementation"
+      estimatedTokens: 2500
+      outputFile: .aios-core/data/knowledge-briefs/po-rice.md
+    status: pending
+
+  # ─── @devops ─────────────────────────────────────────────────────────────────
+
+  - id: KG-024
+    agent: devops
+    domain: incident-response-playbook
+    severity: critical
+    score: 0.20
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "incident response playbook SRE runbook template 2025"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/devops-incident-response.md
+    status: pending
+
+  - id: KG-025
+    agent: devops
+    domain: disaster-recovery
+    severity: critical
+    score: 0.15
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "disaster recovery RTO RPO strategies cloud infrastructure"
+      estimatedTokens: 3500
+      outputFile: .aios-core/data/knowledge-briefs/devops-disaster-recovery.md
+    status: pending
+
+  # ─── @aios-master ────────────────────────────────────────────────────────────
+
+  - id: KG-026
+    agent: aios-master
+    domain: meta-learning
+    severity: critical
+    score: 0.10
+    detectedAt: '2026-02-19'
+    detectedBy: gap-scanner
+    trigger: "Nenhum mecanismo de auto-melhoria existe no framework"
+    acquisitionPlan:
+      sources:
+        - type: exa
+          query: "meta-learning AI agent self-improvement patterns 2025"
+      estimatedTokens: 4000
+      outputFile: .aios-core/data/knowledge-briefs/aios-master-meta-learning.md
+    status: pending

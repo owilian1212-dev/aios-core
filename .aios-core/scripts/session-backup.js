@@ -299,6 +299,78 @@ function collectHooks() {
   return rows.join('\n') || '_Nenhum hook encontrado_';
 }
 
+// ─── Knowledge State ───────────────────────────────────────────────────────
+
+function collectKnowledge() {
+  const profilesPath = path.join(PROJECT_ROOT, '.aios-core', 'data', 'agent-knowledge-profiles.yaml');
+  const gapsPath     = path.join(PROJECT_ROOT, '.aios-core', 'data', 'knowledge-gaps.yaml');
+  const briefsDir    = path.join(PROJECT_ROOT, '.aios-core', 'data', 'knowledge-briefs');
+
+  if (!fs.existsSync(profilesPath)) return null;
+
+  const rows = [];
+  let criticalCount = 0, highCount = 0, mediumCount = 0, okCount = 0;
+
+  try {
+    const profileContent = fs.readFileSync(profilesPath, 'utf8');
+    // Parse agents block by looking for top-level keys (non-indented lines with colon)
+    const agentBlocks = profileContent.match(/^([a-z][\w-]+):\s*\n((?:  .+\n?)*)/gm) || [];
+    const agentSummary = [];
+
+    for (const block of agentBlocks) {
+      if (block.startsWith('meta:') || block.startsWith('scoreThreshold:')) continue;
+      const agentName = block.match(/^([a-z][\w-]+):/)?.[1];
+      if (!agentName || agentName === 'meta') continue;
+
+      const scores = [...block.matchAll(/score:\s*([\d.]+)/g)].map(m => parseFloat(m[1]));
+      if (scores.length === 0) continue;
+
+      const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+      const critical = scores.filter(s => s < 0.30).length;
+      const gap      = scores.filter(s => s >= 0.30 && s < 0.60).length;
+      const ok       = scores.filter(s => s >= 0.60).length;
+
+      criticalCount += critical;
+      highCount     += gap;
+      okCount       += ok;
+
+      const bar = avg >= 0.80 ? '✅' : avg >= 0.60 ? '⚠️' : '✗';
+      agentSummary.push(`| \`@${agentName}\` | ${avg.toFixed(2)} | ${bar} | ${critical} | ${gap} | ${ok} |`);
+    }
+
+    if (agentSummary.length) {
+      rows.push('| Agente | Score Médio | Status | Críticos | Lacunas | OK |');
+      rows.push('|--------|------------|--------|---------|---------|-----|');
+      rows.push(...agentSummary);
+    }
+  } catch (_) {}
+
+  // Gap summary
+  let pendingGaps = 0;
+  try {
+    if (fs.existsSync(gapsPath)) {
+      const gapContent = fs.readFileSync(gapsPath, 'utf8');
+      pendingGaps = (gapContent.match(/status: pending/g) || []).length;
+    }
+  } catch (_) {}
+
+  // Briefs count
+  let briefsCount = 0;
+  try {
+    if (fs.existsSync(briefsDir)) {
+      briefsCount = fs.readdirSync(briefsDir).filter(f => f.endsWith('.md')).length;
+    }
+  } catch (_) {}
+
+  return {
+    table: rows.join('\n') || '_Perfis não encontrados_',
+    criticalCount,
+    highCount,
+    pendingGaps,
+    briefsCount,
+  };
+}
+
 // ─── Session Activity ──────────────────────────────────────────────────────
 
 function collectSessionActivity() {
@@ -333,7 +405,7 @@ function collectSessionActivity() {
 
 // ─── Report Generator ──────────────────────────────────────────────────────
 
-function generateReport({ git, agents, squads, mcps, skills, hooks, session, ts }) {
+function generateReport({ git, agents, squads, mcps, skills, hooks, session, knowledge, ts }) {
   const reasonLabel = {
     precompact: 'Contexto próximo do limite (PreCompact hook automático)',
     manual:     'Backup manual solicitado pelo agente',
@@ -424,6 +496,16 @@ ${hooks}
 
 ---
 
+### Knowledge State (@knowledge-monitor)
+
+${knowledge ? `**Gaps críticos:** ${knowledge.criticalCount} | **Lacunas:** ${knowledge.highCount} | **Pendentes:** ${knowledge.pendingGaps} | **Briefs gerados:** ${knowledge.briefsCount}
+
+${knowledge.table}
+
+> Para relatório completo: \`@knowledge-monitor\` → \`*knowledge-debt\`` : '_knowledge-monitor não configurado_'}
+
+---
+
 ## Como Retomar em Nova Sessão
 
 \`\`\`
@@ -484,19 +566,20 @@ async function main() {
   git = collectGitData();
 
   console.log('[session-backup] Coletando inventário do projeto...');
-  const agents  = collectAgents();
-  const squads  = collectSquads();
-  const mcps    = collectMCPs();
-  const skills  = collectSkills();
-  const hooks   = collectHooks();
-  const session = collectSessionActivity();
+  const agents    = collectAgents();
+  const squads    = collectSquads();
+  const mcps      = collectMCPs();
+  const skills    = collectSkills();
+  const hooks     = collectHooks();
+  const session   = collectSessionActivity();
+  const knowledge = collectKnowledge();
 
   // 1. Ensure reports directory
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
 
   // 2. Write report
   const reportFile = path.join(REPORTS_DIR, `session-${ts}.md`);
-  const report = generateReport({ git, agents, squads, mcps, skills, hooks, session, ts });
+  const report = generateReport({ git, agents, squads, mcps, skills, hooks, session, knowledge, ts });
   fs.writeFileSync(reportFile, report);
   console.log(`[session-backup] Relatório salvo: ${path.relative(PROJECT_ROOT, reportFile)}`);
 

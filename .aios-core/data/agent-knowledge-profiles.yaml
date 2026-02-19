@@ -1,0 +1,595 @@
+# Agent Knowledge Profiles
+# Maintained by @knowledge-monitor (Sage)
+# Updated automatically via scan-gaps, freshness-check, and broker hooks
+#
+# Score scale: 0.0 (unknown) → 1.0 (expert)
+# Threshold:   < 0.60 = gap (brief required before activation)
+#              < 0.30 = critical (acquisition mandatory before activation)
+#              null   = never assessed (treated as 0.0)
+#
+# Sources: entity-registry | gotchas | context7 | exa | apify | broker | manual
+
+meta:
+  version: '1.0.0'
+  generatedAt: '2026-02-19T00:00:00Z'
+  generatedBy: knowledge-monitor
+  scoreThreshold:
+    gap: 0.60
+    critical: 0.30
+
+# ─── @dev (Dex) ────────────────────────────────────────────────────────────────
+dev:
+  persona: Dex
+  domains:
+    # ✓ Well-covered
+    typescript:
+      score: 0.88
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+      notes: Coding standards + devLoadAlwaysFiles coverage
+    javascript:
+      score: 0.85
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    react-patterns:
+      score: 0.78
+      lastUpdated: '2026-02-10'
+      source: context7
+    nodejs-patterns:
+      score: 0.75
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+    git-workflow:
+      score: 0.80
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    jest-testing:
+      score: 0.72
+      lastUpdated: '2026-02-08'
+      source: entity-registry
+
+    # ⚠ Gaps (< 0.60) — brief required
+    supabase-rls:
+      score: 0.35
+      lastUpdated: '2026-01-05'
+      source: gotchas
+      notes: 2 RLS-related gotchas captured; patterns incomplete
+    nextjs-15:
+      score: 0.42
+      lastUpdated: '2026-01-20'
+      source: context7
+      notes: Upgraded from 14; new patterns not fully absorbed
+    error-handling-patterns:
+      score: 0.50
+      lastUpdated: '2026-01-15'
+      source: entity-registry
+
+    # ✗ Critical gaps (< 0.30) — acquisition mandatory
+    security-owasp:
+      score: 0.15
+      lastUpdated: null
+      source: null
+      notes: No security patterns in entity-registry for @dev
+    performance-optimization:
+      score: 0.25
+      lastUpdated: null
+      source: null
+    algorithm-patterns:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    language-idioms-python:
+      score: 0.10
+      lastUpdated: null
+      source: null
+
+# ─── @architect (Aria) ────────────────────────────────────────────────────────
+architect:
+  persona: Aria
+  domains:
+    # ✓ Well-covered
+    system-design:
+      score: 0.92
+      lastUpdated: '2026-02-18'
+      source: entity-registry
+    api-design-rest:
+      score: 0.88
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    microservices:
+      score: 0.82
+      lastUpdated: '2026-02-10'
+      source: context7
+    auth-architecture:
+      score: 0.80
+      lastUpdated: '2026-02-12'
+      source: entity-registry
+    cloud-architecture:
+      score: 0.75
+      lastUpdated: '2026-02-01'
+      source: exa
+
+    # ⚠ Gaps
+    nextjs-15-patterns:
+      score: 0.38
+      lastUpdated: '2026-01-20'
+      source: context7
+      notes: Next.js 15 App Router patterns partially covered
+    event-driven-architecture:
+      score: 0.55
+      lastUpdated: '2026-01-10'
+      source: exa
+    caching-strategies:
+      score: 0.48
+      lastUpdated: '2026-01-15'
+      source: entity-registry
+
+    # ✗ Critical gaps
+    anti-patterns-library:
+      score: 0.00
+      lastUpdated: null
+      source: null
+      notes: No anti-pattern database exists in project
+    scalability-heuristics:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    brownfield-refactoring:
+      score: 0.28
+      lastUpdated: null
+      source: null
+    cost-optimization-architecture:
+      score: 0.15
+      lastUpdated: null
+      source: null
+
+# ─── @qa (Quinn) ──────────────────────────────────────────────────────────────
+qa:
+  persona: Quinn
+  domains:
+    # ✓ Well-covered
+    jest-unit-testing:
+      score: 0.88
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    playwright-e2e:
+      score: 0.75
+      lastUpdated: '2026-02-08'
+      source: context7
+    code-review-patterns:
+      score: 0.85
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    risk-assessment:
+      score: 0.72
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+
+    # ⚠ Gaps
+    integration-testing:
+      score: 0.55
+      lastUpdated: '2026-01-20'
+      source: entity-registry
+    api-contract-testing:
+      score: 0.42
+      lastUpdated: '2026-01-10'
+      source: context7
+    accessibility-testing:
+      score: 0.38
+      lastUpdated: null
+      source: null
+
+    # ✗ Critical gaps
+    load-testing:
+      score: 0.15
+      lastUpdated: null
+      source: null
+      notes: k6/Artillery patterns completely absent
+    security-testing:
+      score: 0.12
+      lastUpdated: null
+      source: null
+    quality-metrics-baselines:
+      score: 0.00
+      lastUpdated: null
+      source: null
+      notes: No historical quality tracking exists
+    chaos-engineering:
+      score: 0.05
+      lastUpdated: null
+      source: null
+
+# ─── @pm (Morgan) ─────────────────────────────────────────────────────────────
+pm:
+  persona: Morgan
+  domains:
+    # ✓ Well-covered
+    prd-creation:
+      score: 0.90
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    epic-management:
+      score: 0.88
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    requirements-gathering:
+      score: 0.82
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+    feature-prioritization:
+      score: 0.72
+      lastUpdated: '2026-02-08'
+      source: entity-registry
+
+    # ⚠ Gaps
+    rice-scoring-implementation:
+      score: 0.45
+      lastUpdated: '2026-01-15'
+      source: entity-registry
+      notes: Method referenced but no implementation
+    moscow-framework:
+      score: 0.55
+      lastUpdated: '2026-01-20'
+      source: entity-registry
+    roadmap-planning:
+      score: 0.50
+      lastUpdated: '2026-01-10'
+      source: exa
+
+    # ✗ Critical gaps
+    competitive-pricing-models:
+      score: 0.10
+      lastUpdated: null
+      source: null
+    go-to-market-playbooks:
+      score: 0.15
+      lastUpdated: null
+      source: null
+    roi-calculator:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    market-segment-analysis:
+      score: 0.18
+      lastUpdated: null
+      source: null
+    revenue-forecasting:
+      score: 0.10
+      lastUpdated: null
+      source: null
+
+# ─── @analyst (Alex) ──────────────────────────────────────────────────────────
+analyst:
+  persona: Alex
+  domains:
+    # ✓ Well-covered
+    competitive-analysis:
+      score: 0.82
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    brainstorming-facilitation:
+      score: 0.88
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    market-research:
+      score: 0.75
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+    web-research:
+      score: 0.85
+      lastUpdated: '2026-02-18'
+      source: exa
+
+    # ⚠ Gaps
+    user-research-methods:
+      score: 0.48
+      lastUpdated: '2026-01-20'
+      source: entity-registry
+    industry-trend-analysis:
+      score: 0.52
+      lastUpdated: '2026-01-15'
+      source: exa
+    feasibility-study:
+      score: 0.45
+      lastUpdated: '2026-01-10'
+      source: entity-registry
+
+    # ✗ Critical gaps
+    primary-research-methodology:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    market-sizing-tam-sam-som:
+      score: 0.15
+      lastUpdated: null
+      source: null
+    persona-library:
+      score: 0.22
+      lastUpdated: null
+      source: null
+    trend-forecasting-frameworks:
+      score: 0.10
+      lastUpdated: null
+      source: null
+
+# ─── @data-engineer (Dara) ────────────────────────────────────────────────────
+data-engineer:
+  persona: Dara
+  domains:
+    # ✓ Well-covered
+    postgresql-schema:
+      score: 0.92
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    supabase-rls:
+      score: 0.88
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    database-migrations:
+      score: 0.85
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+    query-optimization:
+      score: 0.78
+      lastUpdated: '2026-02-08'
+      source: entity-registry
+    security-audit-db:
+      score: 0.82
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+
+    # ⚠ Gaps
+    mongodb:
+      score: 0.42
+      lastUpdated: '2026-01-20'
+      source: context7
+      notes: Setup supported but patterns incomplete
+    mysql:
+      score: 0.40
+      lastUpdated: '2026-01-15'
+      source: context7
+    replication-failover:
+      score: 0.38
+      lastUpdated: '2026-01-10'
+      source: exa
+
+    # ✗ Critical gaps
+    data-warehouse-design:
+      score: 0.20
+      lastUpdated: null
+      source: null
+      notes: OLAP patterns completely absent
+    etl-pipelines:
+      score: 0.18
+      lastUpdated: null
+      source: null
+    sharding-horizontal-scaling:
+      score: 0.15
+      lastUpdated: null
+      source: null
+    gdpr-ccpa-compliance-automation:
+      score: 0.22
+      lastUpdated: null
+      source: null
+    cloud-db-cost-optimization:
+      score: 0.10
+      lastUpdated: null
+      source: null
+
+# ─── @sm (River) ──────────────────────────────────────────────────────────────
+sm:
+  persona: River
+  domains:
+    # ✓ Well-covered
+    story-creation:
+      score: 0.92
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    acceptance-criteria:
+      score: 0.88
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    scrum-ceremonies:
+      score: 0.80
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+    sprint-planning:
+      score: 0.75
+      lastUpdated: '2026-02-08'
+      source: entity-registry
+
+    # ⚠ Gaps
+    story-dependency-mapping:
+      score: 0.45
+      lastUpdated: '2026-01-20'
+      source: entity-registry
+    technical-risk-assessment:
+      score: 0.48
+      lastUpdated: '2026-01-15'
+      source: entity-registry
+    definition-of-ready-done:
+      score: 0.55
+      lastUpdated: '2026-01-10'
+      source: entity-registry
+
+    # ✗ Critical gaps
+    story-estimation-frameworks:
+      score: 0.20
+      lastUpdated: null
+      source: null
+      notes: T-shirt sizing, planning poker patterns absent
+    epic-breakdown-heuristics:
+      score: 0.25
+      lastUpdated: null
+      source: null
+    velocity-learning:
+      score: 0.00
+      lastUpdated: null
+      source: null
+    impediment-resolution:
+      score: 0.18
+      lastUpdated: null
+      source: null
+
+# ─── @po (Pax) ────────────────────────────────────────────────────────────────
+po:
+  persona: Pax
+  domains:
+    # ✓ Well-covered
+    backlog-management:
+      score: 0.90
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    story-validation:
+      score: 0.88
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    story-lifecycle:
+      score: 0.85
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+
+    # ⚠ Gaps
+    moscow-application:
+      score: 0.50
+      lastUpdated: '2026-01-20'
+      source: entity-registry
+    capacity-planning:
+      score: 0.42
+      lastUpdated: '2026-01-15'
+      source: entity-registry
+    stakeholder-management:
+      score: 0.48
+      lastUpdated: '2026-01-10'
+      source: exa
+
+    # ✗ Critical gaps
+    rice-scoring-calculator:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    roi-business-value:
+      score: 0.22
+      lastUpdated: null
+      source: null
+    dependency-visualization:
+      score: 0.10
+      lastUpdated: null
+      source: null
+    impediment-resolution-guide:
+      score: 0.15
+      lastUpdated: null
+      source: null
+
+# ─── @devops (Gage) ───────────────────────────────────────────────────────────
+devops:
+  persona: Gage
+  domains:
+    # ✓ Well-covered
+    git-operations:
+      score: 0.95
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    github-actions:
+      score: 0.88
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    semantic-versioning:
+      score: 0.90
+      lastUpdated: '2026-02-18'
+      source: entity-registry
+    quality-gates:
+      score: 0.92
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    pr-management:
+      score: 0.90
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    mcp-management:
+      score: 0.80
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+
+    # ⚠ Gaps
+    docker-infrastructure:
+      score: 0.55
+      lastUpdated: '2026-01-20'
+      source: context7
+    kubernetes:
+      score: 0.42
+      lastUpdated: '2026-01-15'
+      source: exa
+    monitoring-observability:
+      score: 0.50
+      lastUpdated: '2026-01-10'
+      source: exa
+
+    # ✗ Critical gaps
+    incident-response-playbook:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    cost-optimization-cloud:
+      score: 0.18
+      lastUpdated: null
+      source: null
+    disaster-recovery:
+      score: 0.15
+      lastUpdated: null
+      source: null
+    branch-strategy-gitflow:
+      score: 0.28
+      lastUpdated: null
+      source: null
+
+# ─── @aios-master (Orion) ─────────────────────────────────────────────────────
+aios-master:
+  persona: Orion
+  domains:
+    # ✓ Well-covered
+    framework-orchestration:
+      score: 0.95
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+    ids-governance:
+      score: 0.92
+      lastUpdated: '2026-02-15'
+      source: entity-registry
+    component-creation:
+      score: 0.88
+      lastUpdated: '2026-02-10'
+      source: entity-registry
+    workflow-management:
+      score: 0.85
+      lastUpdated: '2026-02-08'
+      source: entity-registry
+    aios-kb:
+      score: 0.90
+      lastUpdated: '2026-02-19'
+      source: entity-registry
+
+    # ⚠ Gaps
+    elicitation-techniques:
+      score: 0.55
+      lastUpdated: '2026-01-20'
+      source: entity-registry
+    cross-domain-orchestration:
+      score: 0.52
+      lastUpdated: '2026-01-15'
+      source: entity-registry
+
+    # ✗ Critical gaps
+    meta-learning:
+      score: 0.10
+      lastUpdated: null
+      source: null
+      notes: No self-improvement mechanism exists
+    pattern-recognition:
+      score: 0.20
+      lastUpdated: null
+      source: null
+    performance-optimization-framework:
+      score: 0.18
+      lastUpdated: null
+      source: null

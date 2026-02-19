@@ -101,6 +101,7 @@ Use `@agent-name` ou `/AIOS:agents:agent-name`:
 | `@data-engineer` | Dara | Database design |
 | `@ux-design-expert` | Uma | UX/UI design |
 | `@devops` | Gage | CI/CD, git push (EXCLUSIVO) |
+| `@knowledge-monitor` | Sage | Knowledge gaps, perfis de proficiência |
 
 ### Comandos de Agentes
 Use prefixo `*` para comandos:
@@ -133,6 +134,18 @@ Use prefixo `*` para comandos:
 ```
 @po *create-story → @dev implementa → @qa testa → @devops push
 ```
+
+### Knowledge-First Protocol
+```
+@knowledge-monitor *scan-gaps → *prepare {agent} {domain} → @{agent} ativa com brief
+```
+
+Antes de ativar um agente em novo domínio:
+1. `@knowledge-monitor *scan-gaps {agent}` — verificar gaps
+2. `@knowledge-monitor *knowledge-brief {agent} {domain}` — gerar brief
+3. O brief é injetado automaticamente via Synapse L8
+
+**Constitution Artigo VII:** Agentes com score < 0.30 em um domínio DEVEM adquirir conhecimento antes de operar nesse domínio.
 
 ---
 

@@ -162,6 +162,8 @@ O projeto possui uma **Constitution formal** em `.aios-core/constitution.md`.
 | III | Story-Driven Development | MUST |
 | IV | No Invention | MUST |
 | V | Quality First | MUST |
+| VI | Absolute Imports | SHOULD |
+| VII | Knowledge First | MUST |
 
 ### Artigo I — CLI First
 ```
@@ -207,6 +209,7 @@ CLI First → Observability Second → UI Third
 | `@sm`, `/sm` | Scrum Master | River |
 | `@squad-creator`, `/squad-creator` | Squad Creator | — |
 | `@ux-design-expert`, `/ux-design-expert` | UX Expert | Uma |
+| `@knowledge-monitor`, `/knowledge-monitor` | Knowledge Acquisition Monitor | Sage |
 
 **Ao ativar atalho:**
 1. Carregar fonte canônica: `.aios-core/development/agents/<agent>.md` (fallback: `.codex/agents/<agent>.md`)
@@ -216,6 +219,16 @@ CLI First → Observability Second → UI Third
 ---
 
 ## WORKFLOW DE DESENVOLVIMENTO
+
+### Knowledge-First Protocol (Constitution Artigo VII)
+```
+Antes de ativar agente em domínio novo ou crítico:
+1. @knowledge-monitor *scan-gaps {agent} — verificar gaps
+2. @knowledge-monitor *prepare {agent} {domain} — adquirir + brief
+3. Agente ativa com brief injetado automaticamente via Synapse L8
+```
+
+Se o agente alvo tiver score < 0.30 no domínio → aquisição obrigatória.
 
 ### Antes de começar qualquer tarefa
 ```

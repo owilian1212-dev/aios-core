@@ -1,6 +1,6 @@
 # Synkra AIOS Constitution
 
-> **Version:** 1.0.0 | **Ratified:** 2025-01-30 | **Last Amended:** 2025-01-30
+> **Version:** 1.1.0 | **Ratified:** 2025-01-30 | **Last Amended:** 2026-02-19
 
 Este documento define os princípios fundamentais e inegociáveis do Synkra AIOS. Todos os agentes, tasks, e workflows DEVEM respeitar estes princípios. Violações são bloqueadas automaticamente via gates.
 
@@ -125,6 +125,50 @@ import { useStore } from '../../../stores/feature/store'
 
 ---
 
+### VII. Knowledge First (MUST)
+
+Agentes especializados requerem embasamento de conhecimento antes de operar. Generalismo é proibido em domínios críticos.
+
+**Rationale:**
+Um agente sem conhecimento atualizado de seu domínio é tão perigoso quanto nenhum agente. A especialização é o diferencial do sistema; preservá-la é inegociável.
+
+**Regras:**
+- MUST: Agentes com gaps críticos (score < 0.30) DEVEM adquirir conhecimento via `*acquire` antes de tarefas no domínio
+- MUST: @knowledge-monitor (Sage) DEVE ser consultado antes de iniciar sprints com novos domínios
+- MUST: Scores de proficiência DEVEM ser baseados em evidências reais — nunca estimados sem fonte
+- MUST: knowledge-gaps.yaml e agent-knowledge-profiles.yaml têm autoridade exclusiva de @knowledge-monitor
+- SHOULD: Conhecimento adquirido via MCPs (Context7, EXA) DEVE ser documentado em knowledge-briefs
+- SHOULD: Agentes DEVEM informar @knowledge-monitor ao concluir tarefas em novos domínios
+- SHOULD NOT: Ativar agente em domínio crítico sem brief disponível
+- MUST NOT: Inventar scores ou afirmar expertise sem evidência documentada
+
+**Thresholds de Proficiência:**
+
+| Score | Categoria | Ação Requerida |
+|-------|-----------|----------------|
+| 0.00–0.30 | Crítico | `*acquire` obrigatório antes de operar |
+| 0.30–0.60 | Lacuna | `*knowledge-brief` recomendado |
+| 0.60–0.80 | Adequado | Operar com atenção às lacunas |
+| 0.80–1.00 | Proficiente | Operar com confiança |
+
+**Autoridades Exclusivas de @knowledge-monitor:**
+- Leitura/escrita: `agent-knowledge-profiles.yaml`
+- Leitura/escrita: `knowledge-gaps.yaml`
+- Leitura/escrita: `.aios-core/data/knowledge-briefs/`
+- Leitura apenas: `entity-registry.yaml`, `gotchas.json`
+
+**Princípios de @knowledge-monitor (Sage):**
+- "Você não pode especializar o que não consegue medir"
+- "Um gap detectado antes da tarefa é 10x mais barato que uma falha durante"
+- "Conhecimento sem freshness tracking é apenas dado obsoleto"
+- "Todo agente merece um knowledge brief antes de entrar em campo"
+
+**Gate:** `knowledge-brief-runner.js` — WARN ao ativar agente com gaps críticos
+**Monitor:** `*scan-gaps` — detecta novos gaps após cada sprint
+**Comando principal:** `@knowledge-monitor` → `*help`
+
+---
+
 ## Governance
 
 ### Amendment Process
@@ -167,5 +211,5 @@ import { useStore } from '../../../stores/feature/store'
 
 ---
 
-*Synkra AIOS Constitution v1.0.0*
-*CLI First | Agent-Driven | Quality First*
+*Synkra AIOS Constitution v1.1.0*
+*CLI First | Agent-Driven | Quality First | Knowledge First*

@@ -148,7 +148,8 @@ O projeto usa um sistema multi-IDE onde agentes são sincronizados entre IDEs:
 | `@data-engineer` | Dara | Database e schema |
 | `@ux-design-expert` | Uma | UX/UI design |
 | `@devops` | Gage | CI/CD, git push (EXCLUSIVO) |
-| `@aios-master` | — | Orquestrador principal |
+| `@aios-master` | Orion | Orquestrador principal |
+| `@knowledge-monitor` | Sage | Gaps de conhecimento, perfis de proficiência |
 
 ---
 
@@ -163,6 +164,8 @@ O projeto possui uma **Constitution formal** em `.aios-core/constitution.md`.
 | III | Story-Driven Development | MUST |
 | IV | No Invention | MUST |
 | V | Quality First | MUST |
+| VI | Absolute Imports | SHOULD |
+| VII | Knowledge First | MUST |
 
 **O Gemini CLI está sujeito a todos os artigos da Constitution.**
 

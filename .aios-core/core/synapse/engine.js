@@ -1,7 +1,7 @@
 /**
- * SynapseEngine — Orchestrator for the 8-layer context injection pipeline.
+ * SynapseEngine — Orchestrator for the 9-layer context injection pipeline.
  *
- * Executes L0-L7 sequentially, applies bracket-aware filtering via
+ * Executes L0-L8 sequentially, applies bracket-aware filtering via
  * context-tracker (SYN-3), collects pipeline metrics, and formats
  * the final <synapse-rules> XML output via the formatter module.
  *
@@ -39,6 +39,7 @@ const LAYER_MODULES = [
   { path: './layers/l5-squad', layer: 5, name: 'squad' },
   { path: './layers/l6-keyword', layer: 6, name: 'keyword' },
   { path: './layers/l7-star-command', layer: 7, name: 'star-command' },
+  { path: './layers/l8-knowledge', layer: 8, name: 'knowledge' },
 ];
 
 /**
@@ -173,7 +174,7 @@ class PipelineMetrics {
 const PIPELINE_TIMEOUT_MS = 100;
 
 /**
- * Orchestrates the 8-layer SYNAPSE context injection pipeline.
+ * Orchestrates the 9-layer SYNAPSE context injection pipeline (L0-L8).
  *
  * Instantiates all available layers at construction time and
  * executes them sequentially in process(), applying bracket-aware
