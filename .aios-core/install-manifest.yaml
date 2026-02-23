@@ -8,9 +8,9 @@
 # - File types for categorization
 #
 version: 4.2.13
-generated_at: "2026-02-19T17:52:14.155Z"
+generated_at: "2026-02-23T15:52:29.821Z"
 generator: scripts/generate-install-manifest.js
-file_count: 1026
+file_count: 1035
 files:
   - path: cli/commands/config/index.js
     hash: sha256:ebcad2ce3807eda29dcddff76d7a95ddc9b7fa160df21fd608f94b802237e862
@@ -1065,9 +1065,9 @@ files:
     type: data
     size: 34251
   - path: data/entity-registry.yaml
-    hash: sha256:9cbf837d0b2151304c3ce8d28e6ac8efa1ef4b35a9dc4074bdbfaa9fd4afc77f
+    hash: sha256:e28cb60c612eea5566df8c4a7f7af29a5f17fa582c1a23a8df3ba0247da2338b
     type: data
-    size: 291887
+    size: 301177
   - path: data/knowledge-gaps.yaml
     hash: sha256:6aa463260f357da97ab58a8e95c32e2b1f907dbb76be673401fa194b2399b0c3
     type: data
@@ -1096,6 +1096,10 @@ files:
     hash: sha256:e94af39f75eb8638639beb7cc86113874007b7e4fb42af31e9300f7c684e90e0
     type: data
     size: 5349
+  - path: development/6-PREMISSAS-INDEX.md
+    hash: sha256:4322a964772bae2027579919fa1b63ea65da3a9e3ef2a2fd15e0229c1c65fff2
+    type: development
+    size: 10794
   - path: development/agent-teams/team-all.yaml
     hash: sha256:368efa25930f89d33ee4178c7b77871ad2ca1437ca56376233b0c375a2cb311c
     type: development
@@ -1116,6 +1120,10 @@ files:
     hash: sha256:1a1ba8e2816d801cbcce2013a9062d16713a09f70582ea399ed10751bc5b1557
     type: development
     size: 5012
+  - path: development/AGENTS_6_PREMISSAS_CONFIG.yaml
+    hash: sha256:b281d8ec0faddc28cb5e9a368c4f6df90819c812cf9c3cdd59c096882c510b6a
+    type: development
+    size: 7380
   - path: development/agents/aios-master.md
     hash: sha256:092161d318ab523b8cd5c3dc8a2bd19accc23ab7fa731d5b4fa11c5afb8b5a08
     type: agent
@@ -1124,14 +1132,26 @@ files:
     hash: sha256:470384d9ee05d1373fe7519602f135179a88a35895252277823b35339dafd2a3
     type: agent
     size: 10175
+  - path: development/agents/architect-guidelines-6-premissas.md
+    hash: sha256:bd0e46abb5fd2ec00f72db5c4f2edbed926547cf9d23e4da15a8051c73966ac3
+    type: agent
+    size: 9894
   - path: development/agents/architect.md
     hash: sha256:624cc2a9e8a6cb1549321614927649714a867332272faaa5861f4378206f1c34
     type: agent
     size: 18980
+  - path: development/agents/data-engineer-guidelines-6-premissas.md
+    hash: sha256:32c040974b38f173f86638894e34b2dd5d247553367807b5f7824fde46c9404e
+    type: agent
+    size: 8208
   - path: development/agents/data-engineer.md
     hash: sha256:4be2e5bff60e58d7444d39030edd1e8d34e326e6d1267ae84772871f3e76ec19
     type: agent
     size: 20286
+  - path: development/agents/dev-guidelines-6-premissas.md
+    hash: sha256:149a8d0490273829d6164b451101fa3fcb161af2b49497335450556cfacda7a9
+    type: agent
+    size: 9935
   - path: development/agents/dev.md
     hash: sha256:994d1015878d4deec3ee1b0f14cfa9ff6ffcf60ee1f83abe969daaa01b95b4db
     type: agent
@@ -1152,6 +1172,10 @@ files:
     hash: sha256:4b092282c4a6fab6cadb15c9a5792f851766525d152d18bc8d2f0c8d66366c7d
     type: agent
     size: 12765
+  - path: development/agents/qa-guidelines-6-premissas.md
+    hash: sha256:0e34a0b749b0c32cafdce3ab3bafe026bc0b8bb4dedc9e87e879d718e15429a9
+    type: agent
+    size: 7115
   - path: development/agents/qa.md
     hash: sha256:0f8fb4bce7c75852937bc822547ce74735b212c16761b2d58d95356708fd0a14
     type: agent
@@ -1168,6 +1192,10 @@ files:
     hash: sha256:ae3f98570fa6cbd714ecd0aa2f44c7db005f0469b5bd04191d8da3b133bc65f1
     type: agent
     size: 18377
+  - path: development/ARCHITECTURE_MAP.md
+    hash: sha256:999212a2bc79a81cb9475c77567b33eae0624c5de7f31aaeae1ca740bee44741
+    type: development
+    size: 17640
   - path: development/checklists/agent-quality-gate.md
     hash: sha256:04d1bf12dd4b0b3d10de04c1825efab742e6475087d3ac9d5c86ca7ff8ec9057
     type: checklist
@@ -1180,6 +1208,10 @@ files:
     hash: sha256:869fbc8fbc333ac8eea4eca3ea4ab9ca79917fa5e53735b70d634c85ac6420c8
     type: checklist
     size: 9184
+  - path: development/COMPLETION_SUMMARY.md
+    hash: sha256:52918b325dd1911f6f3a685a27604b0ea0061d2103bb9cddaedb5c1fa0650701
+    type: development
+    size: 8004
   - path: development/data/decision-heuristics-framework.md
     hash: sha256:4aef9a7efc9673cc284ac819d7276fc58c5f954a1a41e092df97b9a05d2c092f
     type: data
@@ -1192,6 +1224,10 @@ files:
     hash: sha256:0f2dded0302d12331c785c4c0a022786647beca7e0b07da469071c2d8286063e
     type: data
     size: 11110
+  - path: development/QUICK_START_6_PREMISSAS.md
+    hash: sha256:e7e223bf820862b42186c218f5c6a47e539b95d7f21ae9fe028d7a7f03392f70
+    type: development
+    size: 9388
   - path: development/README.md
     hash: sha256:66c7cc2510c1100c13aa176502428e7b1396fcd88af748a966f9ad3e2d0773b3
     type: development
