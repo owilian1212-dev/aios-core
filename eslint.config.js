@@ -165,6 +165,42 @@ module.exports = [
     },
   },
 
+  // Frontend (Vite/React) overrides
+  {
+    files: ['squads/trafego-os/frontend/src/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        location: 'readonly',
+        history: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        console: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        btoa: 'readonly',
+        atob: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLInputElement: 'readonly',
+        HTMLTextAreaElement: 'readonly',
+        HTMLDivElement: 'readonly',
+        KeyboardEvent: 'readonly',
+        Element: 'readonly',
+        Headers: 'readonly',
+        XMLHttpRequest: 'readonly',
+      },
+    },
+    rules: {
+      'no-undef': 'off',
+    },
+  },
+
   // Test files - more relaxed rules
   {
     files: ['**/*.test.js', '**/*.spec.js', '**/tests/**/*.js'],
