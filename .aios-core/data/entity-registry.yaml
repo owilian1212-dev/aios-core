@@ -1,7 +1,7 @@
 metadata:
   version: 1.0.0
-  lastUpdated: '2026-02-16T20:22:35.905Z'
-  entityCount: 508
+  lastUpdated: '2026-02-23T15:53:00.602Z'
+  entityCount: 531
   checksumAlgorithm: sha256
 entities:
   tasks:
@@ -3927,6 +3927,193 @@ entities:
         extensionPoints: []
       checksum: sha256:0e69435307db814563823896e7ba9b29a4a9c10d90f6dedec5cb7a6d6f7ba936
       lastVerified: '2026-02-16T20:19:27.659Z'
+    acquire-knowledge:
+      path: .aios-core/development/tasks/acquire-knowledge.md
+      type: task
+      purpose: '** Orquestra aquisição ativa de conhecimento via MCPs (Context7, EXA, Apify)'
+      keywords:
+        - acquire
+        - knowledge
+        - 'task:'
+        - acquire-knowledge
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:731068fdefb578cb4e6b61f82bb80ebd1f0a6315864855a584a6d7ff23709938
+      lastVerified: '2026-02-20T13:00:10.315Z'
+    assess-knowledge:
+      path: .aios-core/development/tasks/assess-knowledge.md
+      type: task
+      purpose: '** Avalia score de proficiência de um agente em um domínio (0.0–1.0) via análise de evidências'
+      keywords:
+        - assess
+        - knowledge
+        - 'task:'
+        - assess-knowledge
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:e988238d1b0841c26fd0111ff5beb4423a6eb5ba3e972a184df76209aa26939e
+      lastVerified: '2026-02-20T13:00:10.317Z'
+    freshness-check:
+      path: .aios-core/development/tasks/freshness-check.md
+      type: task
+      purpose: '** Verifica se conhecimento está obsoleto (libs atualizadas, docs mudaram, score stale)'
+      keywords:
+        - freshness
+        - check
+        - 'task:'
+        - freshness-check
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:27dd2f26974dc958580e2e979d1b254ee7c39117728fe7f53f55fc09db5d5472
+      lastVerified: '2026-02-20T13:00:10.319Z'
+    knowledge-brief:
+      path: .aios-core/development/tasks/knowledge-brief.md
+      type: task
+      purpose: '** Gera brief especializado para injetar antes da ativação de um agente'
+      keywords:
+        - knowledge
+        - brief
+        - 'task:'
+        - knowledge-brief
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:2a02b4ffbe27e0b838ad8d8c030659cf68926461c0e27c4c68463e7929b3f120
+      lastVerified: '2026-02-20T13:00:10.319Z'
+    knowledge-broker:
+      path: .aios-core/development/tasks/knowledge-broker.md
+      type: task
+      purpose: '** Transfere padrão descoberto de um agente para outros'
+      keywords:
+        - knowledge
+        - broker
+        - 'task:'
+        - knowledge-broker
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:332553f45f60323a7223e17903e6c7b9d9ef9869e87102b026465555b65ea225
+      lastVerified: '2026-02-20T13:00:10.323Z'
+    knowledge-debt:
+      path: .aios-core/development/tasks/knowledge-debt.md
+      type: task
+      purpose: '** Relatório completo de dívida de conhecimento do sistema'
+      keywords:
+        - knowledge
+        - debt
+        - 'task:'
+        - knowledge-debt
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:df45283683c88be53726313a37d3f5e41aebcca6e8000ab39db871a3a2e45bab
+      lastVerified: '2026-02-20T13:00:10.323Z'
+    prepare-agent:
+      path: .aios-core/development/tasks/prepare-agent.md
+      type: task
+      purpose: '** Prepara agente para story/domínio: scan + acquire + brief em sequência automática'
+      keywords:
+        - prepare
+        - agent
+        - 'task:'
+        - prepare-agent
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:e3c5b15124d078a716d0686858178cda8ca0fde0acc76d6ecc7cb8fb2718ea46
+      lastVerified: '2026-02-20T13:00:10.324Z'
+    publish-brief:
+      path: .aios-core/development/tasks/publish-brief.md
+      type: task
+      purpose: '** Publica um brief gerado para múltiplos agentes'
+      keywords:
+        - publish
+        - brief
+        - 'task:'
+        - publish-brief
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:c91526463486f70b852e993689175d705e6abfea12ca6ef28729637ed78a8554
+      lastVerified: '2026-02-20T13:00:10.325Z'
+    scan-gaps:
+      path: .aios-core/development/tasks/scan-gaps.md
+      type: task
+      purpose: '** Detecta lacunas de conhecimento comparando perfis contra thresholds'
+      keywords:
+        - scan
+        - gaps
+        - 'task:'
+        - scan-gaps
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:7c987d5976c1df358caf8abde40c0c6ddb59ed708dc9d4123954eb6fa1d2391f
+      lastVerified: '2026-02-20T13:00:10.326Z'
+    show-profile:
+      path: .aios-core/development/tasks/show-profile.md
+      type: task
+      purpose: '** Exibe perfil completo de conhecimento de um agente'
+      keywords:
+        - show
+        - profile
+        - 'task:'
+        - show-profile
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:14652003b442cf3526161df263992d71a5553c1e8cbdeada22ff203033422fad
+      lastVerified: '2026-02-20T13:00:10.327Z'
+    update-profile:
+      path: .aios-core/development/tasks/update-profile.md
+      type: task
+      purpose: '** Atualiza score de proficiência de um agente em um domínio'
+      keywords:
+        - update
+        - profile
+        - 'task:'
+        - update-profile
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.8
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:7100a86f90fcd047e5bdb139bb7fff943081bfff69b4202c6844637b660e70b3
+      lastVerified: '2026-02-20T13:00:10.327Z'
   templates:
     activation-instructions-inline-greeting:
       path: .aios-core/product/templates/activation-instructions-inline-greeting.yaml
@@ -6000,7 +6187,9 @@ entities:
     dev-helper:
       path: .aios-core/core/code-intel/helpers/dev-helper.js
       type: module
-      purpose: Code intelligence helper for @dev agent tasks - IDS G4 automation, duplicate detection, conventions, blast radius
+      purpose: >-
+        Code intelligence helper for @dev agent tasks - IDS G4 automation, duplicate detection, conventions, blast
+        radius
       keywords:
         - code-intel
         - dev-helper
@@ -6009,11 +6198,7 @@ entities:
         - blast-radius
         - conventions
         - reuse
-      usedBy:
-        - dev-develop-story
-        - create-service
-        - dev-suggest-refactoring
-        - build-autonomous
+      usedBy: []
       dependencies:
         - code-intel
       adaptability:
@@ -6599,8 +6784,8 @@ entities:
         score: 0.4
         constraints: []
         extensionPoints: []
-      checksum: sha256:65e9c48d8ba7991fcd32bb1ea0bd087ce6d709ebf7f5bc4fd4b2e947ee5ddf0f
-      lastVerified: '2026-02-16T01:21:26.584Z'
+      checksum: sha256:f596091d5c4d442f6ee00bb7e8c4b182d82ba66bf06fb9bb78291cf407ab6a58
+      lastVerified: '2026-02-20T13:00:10.305Z'
     ideation-engine:
       path: .aios-core/core/ideation/ideation-engine.js
       type: module
@@ -8868,6 +9053,67 @@ entities:
         extensionPoints: []
       checksum: sha256:2523ce93f863a28f798d992c4f2fab041c91a09413b3186fd290e6035b391587
       lastVerified: '2026-02-16T01:21:26.584Z'
+    knowledge-broker:
+      path: .aios-core/core/knowledge/knowledge-broker.js
+      type: module
+      purpose: Entity at .aios-core/core/knowledge/knowledge-broker.js
+      keywords:
+        - knowledge
+        - broker
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.4
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:86d66120440c22af8993e856d4fae28dc0696570cbe3fc072f8f53503925e488
+      lastVerified: '2026-02-20T13:00:10.300Z'
+    score-engine:
+      path: .aios-core/core/knowledge/score-engine.js
+      type: module
+      purpose: Entity at .aios-core/core/knowledge/score-engine.js
+      keywords:
+        - score
+        - engine
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.4
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:1b1826637f1fee6baeadc2af8966e3ba9f784a41d2fc3f5cc6d17134217a5b4b
+      lastVerified: '2026-02-20T13:00:10.303Z'
+    semantic-search:
+      path: .aios-core/core/knowledge/semantic-search.js
+      type: module
+      purpose: Entity at .aios-core/core/knowledge/semantic-search.js
+      keywords:
+        - semantic
+        - search
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.4
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:4e21e4eb08a2631d59217fc4d6fa5c2db0578a20fdd51f67613235b525fb8a20
+      lastVerified: '2026-02-20T13:00:10.304Z'
+    l8-knowledge:
+      path: .aios-core/core/synapse/layers/l8-knowledge.js
+      type: module
+      purpose: Entity at .aios-core/core/synapse/layers/l8-knowledge.js
+      keywords:
+        - l8
+        - knowledge
+      usedBy: []
+      dependencies:
+        - layer-processor
+      adaptability:
+        score: 0.4
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:a498d8d596c2af1842b3748e3b37a82f9aa451ccecd6e0e923499f70960f992d
+      lastVerified: '2026-02-20T13:00:10.306Z'
   agents:
     aios-master:
       path: .aios-core/development/agents/aios-master.md
@@ -9049,6 +9295,104 @@ entities:
         extensionPoints: []
       checksum: sha256:5dde817f220f1f452b53026643e267eb027e4a131d1e5fc4bbcf6ebd772da3bb
       lastVerified: '2026-02-15T19:33:09.495Z'
+    knowledge-monitor:
+      path: .aios-core/development/agents/knowledge-monitor.md
+      type: agent
+      purpose: count gaps by severity per agent
+      keywords:
+        - knowledge
+        - monitor
+        - knowledge-monitor
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.3
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:67c629977874a7f075dd6988d36c7854aef1840be0e3d526c4e876bcc1f214d5
+      lastVerified: '2026-02-20T13:00:10.311Z'
+    architect-guidelines-6-premissas:
+      path: .aios-core/development/agents/architect-guidelines-6-premissas.md
+      type: agent
+      purpose: 🏛️ ARCHITECT AGENT (@architect) — 6 PREMISSAS OBRIGATÓRIAS
+      keywords:
+        - architect
+        - guidelines
+        - premissas
+        - 🏛️
+        - agent
+        - (@architect)
+      usedBy: []
+      dependencies:
+        - AuthContext
+        - auth
+      adaptability:
+        score: 0.3
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:bd0e46abb5fd2ec00f72db5c4f2edbed926547cf9d23e4da15a8051c73966ac3
+      lastVerified: '2026-02-23T15:53:00.587Z'
+    data-engineer-guidelines-6-premissas:
+      path: .aios-core/development/agents/data-engineer-guidelines-6-premissas.md
+      type: agent
+      purpose: 🗄️ DATA ENGINEER AGENT (@data-engineer) — 6 PREMISSAS OBRIGATÓRIAS
+      keywords:
+        - data
+        - engineer
+        - guidelines
+        - premissas
+        - 🗄️
+        - agent
+        - (@data-engineer)
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.3
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:32c040974b38f173f86638894e34b2dd5d247553367807b5f7824fde46c9404e
+      lastVerified: '2026-02-23T15:53:00.594Z'
+    dev-guidelines-6-premissas:
+      path: .aios-core/development/agents/dev-guidelines-6-premissas.md
+      type: agent
+      purpose: 🤖 DEVELOPER AGENT (@dev) — 6 PREMISSAS OBRIGATÓRIAS
+      keywords:
+        - dev
+        - guidelines
+        - premissas
+        - developer
+        - agent
+        - (@dev)
+        - obrigatórias
+      usedBy: []
+      dependencies:
+        - AuthContext
+        - auth
+      adaptability:
+        score: 0.3
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:149a8d0490273829d6164b451101fa3fcb161af2b49497335450556cfacda7a9
+      lastVerified: '2026-02-23T15:53:00.594Z'
+    qa-guidelines-6-premissas:
+      path: .aios-core/development/agents/qa-guidelines-6-premissas.md
+      type: agent
+      purpose: ✅ QA AGENT (@qa) — 6 PREMISSAS OBRIGATÓRIAS
+      keywords:
+        - qa
+        - guidelines
+        - premissas
+        - agent
+        - (@qa)
+        - obrigatórias
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.3
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:0e34a0b749b0c32cafdce3ab3bafe026bc0b8bb4dedc9e87e879d718e15429a9
+      lastVerified: '2026-02-23T15:53:00.595Z'
   checklists:
     agent-quality-gate:
       path: .aios-core/development/checklists/agent-quality-gate.md
@@ -9257,6 +9601,38 @@ entities:
         extensionPoints: []
       checksum: sha256:1a7262912c8c8e264d307f0d38a1109bdb2b9bff9ea7d8855c768835201aa59b
       lastVerified: '2026-02-08T13:33:24.397Z'
+    agent-knowledge-profiles:
+      path: .aios-core/data/agent-knowledge-profiles.yaml
+      type: data
+      purpose: Agent Knowledge Profiles
+      keywords:
+        - agent
+        - knowledge
+        - profiles
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.5
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:f518bfe21678f73c26ec3ec5f1fd36d1d71df5c020ed860763cc530d6730d1ea
+      lastVerified: '2026-02-20T13:00:10.308Z'
+    knowledge-gaps:
+      path: .aios-core/data/knowledge-gaps.yaml
+      type: data
+      purpose: Knowledge Gaps Ledger
+      keywords:
+        - knowledge
+        - gaps
+        - ledger
+      usedBy: []
+      dependencies: []
+      adaptability:
+        score: 0.5
+        constraints: []
+        extensionPoints: []
+      checksum: sha256:6aa463260f357da97ab58a8e95c32e2b1f907dbb76be673401fa194b2399b0c3
+      lastVerified: '2026-02-20T13:00:10.310Z'
 categories:
   - id: tasks
     description: Executable task workflows for agent operations

@@ -15,6 +15,7 @@ Mostre a lista de agentes abaixo em formato numerado, explicando em 1 linha quan
 10. /aios-sm - Scrum Master (Use for user story creation from PRD, story validation and completeness checking, acceptance criteria definition, story…)
 11. /aios-squad-creator - Squad Creator (Use to create, validate, publish and manage squads)
 12. /aios-ux-design-expert - UX/UI Designer & Design System Architect (Complete design workflow - user research, wireframes, design systems, token extraction, component building, and quality…)
+13. /aios-knowledge-monitor - Use @knowledge-monitor (Sage) when: - Preparing an agent for a new domain or story - Identifying knowledge gaps before…
 
 No final, peça para o usuário escolher um número ou digitar o comando direto.
 """

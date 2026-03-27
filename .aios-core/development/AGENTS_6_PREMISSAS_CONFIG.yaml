@@ -1,0 +1,234 @@
+# 🤖 AGENTS 6 PREMISSAS CONFIGURATION
+# Synkra AIOS — Development Framework
+# Version: 1.0
+# Updated: 2026-02-23
+
+# ============================================================================
+# CORE PREMISSAS
+# ============================================================================
+
+premissas:
+  - id: 1
+    name: "Planejamento e Mapeamento de Dependências"
+    description: "Entender ordem de implementação das features"
+    severity: "CRÍTICO"
+    applies_to: ["@dev", "@architect", "@qa", "@data-engineer"]
+  
+  - id: 2
+    name: "DRY (Don't Repeat Yourself)"
+    description: "Nunca repita código em 2+ lugares"
+    severity: "CRÍTICO"
+    applies_to: ["@dev", "@architect", "@qa", "@data-engineer"]
+  
+  - id: 3
+    name: "KISS (Keep It Simple, Stupid)"
+    description: "Escolha sempre a solução mais simples"
+    severity: "ALTO"
+    applies_to: ["@dev", "@architect", "@qa"]
+  
+  - id: 4
+    name: "YAGNI (You Aren't Gonna Need It)"
+    description: "Implemente apenas o essencial AGORA"
+    severity: "ALTO"
+    applies_to: ["@dev", "@architect", "@qa"]
+  
+  - id: 5
+    name: "Feature-Based Folder Structure"
+    description: "Organize por funcionalidade, não por camada"
+    severity: "CRÍTICO"
+    applies_to: ["@dev", "@architect", "@qa", "@data-engineer"]
+  
+  - id: 6
+    name: "Separation of Concerns (SoC)"
+    description: "Cada arquivo = 1 responsabilidade"
+    severity: "CRÍTICO"
+    applies_to: ["@dev", "@architect", "@qa", "@data-engineer"]
+
+# ============================================================================
+# AGENT-SPECIFIC GUIDELINES
+# ============================================================================
+
+agents:
+  dev:
+    name: "Developer Agent (@dev)"
+    persona: "Dex"
+    guideline_file: ".aios-core/development/agents/dev-guidelines-6-premissas.md"
+    responsibilities:
+      - "Implementação de código"
+      - "Bug fixes"
+      - "Features"
+    premissa_focus:
+      - 1: "Consultar DEPENDENCY_GRAPH antes de implementar"
+      - 2: "Procurar por código duplicado"
+      - 3: "Usar solução mais simples"
+      - 4: "Remover YAGNI code"
+      - 5: "Criar em features/x/"
+      - 6: "SoC em separação de concerns"
+    checks:
+      - "typecheck: npm run typecheck"
+      - "lint: npm run lint"
+      - "test: npm test"
+      - "build: npm run build"
+
+  architect:
+    name: "Architect Agent (@architect)"
+    persona: "Aria"
+    guideline_file: ".aios-core/development/agents/architect-guidelines-6-premissas.md"
+    responsibilities:
+      - "Arquitetura técnica"
+      - "Design de sistemas"
+      - "Padrões"
+      - "Refatoração"
+    premissa_focus:
+      - 1: "Manter DEPENDENCY_GRAPH.md"
+      - 2: "Identificar padrões DRY"
+      - 3: "Propor designs simples"
+      - 4: "Rejeitar nice-to-have"
+      - 5: "Design feature-based structure"
+      - 6: "Definir SoC boundaries"
+    deliverables:
+      - "DEPENDENCY_GRAPH.md"
+      - "ARCHITECTURE.md"
+      - "SoC_BOUNDARIES.md"
+      - "features/*/README.md"
+
+  qa:
+    name: "QA Agent (@qa)"
+    persona: "Quinn"
+    guideline_file: ".aios-core/development/agents/qa-guidelines-6-premissas.md"
+    responsibilities:
+      - "Testes"
+      - "Qualidade"
+      - "Validação"
+    premissa_focus:
+      - 1: "Testar respeitando dependências"
+      - 2: "Usar fixtures compartilhadas"
+      - 3: "Testes simples e diretos"
+      - 4: "Apenas código implementado"
+      - 5: "Testes em features/x/__tests__/"
+      - 6: "Unit/Service/Component/E2E separados"
+    checks:
+      - "coverage: ≥80%"
+      - "typecheck: npm run typecheck"
+      - "lint: npm run lint"
+      - "test: npm test"
+
+  data_engineer:
+    name: "Data Engineer Agent (@data-engineer)"
+    persona: "Dara"
+    guideline_file: ".aios-core/development/agents/data-engineer-guidelines-6-premissas.md"
+    responsibilities:
+      - "Database design"
+      - "Migrações"
+      - "Schema"
+      - "Data integrity"
+    premissa_focus:
+      - 1: "Migrações respeitam ordem de features"
+      - 2: "Enums/Domains reutilizáveis"
+      - 3: "Schema simples (3NF)"
+      - 4: "Apenas campos solicitados"
+      - 5: "Migrações organizadas por feature"
+      - 6: "Schema/indexes/constraints/seed separados"
+    deliverables:
+      - "db/migrations/*/README.md"
+      - "db/migrations/*/001_schema.sql"
+      - "db/migrations/*/002_indexes.sql"
+      - "db/migrations/*/003_constraints.sql"
+
+# ============================================================================
+# ACTIVATION RULES
+# ============================================================================
+
+activation_rules:
+  before_any_task:
+    - "Agent must read the 6-premissas-index.md"
+    - "Agent must read their specific guideline file"
+    - "Agent must acknowledge understanding of 6 premissas"
+  
+  during_implementation:
+    - "Check 6 premissas checklist"
+    - "Validate against severity levels"
+    - "Document decisions regarding premissas"
+  
+  before_commit:
+    - "Run ALL checks (typecheck, lint, test, build)"
+    - "Verify 6 premissas compliance"
+    - "Get approval from relevant agents"
+
+# ============================================================================
+# VIOLATION HANDLING
+# ============================================================================
+
+violations:
+  severity_critical:
+    - "Feature-based structure violated"
+    - "Circular dependency created"
+    - "SoC boundary crossed"
+    action: "BLOCK: Require refactoring before merge"
+    
+  severity_high:
+    - "DRY violation: Code duplication found"
+    - "Major YAGNI: 50+ lines of unused code"
+    action: "REQUEST CHANGES: Fix before approval"
+    
+  severity_medium:
+    - "KISS violated: Overengineering detected"
+    - "Minor YAGNI: TODO without issue"
+    action: "COMMENT: Address before merge"
+
+# ============================================================================
+# REFERENCES
+# ============================================================================
+
+documentation:
+  - "6-PREMISSAS-INDEX.md (central hub)"
+  - "ARQUITETURA_REFATORADA.md (structure)"
+  - "DEPENDENCY_GRAPH.md (order)"
+  - "dev-guidelines-6-premissas.md"
+  - "architect-guidelines-6-premissas.md"
+  - "qa-guidelines-6-premissas.md"
+  - "data-engineer-guidelines-6-premissas.md"
+
+# ============================================================================
+# MESSAGING
+# ============================================================================
+
+messaging:
+  activate: |
+    🤖 AGENT @{agent_name} ACTIVATED
+    
+    Loading 6 Premissas Framework...
+    ✅ Core premissas loaded
+    ✅ {agent_name} guidelines loaded
+    
+    Remember the 6 Premissas:
+    1️⃣  Dependências mapeadas
+    2️⃣  DRY centralizado
+    3️⃣  KISS simplificado
+    4️⃣  YAGNI essencial
+    5️⃣  Feature-based isolado
+    6️⃣  SoC separado
+    
+    Ready to proceed! 🚀
+  
+  violation: |
+    🚨 VIOLATION DETECTED
+    
+    Premissa {id}: {name}
+    Severity: {severity}
+    
+    Read: {guideline_file}
+    
+    Action required: {action}
+
+# ============================================================================
+# VERSION & METADATA
+# ============================================================================
+
+version: "1.0"
+status: "ACTIVE"
+created: "2026-02-23"
+authors: ["@architect (Aria)", "@dev (Dex)"]
+mandatory: true
+applies_to_all: ["@dev", "@architect", "@qa", "@data-engineer"]
+
